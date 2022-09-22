@@ -103,7 +103,7 @@ class ShopController extends Controller
             'parents'=> $qr_parents
         ];*/
 
-        return $qr_single;
+        return $sng;
     }
     public function is_parent()
     {
