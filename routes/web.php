@@ -34,7 +34,7 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/contacts_page/{id}', [ContactsController::class, 'page'])->name('contacts_page');
     Route::get('/contacts_list/{id}', [ContactsController::class, 'list'])->name('contacts_list');
-    Route::get('contact_form',[WoocommerceController::class,'create'])->name('contact_form');
+    Route::get('/contact_form',[ContactsController::class,'create'])->name('contact_form');
     Route::resources([
         '/contact/'=> ContactsController::class,
     ]);
