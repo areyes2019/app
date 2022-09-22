@@ -1,6 +1,6 @@
 ---
 deployment:
   tasks:
-    
+    - export DEPLOYPATH=/home2/sellopro/public_html/
     
     
