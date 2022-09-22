@@ -55,6 +55,7 @@ class ContactsController extends Controller
             'zip'       =>  'nullable|numeric|min:5',
             'tax_id'    =>  'nullable|max:18',
             'store_id'  =>  'nullable',
+            'company'   =>  ''
         ],[
             'type.required'=>'El tipo de contacto es obligatorio',
             'name.alpha'=>'No se aceptan numero',
@@ -119,8 +120,35 @@ class ContactsController extends Controller
      * @param  \App\Models\Contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Contact $contact)
+    public function destroy($id)
     {
-        //
+        
+        $query = Contact::where('idContact', $id)->delete();
+        if ($query) {
+            return true;
+        }
+    }
+    public function contact_show($id)
+    {
+        $query = Contact::where('idContact',$id)->get();
+        return $query;
+    }
+    public function contact_update(Request $request, $id)
+    {
+        $query = Contact::where('idContact',$id)->update([
+                'type'      =>$request->type,
+                'company'   =>$request->company,
+                'name'      =>$request->name,
+                'email'     =>$request->email,
+                'phone'     =>$request->phone,
+                'mobile'    =>$request->mobile,
+                'address'   =>$request->address,
+                'zone'      =>$request->zone,
+                'zip'       =>$request->zip,
+                'tax_id'    =>$request->tax_id
+        ]);
+        if ($query) {
+            return true;
+        }
     }
 }

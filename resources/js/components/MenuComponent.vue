@@ -9,7 +9,6 @@
 							<li><span class="ti-angle-right"></span><a :href="/contacts_page/+ 1">Lista de Clientes</a></li>
 							<li><span class="ti-angle-right"></span><a :href="/contacts_page/+ 2">Lista de Proveedores</a></li>
 							<li><span class="ti-angle-right"></span><a :href="/contacts_page/+ 3">Lista de Contactos</a></li>
-							<li><span class="ti-angle-right"></span><a href="/contact_form/">Crear</a></li>
 						</ul>
 					</div>
 				</div>

@@ -35,6 +35,9 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('/contacts_page/{id}', [ContactsController::class, 'page'])->name('contacts_page');
     Route::get('/contacts_list/{id}', [ContactsController::class, 'list'])->name('contacts_list');
     Route::get('/contact_form',[ContactsController::class,'create'])->name('contact_form');
+    Route::get('/delete_contact/{id}',[ContactsController::class,'destroy'])->name('delete_contact');
+    Route::get('/contact_show/{id}',[ContactsController::class,'contact_show'])->name('contact_show');
+    Route::post('/contact_update/{id}',[ContactsController::class,'contact_update'])->name('contact_update');
     Route::resources([
         '/contact/'=> ContactsController::class,
     ]);
