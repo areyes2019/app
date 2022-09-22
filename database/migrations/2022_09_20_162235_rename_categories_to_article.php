@@ -13,7 +13,7 @@ class RenameCategoriesToArticle extends Migration
      */
     public function up()
     {
-        Schema::table('article', function (Blueprint $table) {
+        Schema::table('cnnxn_articles', function (Blueprint $table) {
             $table->renameColumn('idCategorie', 'categorie');
         });
     }
