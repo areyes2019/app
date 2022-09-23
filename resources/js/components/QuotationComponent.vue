@@ -47,10 +47,7 @@
                     </div>  
                 </div>
             </div>
-            <div>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, vero. Animi aspernatur aut voluptas! Adipisci facere esse veniam eligendi aperiam, perspiciatis quaerat amet asperiores iste nam, quod tempore enim quos?</p>
-                <p>Este es un ejemplo para saber si llegan mis cambios al repositorio</p>
-            </div>
+            
             <div class="col-md-10">
                 <div class="card-box-std p-3">
                     <div class="row">
