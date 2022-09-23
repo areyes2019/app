@@ -24,18 +24,18 @@
 							</div>
 						</div>
 					</li>
-                    <li>
-                        <a href="">
-                            <span class="bi bi-shop"></span>
-                            Sellos personalizados
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <span class="bi bi-shop"></span>
-                            Sellos para doctores
-                        </a>
-                    </li>
+					<li>
+							<a href="">
+									<span class="bi bi-shop"></span>
+									Sellos personalizados
+							</a>
+					</li>
+					<li>
+							<a href="">
+									<span class="bi bi-shop"></span>
+									Sellos para doctores
+							</a>
+					</li>
 				</ul>
 			</div>
 		</div>
@@ -224,7 +224,7 @@
     							</div>
     						</div>
     					</div>
-    					
+
     				</div>
     			</div>
     		</div>

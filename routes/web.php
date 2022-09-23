@@ -6,6 +6,8 @@ use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\WoocommerceController;
 use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\QuotationController;
+use App\Http\Controllers\QuotationsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -76,7 +78,20 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('/show_categorie/{id}',[ShopController::class,'show_categorie'])->name('show_categorie');
     Route::get('/is_parent/',[ShopController::class,'is_parent'])->name('is_parent');    
     
-    Route::get('/sum_value',[ArticlesController::class,'sum_value'])->name('sum_value');    
+    Route::get('/sum_value',[ArticlesController::class,'sum_value'])->name('sum_value');
+    
 
+    Route::get('/quotations/',[QuotationsController::class,'index'])->name('quotation');
+    
+    Route::get('/quotation_generate/',[QuotationController::class,'store'])->name('quotations');
+    Route::get('/quotation_delete/',[QuotationController::class,'destroy'])->name('quotation_delete');
+    Route::get('/quotation_line/',[QuotationController::class,'line'])->name('quotation_line');
+    
+    Route::get('/quotations_show/',[QuotationController::class,'show'])->name('quotations_show');
+    Route::post('/quotations_new/',[QuotationController::class,'store'])->name('quotations_new');
+    Route::get('/quotation_page/{id}',[QuotationController::class,'page'])->name('quotation_page');
+    Route::get('/articles_show/',[QuotationController::class,'show_articles'])->name('articles_show');
+    Route::get('/quotation/{id}',[QuotationController::class,'show_quotation'])->name('show_quotation');
+    Route::get('/quotation_customer/{id}',[QuotationController::class,'show_customer'])->name('quotation_customer');
 });
 

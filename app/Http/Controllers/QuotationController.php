@@ -3,83 +3,61 @@
 namespace App\Http\Controllers;
 
 use App\Models\cnnxn_quotation;
+use App\Models\cnnxn_Article;
+use App\Models\Contact;
 use Illuminate\Http\Request;
 
 class QuotationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+  public function index()
+  {
+  	return view('quotations.index');
+  }
+  public function show()
+  {
+    $posts = cnnxn_quotation::join('cnnxn_contacts', 'cnnxn_contacts.idContact', '=', 'cnnxn_quotations.idCustomer')->get();
+    return $posts;
+  } 
+  public function store(Request $request)
+   {
+     $query = cnnxn_quotation::create($request->All());
+     if ($query) {
+       return true;
+     }
+   }
+   
+    public function page($id){
+       
+        //aqui enviamos los datos de la cotizacion
+        $query = cnnxn_quotation::where('slug',$id)->get();
+        foreach ($query as $data) {
+            $id = $data->idQt;
+            $slug = $data->slug;
+            $customer = $data->idCustomer;
+        }
+            return view('quotations.page')
+                    ->with('id', $id)
+                    ->with('slug',$slug)
+                    ->with('customer',$customer);
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function show_articles()
     {
-        //
+        $query = cnnxn_Article::all();
+        return $query;
+       
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function show_quotation($id)
     {
-        //
+        $query = cnnxn_quotation::where('slug',$id)->get();
+        return $query;
+    }
+    public function show_customer($id)
+    {
+      $query = Contact::where('type',1)->where('idContact',$id)->get();
+      return $query;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\cnnxn_quotation  $cnnxn_quotation
-     * @return \Illuminate\Http\Response
-     */
-    public function show(cnnxn_quotation $cnnxn_quotation)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\cnnxn_quotation  $cnnxn_quotation
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(cnnxn_quotation $cnnxn_quotation)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\cnnxn_quotation  $cnnxn_quotation
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, cnnxn_quotation $cnnxn_quotation)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\cnnxn_quotation  $cnnxn_quotation
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(cnnxn_quotation $cnnxn_quotation)
-    {
-        //
-    }
 }

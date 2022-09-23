@@ -43,6 +43,8 @@ Vue.component('wooarticle-component', require('./components/WooArticleComponent.
 Vue.component('articles-component', require('./components/ArticlesComponent.vue').default);
 Vue.component('cataloges-component', require('./components/CatalogesComponent.vue').default);
 Vue.component('categories-component', require('./components/CategoriesComponent.vue').default);
+Vue.component('quotations-component', require('./components/QuotationsComponent.vue').default);
+Vue.component('quotation-component', require('./components/QuotationComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
