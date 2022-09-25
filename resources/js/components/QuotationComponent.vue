@@ -400,22 +400,22 @@
                         me.total.total = gran_total.toFixed(2);
                     } else{
                         //sacamos el subtotal
-                        var sub_total = response.data.sub_total;
-                        var tax = sub_total/1.16;
-                        var fix = tax.toFixed(2);
-                        me.total.amount = fix;
-                        //traemo el descuento en $
+                        me.total.amount = response.data.sub_total;
+                        
+                        //traemos el descuento en $
                         me.total.money = response.data.summary[0].money_discount;
                         var money = response.data.summary[0].money_discount;
+                        
                         //traemo el descuento en %
                         me.total.percent = response.data.summary[0].percent_discount;
                         var percent = response.data.summary[0].percent_discount;
+                        
                         //hacemos la cuenta 
-                        var firt_discount = fix/100 * percent;
-                        var second_discount = fix - firt_discount;
+                        var firt_discount = response.data.sub_total / 100 * percent;
+                        var second_discount = response.data.sub_total - firt_discount;
                         var money_discount = second_discount - money;
                         me.total.tax = ""
-                        me.total.total = money_discount.toFixed(2);
+                        me.total.total = money_discount;
                     }
                     
                     
