@@ -93,5 +93,12 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('/articles_show/',[QuotationController::class,'show_articles'])->name('articles_show');
     Route::get('/quotation/{id}',[QuotationController::class,'show_quotation'])->name('show_quotation');
     Route::get('/quotation_customer/{id}',[QuotationController::class,'show_customer'])->name('quotation_customer');
+    Route::post('/change_status/{id}',[QuotationController::class,'change_status'])->name('change_status');
+    Route::post('/quotations_add_line/',[QuotationController::class,'add_line'])->name('quotations_add_line');
+    Route::get('/quotations_show_lines/{id}',[QuotationController::class,'show_lines'])->name('show_lines');
+    Route::get('/show_totals/{id}',[QuotationController::class,'show_totals'])->name('show_totals');
+    Route::post('/add_quantity/{line}',[QuotationController::class,'add_quantity'])->name('add_quantity');
+    Route::post('/delete_line/{id}',[QuotationController::class,'delete_line'])->name('delete_line');
+    Route::post('/tax_add',[QuotationController::class,'tax_free'])->name('tax_free');
 });
 

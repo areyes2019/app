@@ -26,7 +26,7 @@
 				<tbody>
 					<tr v-for="item in array">
 						<td>{{item.cataloge_name}}</td>
-						<td>{{item.company}}</td>
+						<td>{{item.company}} - {{item.name}}</td>
 						<td>{{item.discount}}%</td>
 						<td>
 							<a href="#" class="icon-link" @click.prevent="open_trash_modal(item.idCataloge)"><span class="bi bi-trash"></span></a>

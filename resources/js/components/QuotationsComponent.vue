@@ -109,7 +109,7 @@
                                     <td>{{data.company}}</td>
                                     <td>{{data.name}}</td>
                                     <td>
-                                       <button>Accion</button>
+                                       <button class="btn btn-danger rounded-0 btn-sm" @click="toQuotation(data.slug)">Ver</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -217,7 +217,10 @@
               $(function(){
                 $('#mytable').DataTable();
               });
-            }
+            },
+            toQuotation(data){
+              window.location.href = 'quotation_page'+'/'+data;
+            },
         },
         mounted() {
             this.getData();

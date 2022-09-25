@@ -14,16 +14,20 @@
                     <div class="d-grid gap-2 col-12 mx-auto mb-3">
                         <button :class="['btn', 'btn-danger', 'rounded-0', 'm-0', 'mr-2', display]" @click="openModal()">Agregar Artículos</button>
                     </div>
+                    <!-- con iva -->
                     <div class="my-form-group d-flex justify-content-between align-items-center">
-                        <p class="m-0 p-0">Desglosar Iva</p>
+                        <p class="m-0 p-0" v-if="tax==1">Con Factura</p>
+                        <p class="m-0 p-0" v-if="tax==0">Sin Factura</p>
                         <label class="switch">
-                          <input type="checkbox" :value="1">
+                          <input type="checkbox"  v-model ="tax" @change="tax_free">
                           <span class="slider"></span>
                         </label>
                     </div>
+                    {{tax}}
+                    <!-- con iva -->
                     <hr>
                     <div class="my-form-group">
-                        <p class="m-0 mr-2 p-0 align-self-center">Descuentos</p>
+                        <h5 class="m-0 mr-2 p-0 align-self-center">Descuentos</h5>
                         <div class="d-grid gap-2 col-12 mx-auto mb-3 mt-1">
                             <a href="#money" class="btn btn-danger rounded-0" data-bs-toggle="collapse">Descuento $</a>
                             <div class="collapse" id="money">
@@ -44,26 +48,43 @@
                                 </div>
                             </div>
                         </div>                       
-                    </div>  
+                    </div>
+                    <hr>
+                    <div class="my-form-group">
+                        <h5 class="m-0 mr-2 p-0 align-self-center">Cambiar Estatus</h5>
+                        <div class="d-grid gap-2 col-12 mx-auto mb-3 mt-1">
+                            <p v-if="status==0">Cotización en borrador</p>
+                            <button class="btn btn-danger rounded-0" v-if="status==1" @click="change_status(2)">Aprobada</button>
+                            <button class="btn btn-danger rounded-0" v-if="status==2" @click="change_status(3)">Pagada</button>
+                            <button class="btn btn-danger rounded-0" v-if="status==3" @click="change_status(4)">Facturar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             
             <div class="col-md-10">
                 <div class="card-box-std p-3">
                     <div class="row">
-                        <div class="col-md-5" v-for="customer in customers">
-                            <div class="mb-3" v-for="item in quotation">
-                                <p class="m-0">No: <span>{{item.idQt}}</span></p>
-                                <p class="m-0">Fecha: <span>{{item.created_at}}</span></p>
+                        <div class="col-md-5">
+                            <div v-for="customer in customers">
+                                <div class="mb-3" v-for="item in quotation">
+                                    <p class="m-0">No: <span>{{item.idQt}}</span></p>
+                                    <p class="m-0">Fecha: <span>{{item.created_at}}</span></p>
+                                </div>
+                                
+                                <p class="m-0">Para: <span>{{customer.company}}</span></p>
+                                <p class="m-0">Con Att.: <span>{{customer.name}}</span></p>
+                                <p class="m-0"><strong>{{customer.email}}</strong></p>
+                                <p class="m-0">Tipo:
+                                    <strong v-if="customer.type == 0">Cliente Regular</strong>
+                                    <strong v-else="customer.type == 1">Distribuidor</strong>
+                                </p>
                             </div>
-                            
-                            <p class="m-0">Para: <span>{{customer.company}}</span></p>
-                            <p class="m-0">Con Att.: <span>{{customer.name}}</span></p>
-                            <p class="m-0"><strong>{{customer.email}}</strong></p>
-                            <p class="m-0">Tipo:
-                                <strong v-if="customer.type == 0">Cliente Regular</strong>
-                                <strong v-else="customer.type == 1">Distribuidor</strong>
-                            </p>
+                            <h5 class="mt-1" v-if="status==0"><span class="badge bg-secondary">Borrador</span></h5>
+                            <h5 class="mt-1" v-if="status==1"><span class="badge bg-primary">Enviada</span></h5>
+                            <h5 class="mt-1" v-if="status==2"><span class="badge bg-success">Aprobada</span></h5>
+                            <h5 class="mt-1" v-if="status==3"><span class="badge bg-danger">Pagada</span></h5>
+                            <h5 class="mt-1" v-if="status==4"><span class="badge bg-dark">Facturada</span></h5>
                         </div>
                     </div>
                 </div>
@@ -81,7 +102,7 @@
                         <tbody>
                             <tr v-for="line in lines">
                                 <td>
-                                    <input type="number" :value="line.quantity" class="form-control w-50" :id="line.idDetail" @change="addQuantity(line.idDetail)" :disabled = "disabled == 1">
+                                    <input type="number" :value="line.quantity"  :id="line.id" @change="addQuantity(line.id)" :disabled = "disabled == 1">
                                 </td>
                                 <td>{{line.name}}</td>
                                 <td>{{line.model}}</td>
@@ -90,7 +111,7 @@
                                 <td>
                                     <div class="d-flex justify-content-between">
                                         <p class="m-0">{{line.total}}</p>
-                                        <a href="" @click.prevent="deleteLine(line.idDetail)" :class="[display]">X</a>
+                                        <a href="" @click.prevent="deleteLine(line.id)" :class="[display]">X</a>
                                     </div>
                                 </td>
                             </tr>
@@ -128,7 +149,7 @@
                             <tr>
                                 <th colspan="3"></th>
                                 <th>Total</th>
-                                <td>$250.00</td>
+                                <td>${{total.total}}</td>
                             </tr>
                         </tfoot>
                     </table>
@@ -168,56 +189,43 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-danger rounded-0" data-dismiss="modal">Cerrar</button>
-                    </div>
+                    
                 </div>
             </div>
         </div>
         <!-- agregar articulo del catalogo -->
+        <!-- Advertencia doble articulo -->
+        <div class="modal fade" id="modal_warning" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content rounded-0">
+                <div class="modal-body">
+                    <div class="body-warning">
+                        <center><span class="bi bi-exclamation-diamond warning-icon"></span>
+                        <p class="m-0 warning-title">¡Opss!</p>
+                        <p class="m-0 warning-text">Este Artículo ya esta agregad.</p>
+                        <p class="m-0 warning-ref text-danger">¿Desas continuar?</p>
+                        </center>
+                    </div>
+                </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Ok</button>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
 </template>
 
 <script>
-    import datatable from 'datatables.net-bs5'
-    export default {
+   export default{
         props:['id','slug','customer','type'],
         data(){
             return{
-                //styles
-                tax_set:"",
-                tax_style:"",
-                color_badge:"",
-                btn_state:"",
-                quit_tax:"",
-                status:"",
-                discount:"",
-                add_discount:"",
-                articles:[],
                 quotation:[],
-                customers:[],
+                articles:[],
                 lines:[],
-                percent:"",
-                money:"",
-                quantity:"",
-                //variables de descuentos
-                money_discount:"",
-                percent_discount:"",
-                //suma de la cotización
-                amount:"",
-                discount:"",
                 tax:"",
-                advance_payment:"",
-                total_amount:"",
-                line:{
-                    quantity:"",
-                    model:"",
-                    article:"",
-                    price:"",
-                },
-                payment:"",
-                display:"",
-                disabled:0,
+                status:"",
                 total:{
                     amount:"", //esto es el sub-total
                     percent:"", // esto es el porcentaje de dcto
@@ -225,10 +233,7 @@
                     discount:"", //esto es el descuento en dinero
                     tax:"", 
                     total:"", //esto es el gran total
-                }
-
-
-               
+                },
             }
         },
         methods:{
@@ -241,39 +246,37 @@
                 })
             },
             addArticle(item){
-                var refernce =this.$refs[item][0].value;
+                //console.log(this.id);
+                var quantity =this.$refs[item][0].value;
                 var me = this;
-                var url = "/quotations_add_line"
-                axios.get('/quotation_double/'+me.id+'/'+item).then(function(response) {
-                    
-                    if (response.data==0) {
-                        axios.post(url,{
-                            'article':item,
-                            'id':me.id,
-                            'customer':me.customer,
-                            'quantity':refernce
-                        }).then(function(response){
-                            me.showTotals();
-                            me.showDetails();
-                        })
-                    }else{
-                        alert('Este articulo ya esta agragado');
+                var url = "/quotations_add_line";
+                axios.post(url,{
+                    'id':me.id,//id de cotizacion
+                    'quantity':quantity,//cantidad
+                    'article':item,//id de articulo
+                }).then(function(response){
+                    if (response.data==1) {
+                        $('#modal_warning').modal('show');
                     }
-               })
+                    me.showDetails();
+                    me.showTotals();
+                }).catch(function(errors){
+
+                });
+                
 
             },
-
             getQuotation(){
                 var me = this;
                 var url = "/quotation/"+me.slug;
                 axios.get(url).then(function(response){
                     me.quotation = response.data;
-                    var status = response.data[0].status;
+                    me.status = response.data[0].status;
                     var payment = response.data[0].invoice;
+                    me.tax = response.data[0].with_tax
                     
                 })
             },
-            //muestra las lineas en la cotizacion
             showDetails(){
                 var me = this;
                 var url = "/quotations_show_lines/"+me.id;
@@ -288,45 +291,51 @@
                     me.customers=response.data;
                 })
             },
-            approved(){
-                var me = this;
-                var url = "/add_pay";
-
-                Swal.fire({
-                  title: '¿Quieres enviar a facturación?',
-                  text: "Esta acción ya no se puede deshacer",
-                  icon: 'warning',
-                  showCancelButton: true,
-                  confirmButtonColor: '#3085d6',
-                  cancelButtonColor: '#d33',
-                  confirmButtonText: 'Sí, enviar a facturación'
-                }).then((result) => {
-                  if (result.isConfirmed) {
-
-                    axios.post(url,{
-                        'slug':me.slug
-                    }).then(function(response){
-                        Swal.fire(
-                          'Enviado',
-                          'Tu cotización se fue a facturación',
-                          'success'
-                        )
-                        location.reload();
-                    })
-
-                  }
-                })
+            change_status(data){
+                var status="";
+                if (data==2) {
+                    if (window.confirm("¿Realmente quieres cambiar el etatus?. Esta acción ya no se puede revertir")) {
+                        var status = 2;
+                        this.status_fun(2);
+                    }
+                    
+                }else if (data==3) {
+                    if (window.confirm("¿Realmente quieres cambiar el etatus?. Esta acción ya no se puede revertir")) {
+                        var status = 3;
+                        this.status_fun(3);
+                    }
+                }else if (data==4) {
+                    if (window.confirm("¿Realmente quieres cambiar enviar a facturación?. Una vez enviada la cotización, se cierra")) {
+                        var status = 4;
+                        this.status_fun(4);
+                    }
+                }
             },
-            quitTax(){
+            status_fun(data){
                 var me = this;
-                var quotation = this.id;
-                var slug = this.slug;
-                var url = "/quit_tax";
+                var url = "/change_status/"+this.slug;
                 axios.post(url,{
-                    'slug':slug,
-                    'id':quotation
+                    'status':data
                 }).then(function(response){
-                    me.total.tax = 0;
+                    if (response.data == 1) {
+                        me.getQuotation(); 
+                    }
+                }).catch(function(errors){
+
+                });
+            },
+            tax_free(){
+                var me = this;
+                if (this.tax==false) {
+                    this.tax = 0;
+                }else{
+                    this.tax = 1;
+                }
+                var url = "/tax_add";
+                axios.post(url,{
+                    'id':me.id,
+                    'tax':me.tax
+                }).then(function(response){
                     me.showTotals();
                     me.getQuotation();
                 })
@@ -349,63 +358,33 @@
                 var me = this;
                 var url = "/show_totals/"+ this.id;
                 axios.get(url).then(function(response){
-                    
-                    //suma total
-                    var amount =  response.data.total;
-
-                    //porcentaje de descuento
-                    var percent = response.data.data[0].discount_type;
-
-                    //descuento de porcentaje en dinero
-                    var money_percent = amount/100 * percent;
-
-                    //descuento en dinero
-                    var money = response.data.data[0].discount;
-
-
-                    //ahora vaciamos los datos al panel 
-                    me.total.amount         = amount;
-                    me.total.percent        = percent;
-                    me.total.percent_amount = money_percent.toFixed(2);
-                    me.total.discount       = money;
-                    var num1 = money_percent;
-                    var num2 = money;
-
-                    var sum = parseFloat(num1) + parseFloat(num2)
-
-                    
-                    var sum_before_tax = amount - sum;
-
-                    //aqui sacamos el IVA
-                    var tax = sum_before_tax/100*16;
-
-                    //acomodamos los deciamles
-                    me.total.tax = tax.toFixed(2);
-                    //prerapramos para sumar
-                    var tax1 = parseFloat(tax);
-                    var tax2 = parseFloat(sum_before_tax);
-                    var grand_total = tax1 + tax2; 
-                    me.total.total = grand_total.toFixed(2);
-                    me.advance_payment = grand_total.toFixed(2) / 2 ;
-
+                    me.total.amount = response.data.sub_total;
+                    me.total.percent = response.data.summary[0].percent_discount;
+                    me.total.percent_amount = response.data.summary[0].money_discount;
+                    me.total.tax = response.data.summary[0].tax;
+                    me.total.total = response.data.summary[0].total;
                     
                 })
             },
-            addQuantity(data){
-                var number = $("#"+data).val();
+            addQuantity(line){
+                //console.log(number);
+                var number = $("#"+line).val();
                 var me = this;
-                var url = '/add_quantity/'+data;
+                var url = '/add_quantity/'+line;
                 axios.post(url,{
-                    'quantity':number
+                    'quantity':number,
+                    'id':me.id
                 }).then(function(response){
                     me.showDetails();
                     me.showTotals();
                 })
             },
-            deleteLine(data){
+            deleteLine(line){
                 var me = this;
-                var url = '/delete_line/'+data+'/'+this.id;
-                axios.get(url).then(function(response){
+                var url = '/delete_line/'+line;
+                axios.post(url,{
+                    'id_qt':me.id
+                }).then(function(response){
                     me.showDetails();
                     me.showTotals();
                 })
@@ -434,26 +413,19 @@
                     me.showTotals();
                 })
             },
-            sendMail(){
-                var me = this;
-                var url = "/get_quotation_pdf/"+me.customer+'/'+me.id+"/send";
-                axios.get(url).then(function(response){
-                    alert('Correo enviado');
-                })
-            },
             table(){
                 this.$nextTick(() => {
                     $('#articles_table').DataTable();
                 });
             },
 
-        },
 
-        mounted() {
+        },
+        mounted(){
             this.showCutomerData();
             this.getQuotation();
-            this.showDetails();
             this.showTotals();
+            this.showDetails();
         }
-    }
+   }
 </script>

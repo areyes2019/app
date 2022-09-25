@@ -17,6 +17,10 @@
 			<p><span class="bi bi-wallet2"></span>Multiples métodos de pago</p>
 		</div>
 	</div>
+	<div class="top-header-mobile">
+		<p>Bienvendios a la tinda de sellos mas grande de México</p>
+		<p>vetnas@sellopronto.com.mx</p>
+	</div>
 	<div class="container">
 		<div class="top-menu">
 			<div class="row m-0 p-0">
