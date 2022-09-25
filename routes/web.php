@@ -100,5 +100,6 @@ Route::group(['middleware'=>'auth'],function(){
     Route::post('/add_quantity/{line}',[QuotationController::class,'add_quantity'])->name('add_quantity');
     Route::post('/delete_line/{id}',[QuotationController::class,'delete_line'])->name('delete_line');
     Route::post('/tax_add',[QuotationController::class,'tax_free'])->name('tax_free');
+    Route::post('/add_discount',[QuotationController::class,'add_discount'])->name('add_discount');
 });
 

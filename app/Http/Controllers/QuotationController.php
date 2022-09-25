@@ -202,5 +202,21 @@ class QuotationController extends Controller
             
 
     }
+    public function add_discount(Request $request)
+    {
+      if ($request->type == 1) {
+        $query = cnnxn_quotation::where('slug',$request->slug)->update([
+            'money_discount'=> $request->discount
+        ]);
+      }elseif($request->type==2){
+        $query = cnnxn_quotation::where('slug',$request->slug)->update([
+            'percent_discount'=> $request->discount
+        ]);
+      }
+
+      if ($query) {
+        return true;
+      }
+    }
 
 }

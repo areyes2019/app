@@ -6,13 +6,13 @@
                     <ul class="my-list">
                         <li><a class="mr-2" href="" @click.prevent="sendMail">Enviar</a></li>
                         <li><a class="mr-2" :href="'/get_quotation_pdf/'+customer+'/'+id+'/down'">Descargar PDF</a></li>
-                        <li><a :class="['mr-2', payment]" href="#" @click.prevent="approved">Enviar a Factura</a></li>
+                        <li><a :class="['mr-2']" href="#" @click.prevent="approved">Enviar a Factura</a></li>
                         <li><a href="#" @click="deleteQuotation" >Eliminar</a></li>
                     </ul>
                 </div>
                 <div class="card-box-std p-3 mt-3">
                     <div class="d-grid gap-2 col-12 mx-auto mb-3">
-                        <button :class="['btn', 'btn-danger', 'rounded-0', 'm-0', 'mr-2', display]" @click="openModal()">Agregar Artículos</button>
+                        <button :class="['btn', 'btn-danger', 'rounded-0', 'm-0', 'mr-2']" @click="openModal()">Agregar Artículos</button>
                     </div>
                     <!-- con iva -->
                     <div class="my-form-group d-flex justify-content-between align-items-center">
@@ -23,7 +23,6 @@
                           <span class="slider"></span>
                         </label>
                     </div>
-                    {{tax}}
                     <!-- con iva -->
                     <hr>
                     <div class="my-form-group">
@@ -32,7 +31,7 @@
                             <a href="#money" class="btn btn-danger rounded-0" data-bs-toggle="collapse">Descuento $</a>
                             <div class="collapse" id="money">
                                 <div class="d-flex justify-content-between">
-                                    <input type="text" class="form-control form-control-sm rounded-0 shadow-none" ref="money">
+                                    <input type="text" class="form-control form-control-sm rounded-0 shadow-none" ref="money" v-model="money">
                                     <button class="btn btn-dark btn-sm " @click="addDiscount(1)"><span class="bi bi-check-square"></span></button>
                                 </div>
                             </div>
@@ -42,7 +41,15 @@
                             <div class="collapse" id="percent">
                                 <div class="d-flex justify-content-between">
                                     <div class="d-flex justify-content-between">
-                                        <input type="text" class="form-control form-control-sm rounded-0 shadow-none" ref="percent">
+                                        <select name="" id="" ref="percent" v-model="percent" class="form-control">
+                                            <option value="0">0%</option>
+                                            <option value="5">5%</option>
+                                            <option value="10">10%</option>
+                                            <option value="15">15%</option>
+                                            <option value="20">20%</option>
+                                            <option value="25">25%</option>
+                                            <option value="30">30%</option>
+                                        </select>
                                         <button class="btn btn-dark btn-sm" @click="addDiscount(2)"><span class="bi bi-check-square"></span></button>
                                     </div>
                                 </div>
@@ -89,7 +96,10 @@
                     </div>
                 </div>
                 <div class="card-box-std p-3 mt-3">
-                    <table class="my-table-quotation">
+                    <div class="card-box-std p-3" v-if="lines == 0">
+                        <p>No hay articulos en tu cotización</p>
+                    </div>
+                    <table class="my-table-quotation" v-if="lines != 0">
                         <thead>
                             <tr>
                                 <th>CANT.</th>
@@ -124,15 +134,15 @@
                             </tr>
                             <tr>
                                 <th colspan="3"></th>
-                                <th>Dcto %{{total.percent}}</th>
-                                <td>${{total.percent_amount}}</td>
+                                <th>Dcto %</th>
+                                <td>${{total.percent}}</td>
                             </tr>
                             <tr>
                                 <th colspan="3"></th>
                                 <th>Dcto $</th>
-                                <td>${{total.discount}}</td>
+                                <td>${{total.money}}</td>
                             </tr>
-                            <tr>
+                            <tr v-if="tax==1">
                                 <th colspan="3"></th>
                                 <th>IVA</th>
                                 <td>
@@ -141,10 +151,10 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr v-if="total.advance > 0">
                                 <th colspan="3"></th>
                                 <th>Anticipo</th>
-                                <td>${{advance_payment}}</td>
+                                <td>{{total.advance}}</td>
                             </tr>                    
                             <tr>
                                 <th colspan="3"></th>
@@ -221,18 +231,23 @@
         props:['id','slug','customer','type'],
         data(){
             return{
+                percent:"",
+                money:"",
                 quotation:[],
                 articles:[],
                 lines:[],
+                customers:[],
+                display:"",
+                disabled:0,
                 tax:"",
                 status:"",
                 total:{
                     amount:"", //esto es el sub-total
                     percent:"", // esto es el porcentaje de dcto
-                    percent_amount:"", //esto es el descuetno en dinero con porcentaje
-                    discount:"", //esto es el descuento en dinero
+                    money:"", //esto es el descuetno en dinero con porcentaje
                     tax:"", 
                     total:"", //esto es el gran total
+                    advance:""
                 },
             }
         },
@@ -358,11 +373,51 @@
                 var me = this;
                 var url = "/show_totals/"+ this.id;
                 axios.get(url).then(function(response){
-                    me.total.amount = response.data.sub_total;
-                    me.total.percent = response.data.summary[0].percent_discount;
-                    me.total.percent_amount = response.data.summary[0].money_discount;
-                    me.total.tax = response.data.summary[0].tax;
-                    me.total.total = response.data.summary[0].total;
+                    var tax = response.data.summary[0].with_tax;
+                    if (tax == 1) {
+                        //sacamos el subtotal
+                        var sub_total = response.data.sub_total;                      
+                        var tax = sub_total/1.16;
+                        var fix = tax.toFixed(2);
+                        me.total.amount = fix;
+                        //traemo el descuento en $
+                        me.total.money = response.data.summary[0].money_discount;
+                        var money = response.data.summary[0].money_discount;
+                        //traemo el descuento en %
+                        me.total.percent = response.data.summary[0].percent_discount;
+                        var percent = response.data.summary[0].percent_discount;
+                        //hacemos la cuenta 
+                        var firt_discount = fix/100 * percent;
+                        var second_discount = fix - firt_discount;
+                        var money_discount = second_discount - money;
+                        
+                        //sacamos el iva
+                        var total_tax = money_discount/100 * 16;
+                        me.total.tax = total_tax.toFixed(2); 
+                        
+                        //sacamos el gran total
+                        var gran_total = money_discount + total_tax;
+                        me.total.total = gran_total.toFixed(2);
+                    } else{
+                        //sacamos el subtotal
+                        var sub_total = response.data.sub_total;
+                        var tax = sub_total/1.16;
+                        var fix = tax.toFixed(2);
+                        me.total.amount = fix;
+                        //traemo el descuento en $
+                        me.total.money = response.data.summary[0].money_discount;
+                        var money = response.data.summary[0].money_discount;
+                        //traemo el descuento en %
+                        me.total.percent = response.data.summary[0].percent_discount;
+                        var percent = response.data.summary[0].percent_discount;
+                        //hacemos la cuenta 
+                        var firt_discount = fix/100 * percent;
+                        var second_discount = fix - firt_discount;
+                        var money_discount = second_discount - money;
+                        me.total.tax = ""
+                        me.total.total = money_discount.toFixed(2);
+                    }
+                    
                     
                 })
             },
@@ -410,7 +465,10 @@
                     'type':data,
                 }).then(function(response){
                     me.percent = response.data;
+                    me.showDetails();
                     me.showTotals();
+                    me.percent = "";
+                    me.money = "";
                 })
             },
             table(){
