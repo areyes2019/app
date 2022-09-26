@@ -16,7 +16,7 @@
 					<a href="#quotation" @click.prevent="quotation = !quotation ,show_menu(2)"><span class="ti-files"></span> Cotizaciones</a>
 					<div class="menu-collapse" v-if="quotation">
 						<ul class="m-0 p-0">
-							<li><span class="ti-angle-right"></span><a href="quotations/">Ver lista</a></li>
+							<li><span class="ti-angle-right"></span><a href="/quotations">Ver lista</a></li>
 							<li><span class="ti-angle-right"></span><a href="">Crear cotización</a></li>
 						</ul>
 					</div>

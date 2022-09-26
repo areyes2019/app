@@ -81,13 +81,13 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('/sum_value',[ArticlesController::class,'sum_value'])->name('sum_value');
     
 
-    Route::get('/quotations/',[QuotationsController::class,'index'])->name('quotation');
+    Route::get('quotations',[QuotationsController::class,'index'])->name('quotation');
     
     Route::get('/quotation_generate/',[QuotationController::class,'store'])->name('quotations');
     Route::get('/quotation_delete/',[QuotationController::class,'destroy'])->name('quotation_delete');
     Route::get('/quotation_line/',[QuotationController::class,'line'])->name('quotation_line');
     
-    Route::get('/quotations_show/',[QuotationController::class,'show'])->name('quotations_show');
+    Route::get('quotations_show',[QuotationController::class,'show'])->name('quotations_show');
     Route::post('/quotations_new/',[QuotationController::class,'store'])->name('quotations_new');
     Route::get('/quotation_page/{id}',[QuotationController::class,'page'])->name('quotation_page');
     Route::get('/articles_show/',[QuotationController::class,'show_articles'])->name('articles_show');
