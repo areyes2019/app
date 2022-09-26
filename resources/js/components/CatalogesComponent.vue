@@ -17,6 +17,7 @@
 			<table class="my-table mt-2">
 				<thead>
 					<tr>
+						<th>#</th>
 						<th>Nombre</th>
 						<th>Proveedor</th>
 						<th>Dcto.</th>
@@ -25,6 +26,7 @@
 				</thead>
 				<tbody>
 					<tr v-for="item in array">
+						<td>{{item.idCataloge}}</td>
 						<td>{{item.cataloge_name}}</td>
 						<td>{{item.company}} - {{item.name}}</td>
 						<td>{{item.discount}}%</td>
@@ -45,12 +47,14 @@
 			<table class="my-table mt-2">
 				<thead>
 					<tr>
+						<th>#</th>
 						<th>Nombre</th>
 						<th>Acción</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr v-for="family in list_family">
+						<td>{{family.idFamily}}</td>
 						<td>{{family.family_name}}</td>
 						<td >
 							<a href="#" class="icon-link" @click.prevent="open_trash_modal(item.idCataloge)"><span class="bi bi-trash"></span>
