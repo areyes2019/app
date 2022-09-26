@@ -48,8 +48,8 @@
 						<td>{{article.cost}}</td>
 						<td>{{article.price}}</td>
 						<td>
-							<button class="btn btn-primary btn-sm" @click="showModal(article.idArticle)">Editar</button>
-							<button class="btn btn-danger btn-sm" @click="deleteData(article.idArticle)">Eliminar</button>
+							<a href="#" @click.prevent="showModal(article.idArticle)"><span class="bi bi-pencil-square"></span></a>
+							<a href="#" @click.prevent="deleteData(article.idArticle)"><span class="bi bi-trash"></span></a>
 						</td>
 					</tr>
 				</tbody>
