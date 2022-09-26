@@ -403,7 +403,7 @@
                         me.total.amount = response.data.sub_total;
                         
                         //traemos el descuento en $
-                        /*me.total.money = response.data.summary[0].money_discount;
+                        me.total.money = response.data.summary[0].money_discount;
                         var money = response.data.summary[0].money_discount;
                         
                         //traemo el descuento en %
@@ -413,7 +413,7 @@
                         //hacemos la cuenta 
                         var firt_discount = response.data.sub_total / 100 * percent;
                         var second_discount = response.data.sub_total - firt_discount;
-                        var money_discount = second_discount - money;*/
+                        var money_discount = second_discount - money;
                         me.total.tax = ""
                         me.total.total = response.data.sub_total;
                     }

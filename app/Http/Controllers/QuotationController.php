@@ -218,5 +218,74 @@ class QuotationController extends Controller
         return true;
       }
     }
+    public function get_pdf($id, $id_qt,$try)
+    {
+        //este es el cliente
+        $customer =  $id;
+
+        //estos son los datos de la cotización
+        $quotation = $id_qt;
+
+        //aqui obtenemos todos los datos del cliente
+        $customer_query     = Contact::where('idCustomer',$customer)->get();
+        
+        //aqui todos los datos de la cotización
+        $quotation_query    = cnnxn_quotation::where('idQt', $quotation)->get();          
+
+        $detail_query = cnnxn_quotation_detail::where('idQuotation',$quotation)
+                        ->join('articles','articles.idArticle','=','quotation_details.idArticle')
+                        ->get();
+        
+        $quotation_total    = cnnxn_quotation_detail::where('idQuotation', $quotation)->sum('total');          
+        $amount         = $quotation_total;   //este es el sub-total
+        $discount       = $quotation_query[0]->discount; //este es el descuento en dinero
+        $percent        = $quotation_query[0]->discount_type; //este es el porcentaje de descuento
+        $percent_money  = $amount /100 * $percent;  //este es el porcentaje en dinero
+
+        //aqui tenemos el total de descuentos
+        $total_discounts = $discount + $percent_money;
+
+        //le quitamos los descuentos al sub-total
+        $total_sum = $amount - $total_discounts;
+
+        //sacamos el impueto
+        $tax_sum = $total_sum / 100 * 16;
+        $tax  = number_format($tax_sum,2); //este es el impuesto
+
+        //este es el gran total 
+        $total = number_format($total_sum + $tax_sum,2);
+
+
+        $data = [
+
+            'sub_total'     =>$amount,
+            'discount'      =>$discount,
+            'percent'       =>$percent,
+            'percent_money' =>$percent_money,
+            'tax'           =>$tax,
+            'total'         =>$total
+
+        ];
+        
+        $mega_pack=[
+            'quotation' => $quotation_query,
+            'customer'  => $customer_query,
+            'detail'    => $detail_query,
+            'totals'    => $data
+        ];
+        $pdf = PDF::loadView('quotations.pdf',$mega_pack);
+                    
+        //return $mega_pack;
+
+        $file_name = str_replace(' ','_',$customer_query[0]->company_name);
+        if ($try == "down") {
+            return $pdf->download('QT-'.$id_qt.'-'.$file_name.'.pdf');
+        }elseif ($try = "send") {
+            $file=$pdf->output();
+            $file_id = 'QT-'.$id_qt.'-'.$file_name.'.pdf';
+            $mailable = new SendQuotation($file, $file_id);
+            Mail::to($customer_query[0]->email)->send($mailable);
+        }
+    }
 
 }
