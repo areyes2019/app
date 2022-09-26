@@ -175,7 +175,7 @@
             </tr>
             <tr>
                 <th>DESCUENTO %{{$totals['percent']}}</th>
-                <td>${{$totals['percent_money']}}</td>
+                <td>${{$totals['money']}}</td>
             </tr>
             <tr>
                 <th>DESCUENTO $</th>
