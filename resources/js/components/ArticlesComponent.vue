@@ -32,6 +32,7 @@
 						<th>#</th>
 						<th>Nombre</th>
 						<th>Modelo</th>
+						<th>Tamaño</th>
 						<th>Familia</th>
 						<th>Precio Prov.</th>
 						<th>Precio Dist.</th>
@@ -45,6 +46,7 @@
 						<td>{{article.idArticle}}</td>
 						<td>{{article.name}}</td>
 						<td>{{article.model}}</td>
+						<td>{{article.size}}</td>
 						<td>{{article.family_name}}</td>
 						<td>{{article.cost}}</td>
 						<td>{{article.dealer}}</td>
