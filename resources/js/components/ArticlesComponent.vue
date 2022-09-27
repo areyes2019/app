@@ -33,8 +33,9 @@
 						<th>Nombre</th>
 						<th>Modelo</th>
 						<th>Familia</th>
-						<th>Precio Prov</th>
-						<th>Precio Público</th>
+						<th>Precio Prov.</th>
+						<th>Precio Dist.</th>
+						<th>Precio Púb.</th>
 						<th>
 						</th>
 					</tr>
@@ -46,6 +47,7 @@
 						<td>{{article.model}}</td>
 						<td>{{article.family_name}}</td>
 						<td>{{article.cost}}</td>
+						<td>{{article.dealer}}</td>
 						<td>{{article.price}}</td>
 						<td>
 							<a href="#" @click.prevent="showModal(article.idArticle)"><span class="bi bi-pencil-square"></span></a>
