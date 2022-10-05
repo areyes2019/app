@@ -265,7 +265,7 @@
 	<div class="container mt-4">
 		<div class="row">
 			<div class="col-md-4 big-img">
-				<img src="" alt="">
+				<img src="img/big.png" alt="">
 			</div>
 			<div class="col-md-8">
 				<div class="big-title">

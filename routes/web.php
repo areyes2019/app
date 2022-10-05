@@ -19,7 +19,7 @@ use App\Http\Controllers\QuotationsController;
 |
 */
 
-Route::get('/',function(){
+Route::get('/',function(){   
     return view('welcome');
 });
 Route::get('/shop', [ShopController::class, 'shop'])->name('shop');
