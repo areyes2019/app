@@ -22,6 +22,12 @@ class ShopController extends Controller
     {
         return view('categories.index');    
     }
+
+    public function expert()
+    {
+        return view('store.expert');
+    }
+
     public function get_categories()
     {
         //papas 
