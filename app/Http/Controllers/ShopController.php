@@ -8,6 +8,10 @@ use App\Http\Requests\CategoriesRequest;
 
 class ShopController extends Controller
 {
+    public function categories()
+    {
+        return view('categories.index');
+    }
 
     public function get_categories()
     {
