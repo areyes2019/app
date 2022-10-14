@@ -8,6 +8,7 @@ use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\QuotationsController;
+use App\Http\Controllers\StoreController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,10 +20,10 @@ use App\Http\Controllers\QuotationsController;
 |
 */
 
-Route::get('/', [ShopController::class, 'shop'])->name('shop');
-Route::get('/shop_item', [ShopController::class, 'shop_item'])->name('shop_item');
-Route::get('/description', [ShopController::class, 'shop_item'])->name('shop_item');
-Route::get('/expert', [ShopController::class, 'expert'])->name('expert');
+Route::get('/', [StoreController::class, 'shop'])->name('shop');
+Route::get('/shop_item', [StoreController::class, 'shop_item'])->name('shop_item');
+Route::get('/description', [StoreController::class, 'shop_item'])->name('shop_item');
+Route::get('/expert', [StoreController::class, 'expert'])->name('expert');
 
 Route::get('admin', function () {
     if (Auth()->user()) {

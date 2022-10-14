@@ -1,4 +1,5 @@
 @extends('template.store')
+<?php use App\Models\cnnxn_categorie ?>
 @section('content')
 <div class="container categories">
 		<div class="row">
@@ -7,15 +8,21 @@
 					<span class="bi bi-list"></span>
 					<p>nuestros sellos</p>
 				</div>
-				<ul class="categories-list">
-					<li><a href="">Sellos con fecha</a></li>
-					<li><a href="">Sellos de madera</a></li>
-					<li><a href="">Sellos de personalizados</a></li>
-					<li><a href="">Sellos de bolsillo</a></li>
-					<li><a href="">Sellos con fecha</a></li>
-					<li><a href="">Sellos de madera</a></li>
-					<li><a href="">Sellos de personalizados</a></li>
-					<li><a href="">Sellos de bolsillo</a></li>
+				<ul class="categories-list p-2">
+					@foreach ($parent as $parents)
+					<li><a href="#{{$parents->slug}}" class="d-flex justify-content-between" data-bs-toggle="collapse">{{$parents->name}}<span class="bi bi-plus-circle-dotted"></span></a>
+						<ul class="p-0 m-0 collapse" id="{{$parents->slug}}">
+							<?php $query = cnnxn_categorie::where('main',$parents->idCategorie)->get()?>
+							@foreach ($query as $child)
+							<li class="m-0"><a href="">{{$child->name}}</a></li>
+							@endforeach
+						</ul>
+					</li>
+					@endforeach
+					
+					@foreach ($single as $singles)
+					<li><a href="">{{$singles->name}}</a></li>
+					@endforeach
 					
 				</ul>
 			</div>
