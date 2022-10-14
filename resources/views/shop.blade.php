@@ -14,14 +14,14 @@
 						<ul class="p-0 m-0 collapse" id="{{$parents->slug}}">
 							<?php $query = cnnxn_categorie::where('main',$parents->idCategorie)->get()?>
 							@foreach ($query as $child)
-							<li class="m-0"><a href="">{{$child->name}}</a></li>
+							<li class="m-0"><a href="/store_categorie/{{$child->slug}}">{{$child->name}}</a></li>
 							@endforeach
 						</ul>
 					</li>
 					@endforeach
 					
 					@foreach ($single as $singles)
-					<li><a href="">{{$singles->name}}</a></li>
+					<li><a href="/store_categorie/{{$singles->slug}}">{{$singles->name}}</a></li>
 					@endforeach
 					
 				</ul>

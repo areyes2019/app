@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\cnnxn_categorie;
+use App\Models\cnnxn_Article;
 use App\Http\Requests\CategoriesRequest;
 class StoreController extends Controller
 {
@@ -21,10 +22,17 @@ class StoreController extends Controller
         return view('article');
     }
 
-    public function categories()
+    public function categories($slug)
     {
 
-        return view('categories.index');    
+        //econtramos el id
+        $query = cnnxn_categorie::where('slug',$slug)->get();
+        $id = $query[0]->idCategorie;
+        $title = $query[0]->name;
+
+        //sacamos los artículos
+        $items = cnnxn_Article::where('categorie',$id)->get();
+        return view('store.categories',['title'=>$title,'articles'=>$items]);    
     }
 
     public function expert()
