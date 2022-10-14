@@ -4,30 +4,23 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\cnnxn_categorie;
-use App\Models\cnnxn_Article;
 use App\Http\Requests\CategoriesRequest;
 
 class ShopController extends Controller
 {
     public function shop()
     {
-        $single = cnnxn_categorie::where('main',0)->where('is_parent',0)->get();
-        $parent = cnnxn_categorie::where('main',0)->where('is_parent',!0)->get();
-        return view('shop',['single'=> $single, 'parent'=> $parent]);
+        return view('shop');
     }
 
     public function shop_item()
     {
-        return view('store.article');
+        return view('article');
     }
 
-    public function categories($slug)
+    public function categories()
     {
-        $query_slug = cnnxn_categorie::where('slug',$slug)->get();
-        $id = $query_slug[0]->idCategorie;
-        $name = $query_slug[0]->name;
-        $query = cnnxn_Article::where('categorie',$id)->get();
-        return view('store.categories',['title'=>$name,'articles'=>$query]);    
+        return view('categories.index');    
     }
 
     public function expert()
