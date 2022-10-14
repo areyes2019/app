@@ -8,25 +8,6 @@ use App\Http\Requests\CategoriesRequest;
 
 class ShopController extends Controller
 {
-    public function shop()
-    {
-        return view('shop');
-    }
-
-    public function shop_item()
-    {
-        return view('article');
-    }
-
-    public function categories()
-    {
-        return view('categories.index');    
-    }
-
-    public function expert()
-    {
-        return view('store.expert');
-    }
 
     public function get_categories()
     {

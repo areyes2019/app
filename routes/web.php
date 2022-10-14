@@ -23,6 +23,7 @@ Route::get('/', [ShopController::class, 'shop'])->name('shop');
 Route::get('/shop_item', [ShopController::class, 'shop_item'])->name('shop_item');
 Route::get('/description', [ShopController::class, 'shop_item'])->name('shop_item');
 Route::get('/expert', [ShopController::class, 'expert'])->name('expert');
+
 Route::get('admin', function () {
     if (Auth()->user()) {
         return redirect(route('home'));
