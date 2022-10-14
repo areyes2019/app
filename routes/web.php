@@ -19,10 +19,10 @@ use App\Http\Controllers\QuotationsController;
 |
 */
 
-Route::get('/', [StoreController::class, 'shop'])->name('shop');
-Route::get('/shop_item/{id}', [StoreController::class, 'shop_item'])->name('shop_item');
-Route::get('/expert', [StoreController::class, 'expert'])->name('expert');
-Route::get('/categories_store/{id}', [StoreController::class, 'categories_store'])->name('categories_store');
+Route::get('/', [ShopController::class, 'shop'])->name('shop');
+Route::get('/shop_item/{id}', [ShopController::class, 'shop_item'])->name('shop_item');
+Route::get('/expert', [ShopController::class, 'expert'])->name('expert');
+Route::get('/categories/{slug}', [ShopController::class, 'categories'])->name('categories');
 
 Route::get('admin', function () {
     if (Auth()->user()) {

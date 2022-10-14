@@ -21,7 +21,7 @@ class ShopController extends Controller
         return view('store.article');
     }
 
-    public function categories_store($slug)
+    public function categories($slug)
     {
         $query_slug = cnnxn_categorie::where('slug',$slug)->get();
         $id = $query_slug[0]->idCategorie;
