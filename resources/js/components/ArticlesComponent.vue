@@ -30,6 +30,7 @@
 				<thead>
 					<tr>
 						<th>#</th>
+						<th></th>
 						<th>Nombre</th>
 						<th>Modelo</th>
 						<th>Tamaño</th>
@@ -44,6 +45,9 @@
 				<tbody>
 					<tr v-for="article in table">
 						<td>{{article.idArticle}}</td>
+						<td>
+							<a href=""><img :src="'img_cataloge/'+article.img_url" alt="" width="40"></a>
+						</td>
 						<td>{{article.name}}</td>
 						<td>{{article.model}}</td>
 						<td>{{article.size}}</td>
@@ -54,6 +58,7 @@
 						<td>
 							<a href="#" @click.prevent="showModal(article.idArticle)"><span class="bi bi-pencil-square"></span></a>
 							<a href="#" @click.prevent="deleteData(article.idArticle)"><span class="bi bi-trash"></span></a>
+							<a href="#" @click.prevent="addImage(article.idArticle)"><span class="bi bi-camera"></span></a>
 						</td>
 					</tr>
 				</tbody>
@@ -381,6 +386,29 @@
 		    </div>
 		  </div>
 		</div>
+		<!-- modal imagen -->
+		<div class="modal fade" id="modal_image" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-scrollable">
+		    <div class="modal-content rounded-0">
+		      	<div class="modal-body">
+		      		<h3>Agregar imagen principal</h3>
+		      		<form @submit.prevent="saveImg" enctype="mulipart/form-data">
+		      			<input type="file" name="" @change="getImage" id="file">
+		      			<button type="submit" class="btn btn-danger">Guardar</button>
+		      		</form>
+
+		      		<h3 class="mt-4">Agregar galería</h3>
+					<form enctype="mulipart/formdata">
+		      			<input type="file" name="" >
+		      			<button type="submit" class="btn btn-danger">Guardar</button>
+		      		</form>		      		
+		      	</div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn my-btn-secondary-sm" data-bs-dismiss="modal"><span class="bi bi-x-octagon"></span> Cerrar</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 	</div>
 </template>
 <script>
@@ -431,7 +459,9 @@
                 	provider:"",
                 	family:"",
                 	cataloge:""
-                }
+                },
+                img:"",
+                image_id:""
 			}
 		},
 		methods:{
@@ -566,6 +596,33 @@
                 })
                 $('#edit_modal').modal('show');
 
+            },
+            addImage(data){
+                $('#modal_image').modal('show');
+                this.image_id = data;	
+            },
+            getImage(e){
+            	var file = e.target.files[0];
+            	this.img = file;
+            },
+            saveImg(){
+            	var me = this;
+            	var data = new FormData();
+            	data.append('image',this.img);
+            	data.append('_token', document.querySelector('#csrf').getAttribute('content'));
+            	data.append('id_article', this.image_id);
+            	var url = '/article_img';
+            	axios.post(url,data).then(function(response){
+            		if (response.data == 1) {
+            			document.getElementById('file').value ='';
+            			me.image_id = "";
+            			me.getData();
+            			$('#modal_image').modal('hide');
+            			var title = "Felicidades";
+						var message = "Tu imagen se ha agregado";
+						toaster(title,message);
+            		}
+            	})
             },
             updateData(data){    
                 //console.log(data);

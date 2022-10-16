@@ -263,6 +263,29 @@ class ArticlesController extends Controller
         cnnxn_Article::query()->increment('price', $value);
 
     }
+    public function img(Request $request)
+    {
+
+        //obtenemos la imagen 
+        /*$request()->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);*/
+
+        if ($files = $request->file('image')) {
+            $path = public_path('/img_cataloge/');
+            $name = $files->getClientOriginalName();
+            $files->move($path,$name);
+
+            //actualiamos la table
+            $insert = cnnxn_Article::where('idArticle',$request->id_article)->update([
+                'img_url'=> $name
+            ]);
+            if ($insert) {
+                return true;
+            }
+        }
+
+    }
 
     
 

@@ -60,6 +60,7 @@ Route::group(['middleware'=>'auth'],function(){
     Route::resources([
         'articles'=>ArticlesController::class
     ]);
+    Route::post('/article_img',[ArticlesController::class,'img'])->name('article_img');
 
 
     Route::get('/cataloges',[ArticlesController::class,'cataloges'])->name('cataloges');
