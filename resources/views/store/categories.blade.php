@@ -41,7 +41,7 @@
 					@foreach ($articles as $article )
 					<div class="col-md-3 col-2 p-2">
 						<div class="top-ten-item">
-							<a href="/shop_item/{{$article->idArticle}}/{{$article->categorie}}"><img src="{{ asset('img_cataloge/'.$article->img_url) }}" class="img-fluid" alt=""></a>
+							<a href="/shop_item/{{$article->idArticle}}"><img src="{{ asset('img_cataloge/'.$article->img_url) }}" class="img-fluid" alt=""></a>
 							<p><a href="">{{$article->model}}</a></p>
 							<p>{{$article->name}}</p>
 							<p>${{$article->price}}</p>

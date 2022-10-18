@@ -21,7 +21,7 @@ use App\Http\Controllers\StoreController;
 */
 
 Route::get('/', [StoreController::class, 'shop'])->name('shop');
-Route::get('/shop_item/{id}/{data}', [StoreController::class, 'shop_item'])->name('shop_item');
+Route::get('/shop_item', [StoreController::class, 'shop_item'])->name('shop_item');
 Route::get('/description', [StoreController::class, 'shop_item'])->name('shop_item');
 Route::get('/expert', [StoreController::class, 'expert'])->name('expert');
 Route::get('/store_categorie/{slug}', [StoreController::class, 'categories'])->name('store_categorie');

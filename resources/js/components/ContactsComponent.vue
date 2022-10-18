@@ -30,7 +30,6 @@
 					</tr>
 				</tbody>
 			</table>
-			{{type}}
 		</div>
 		<!-- modal agregar proveedor -->
 		<div class="modal fade" id="new" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -176,13 +175,6 @@
                     	</div>
 						<span class="text-danger" v-if="zip">{{zip}}</span>
                     </div>
-                    <div class="my-form-group" v-if="type==1">
-                    	<div class="input-layer">
-							<span class="bi bi-percent input-icon"></span>
-                      		<input type="text" v-model="update_contact.discount" id="" class="input-control" placeholder="Descuento Permanente" >
-                      	</div>
-						<span class="text-danger" v-if="tax_id">{{tax_id}}</span>
-                    </div>
                     <div class="my-form-group">
                     	<div class="input-layer">
 							<span class="bi bi-credit-card-2-front input-icon"></span>
@@ -232,7 +224,6 @@
 			get_list(){
 				var me = this;
 				var url = location.pathname.split('/').pop();
-				this.type = url;
 				axios.get('/contacts_list/'+url).then(function(response){
 					me.table();
 					me.data = response.data;
