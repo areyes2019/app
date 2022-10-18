@@ -30,7 +30,7 @@ class StoreController extends Controller
         $id = $query[0]->idCategorie;
         $title = $query[0]->name;
         //sacamos los artículos
-        $items = cnnxn_Article::where('categorie',$id)->get();
+        $items = cnnxn_Article::where('categorie',$id)->paginate(8);
 
         //sacamos las categorías
         $single = cnnxn_categorie::where('main',0)->where('is_parent',0)->get();
