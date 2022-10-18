@@ -10,7 +10,6 @@ use App\Models\cnnxn_Family;
 use App\Http\Requests\ArticleRequest;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ArticlesImport;
-use Illuminate\Support\Facades\Storage;
 class ArticlesController extends Controller
 {
     /**
@@ -273,12 +272,10 @@ class ArticlesController extends Controller
         ]);*/
 
         if ($files = $request->file('image')) {
-            //obtenermos el nombre del archivo
+            $path = public_path('/img_cataloge/');
             $name = $files->getClientOriginalName();
-            //lo movemos a la carpeta storage
-            $image = $files->storeAs('public',$name);
-            //sacamos la url completa
-            $url = Storage::url($image);
+            $files->move($path,$name);
+
             //actualiamos la table
             $insert = cnnxn_Article::where('idArticle',$request->id_article)->update([
                 'img_url'=> $name
