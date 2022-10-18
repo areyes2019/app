@@ -17,9 +17,20 @@ class StoreController extends Controller
         return view('shop',['single'=>$single,'parent'=>$parent]);
     }
 
-    public function shop_item()
+    public function shop_item($id, $data)
     {
-        return view('article');
+        $article = cnnxn_Article::where('idArticle',$id)->get();
+        $article_name = $article[0]->name;
+        $categories = cnnxn_categorie::where('idCategorie',$data)->get();
+        $categorie_name = $categories[0]->name;
+        $slug = $categories[0]->slug;
+
+        return view('store.article',[
+            'article_name'=>$article_name,
+            'article'=>$article,
+            'categorie_name'=>$categorie_name,
+            'slug'=>$slug
+        ]);
     }
 
     public function categories($slug)
