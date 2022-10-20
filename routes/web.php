@@ -25,6 +25,9 @@ Route::get('/shop_item/{id}/{data}', [StoreController::class, 'shop_item'])->nam
 Route::get('/description', [StoreController::class, 'shop_item'])->name('shop_item');
 Route::get('/expert', [StoreController::class, 'expert'])->name('expert');
 Route::get('/store_categorie/{slug}', [StoreController::class, 'categories'])->name('store_categorie');
+Route::get('/dashboard', function(){
+    return view('template.dashboard');
+});
 
 Route::get('admin', function () {
     if (Auth()->user()) {
