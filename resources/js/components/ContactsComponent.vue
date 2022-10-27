@@ -9,6 +9,7 @@
 				<thead>
 					<tr>
 						<th>#</th>
+						<th>Empresa</th>
 						<th>Nombre</th>
 						<th>Correo</th>
 						<th>Telefono</th>
@@ -19,6 +20,7 @@
 				<tbody>
 					<tr v-for="item in data">
 						<td>{{item.idContact}}</td>
+						<td>{{item.company}}</td>
 						<td>{{item.name}}</td>
 						<td>{{item.email}}</td>
 						<td>{{item.phone}}</td>
