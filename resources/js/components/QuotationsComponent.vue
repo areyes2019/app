@@ -124,7 +124,7 @@
           <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content rounded-0">
               <div class="modal-header rounded-0 bg-color">
-                <h5 class="modal-title text-white" id="staticBackdropLabel">{{modal_title}}</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Seleccionar Cliente</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
@@ -133,16 +133,24 @@
                         <tr>
                             <th>Empresa</th>
                             <th>Contacto</th>
+                            <th>Con Fact.</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="data in customers_data">
                             <td v-text="data.company"></td> 
-                            <td v-text="data.name"></td> 
+                            <td v-text="data.name"></td>
+                            <td>
+                              <label class="switch">
+                                <input type="checkbox"  @click="tax = !tax" :id="data.idContact">
+                                <span class="slider"></span>
+                              </label>
+                            </td> 
                             <td class="d-flex justify-content-end">
                               <button class="btn btn-danger btn-sm rounded-0" @click="makeQt(data.idContact)"><span class="bi bi-check-square"></span></button>
                             </td>
+
                         </tr>
                     </tbody>
                 </table>
@@ -160,13 +168,13 @@
         data(){
             return{
                 general_data:[],
-                customers_data:[]
+                customers_data:[],
+                tax:""
 
                
             }
         },
         methods:{
-           
             getData(){
               var me = this;
               axios.get('/quotations_show').then(function(response) {
@@ -198,7 +206,7 @@
               axios.post('/quotations_new',{
                 'idCustomer':data,
                 'slug':slug,
-                'invoice':0
+                'invoice':me.tax,
               }).then(function(response) {
                 if (response.data == true) {
                   console.log('hecho');
@@ -221,6 +229,9 @@
             toQuotation(data){
               window.location.href = 'quotation_page'+'/'+data;
             },
+            has_tax(data){
+              this.tax = $("#"+data).val();
+            }
         },
         mounted() {
             this.getData();

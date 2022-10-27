@@ -4,7 +4,6 @@
 			<div class="row">
 				<div class="col-md-7">
 					<div class="card-box-left">
-						<button class="btn btn-danger btn-sm" @click.prevent="add_article"><span class="bi bi-box"></span> Agregar artículo</button>
 						<div class="dropdown">
 						  <button class="btn btn-danger btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
 						    Dropdown button
@@ -25,82 +24,79 @@
 				</div>
 			</div>
 		</div>
-		<div class="card-box-std p-3 mt-3">
-			<table class="table table-bordered" id="articles_table">
-				<thead>
-					<tr>
-						<th>#</th>
-						<th></th>
-						<th>Nombre</th>
-						<th>Modelo</th>
-						<th>Tamaño</th>
-						<th>Familia</th>
-						<th>Precio Prov.</th>
-						<th>Precio Dist.</th>
-						<th>Precio Púb.</th>
-						<th>
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr v-for="article in table">
-						<td>{{article.idArticle}}</td>
-						<td>
-							<a href=""><img :src="'img_cataloge/'+article.img_url" alt="" width="40"></a>
-						</td>
-						<td>{{article.name}}</td>
-						<td>{{article.model}}</td>
-						<td>{{article.size}}</td>
-						<td>{{article.family_name}}</td>
-						<td>{{article.cost}}</td>
-						<td>{{article.dealer}}</td>
-						<td>{{article.price}}</td>
-						<td>
-							<a href="#" @click.prevent="showModal(article.idArticle)"><span class="bi bi-pencil-square"></span></a>
-							<a href="#" @click.prevent="deleteData(article.idArticle)"><span class="bi bi-trash"></span></a>
-							<a href="#" @click.prevent="addImage(article.idArticle)"><span class="bi bi-camera"></span></a>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+		<div class="card rounded-0">
+			<div class="card-header rounded-0">
+				<button class="btn btn-danger btn-sm rounded-0" @click.prevent="add_article"><span class="bi bi-box"></span> Agregar artículo</button>
+			</div>
+			<div class="card-body">
+				<table class="table table-bordered" id="articles_table">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th></th>
+							<th>Nombre</th>
+							<th>Modelo</th>
+							<th>Tamaño</th>
+							<th>Familia</th>
+							<th>Precio Prov.</th>
+							<th>Precio Dist.</th>
+							<th>Precio Púb.</th>
+							<th>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="article in table">
+							<td>{{article.idArticle}}</td>
+							<td>
+								<a href=""><img :src="'img_cataloge/'+article.img_url" alt="" width="40"></a>
+							</td>
+							<td>{{article.name}}</td>
+							<td>{{article.model}}</td>
+							<td>{{article.size}}</td>
+							<td>{{article.family_name}}</td>
+							<td>{{article.cost}}</td>
+							<td>{{article.dealer}}</td>
+							<td>{{article.price}}</td>
+							<td>
+								<a href="#" @click.prevent="showModal(article.idArticle)"><span class="bi bi-pencil-square"></span></a>
+								<a href="#" @click.prevent="deleteData(article.idArticle)"><span class="bi bi-trash"></span></a>
+								<a href="#" @click.prevent="addImage(article.idArticle)"><span class="bi bi-camera"></span></a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</div>
 		<!-- modal agregar artículo-->
 		<div class="modal fade" id="add_article" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-scrollable">
 		    <div class="modal-content rounded-0">
 		      	<div class="modal-header rounded-0 bg-color">
-		        	<h5 class="modal-title text-white" id="staticBackdropLabel">Modal title</h5>
+		        	<h5 class="modal-title" id="staticBackdropLabel">Nuevo Artículo</h5>
 		        	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		      	</div>
 		      	<div class="modal-body">
-		      		<div class="my-form-group">
-		      			<div class="input-layer">
-							<span class="bi bi-pencil input-icon"></span>
-							<input type="text" v-model="data.name" class="input-control" placeholder="Nombre del Sello">
-		      			</div>
+		      		<div class="form-group">
+		      			<label>Nombre del Sello</label>
+						<input type="text" v-model="data.name" class="form-control rounded-0 shadow-none" placeholder="Nombre del Sello">
 						<small class="text-danger m-0 p-0">{{errors.name}}</small>
 					</div>
-					<div class="my-form-group">
-						<div class="input-layer">
-							<span class="bi bi-pencil input-icon"></span>
-							<input type="text" v-model="data.model" class="input-control" placeholder="Modelo">
-						</div>
+					<div class="form-group">
+		      			<label>Modelo</label>
+						<input type="text" v-model="data.model" class="form-control rounded-0 shadow-none" placeholder="Nombre del Sello">
 					</div>
 					<div class="row">
 						<div class="col-md-6">
-							<div class="my-form-group">
-								<div class="input-layer">
-									<span class="bi bi-pencil input-icon"></span>
-									<input type="number" min="1" v-model="data.lines" class="input-control" placeholder="Líneas sugeridas">
-								</div>
+							<div class="form-group">
+				      			<label>Lineas sugeridas</label>
+								<input type="number" min="1" v-model="data.lines" class="form-control rounded-0 shadow-none" value="1">
 							</div>
 						</div>
 						<div class="col-md-6">
-							<div class="my-form-group">
-								<div class="input-layer">
-									<span class="bi bi-pencil input-icon"></span>
-									<input type="text" v-model="data.size" class="input-control" placeholder="Tamaño">
-								</div>
+							<div class="form-group">
+								<label for="">Tamaño</label>
+								<input type="text" v-model="data.size" class="form-control rounded-0 shadow-none" placeholder="Tamaño">
 							</div>
 						</div>
 					</div>
@@ -117,24 +113,26 @@
 						  <input type="checkbox" v-model="data.visible" :value="1">
 						  <span class="slider"></span>
 						</label>
-					</div>					
-					<div class="my-form-group">
-						<div class="input-layer">
-							<span class="bi bi-currency-exchange input-icon"></span>
-							<input type="text" v-model="data.cost" class="input-control" placeholder="Precio Proveedor">
-						</div>
+					</div>
+					<br>					
+					<div class="form-group mt-3">
+						<label for="">Precio Proveedor</label>
+						<input type="text" v-model="data.cost" class="form-control rounded-0 shadow-none" placeholder="Precio Proveedor">
 						<small class="text-danger">{{errors.cost}}</small>
 					</div>
-					<div class="my-form-group">
-						<div class="input-layer">
-							<span class="bi bi-currency-exchange input-icon"></span>
-							<input type="text" v-model="data.price" class="input-control" placeholder="Precio Público">
-						</div>
+					<div class="form-group mt-3">
+						<label for="">Precio Distribuidor</label>
+						<input type="text" v-model="data.dealer" class="form-control rounded-0 shadow-none" placeholder="Precio Distribuidor">
+						<small class="text-danger">{{errors.cost}}</small>
+					</div>
+					<div class="form-group">
+						<label for="">Precio Público</label>
+						<input type="text" v-model="data.price" class="form-control" placeholder="Precio Público">
 						<small class="text-danger m-0">{{errors.price}}</small><br>
 						<small class="text-danger m-0">{{errors.price_decimal}}</small>
 					</div>
 					<label for="">Asignar Proveedor</label>
-					<div class="my-form-group">
+					<div class="form-group">
 						<div class="input-layer">
 							<div class="input-layer">
 								<span class="bi bi-people input-icon"></span>

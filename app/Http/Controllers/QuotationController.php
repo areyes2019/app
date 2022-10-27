@@ -22,10 +22,31 @@ class QuotationController extends Controller
   } 
   public function store(Request $request)
    {
-     $query = cnnxn_quotation::create($request->All());
-     if ($query) {
-       return true;
-     }
+
+      if ($request->invoice==true) {
+        //con iva
+        $tax = 1;
+        $query = new cnnxn_quotation;
+        $query->slug = $request->slug;
+        $query->idCustomer = $request->idCustomer;
+        $query->with_tax = $tax;
+        $query->save();
+        if ($query) {
+           return true;
+        }
+      }else{
+        //sin iva
+        $tax = 0;
+        $query = new cnnxn_quotation;
+        $query->slug = $request->slug;
+        $query->idCustomer = $request->idCustomer;
+        $query->with_tax = $tax;
+        $query->save(); 
+        if ($query) {
+           return true;
+        }
+      }
+     
    }
    
     public function page($id){
@@ -73,34 +94,71 @@ class QuotationController extends Controller
     public function add_line(Request $request)
     {
       
-        //primero vemos si ya esta agregado
+
+        //vemos si hay iva o no 
+        $query_tax = cnnxn_quotation::where('idQt',$request->idQt)->get();
+        $has_tax = $query_tax[0]->with_tax;
+
+        //luego vemos si ya esta agregado
         $unique = cnnxn_quotation_detail::where('article',$request->article)
-          ->where('idQuotation',$request->id)
+          ->where('idQuotation',$request->idQt)
           ->count();
         if ($unique > 0) {
           return 1;
         }else{
-          $query = cnnxn_Article::where('idArticle',$request->article)->get();
-          $price = $query[0]->price;
-          $add = new cnnxn_quotation_detail;
-          $add->quantity = $request->quantity;
-          $add->article = $request->article;
-          $add->unit_price = $price;
-          $add->total = $price * $request->quantity;
-          $add->idQuotation = $request->id;
-          $add->save();
+          if ($has_tax == 1) {
+            //con iva
 
-          $query_sum = cnnxn_quotation_detail::where('idQuotation',$request->id)->sum('total'); //sacamos el valor parcial
-          
-          $tax_value = $query_sum /1.16; //sacamos el precio sin iva;
-          $tax = $query_sum-$tax_value;
-          
-          $gran_total = $tax_value + $tax; // sumamos todo
-          //agregamos el iva
-          cnnxn_quotation::where('idQt',$request->id)->update([
-              'tax'=>$tax,
-              'total'=>$gran_total
-          ]);
+            $query = cnnxn_Article::where('idArticle',$request->article)->get(); //sacamos el artículo
+            $price = $query[0]->price;
+            $with_tax = $price / 1.16;
+            $add = new cnnxn_quotation_detail;
+            $add->quantity = $request->quantity;
+            $add->article = $request->article;
+            $add->unit_price = $with_tax;
+            $add->total = $with_tax * $request->quantity;
+            $add->idQuotation = $request->idQt;
+            $add->save();
+            
+            //actualizamos la tabla de cotización
+
+            $sub_total = cnnxn_quotation_detail::where('idQuotation',$request->idQt)->sum('total'); //sacamos el sub-total
+            $tax = $sub_total * 0.16; //sacamos el iva;
+            $total = $tax + $sub_total;
+    
+            cnnxn_quotation::where('idQt',$request->idQt)->update([
+                'tax'=>$tax,
+                'sub_total'=>$sub_total,
+                'total'=>$total,
+            ]);
+
+          }else{
+            //sin iva
+            $query = cnnxn_Article::where('idArticle',$request->article)->get();
+            $price = $query[0]->price;
+            $add = new cnnxn_quotation_detail;
+            $add->quantity = $request->quantity;
+            $add->article = $request->article;
+            $add->unit_price = $price;
+            $add->total = $price * $request->quantity;
+            $add->idQuotation = $request->idQt;
+            $add->save();
+            $query_sum = cnnxn_quotation_detail::where('idQuotation',$request->idQt)->sum('total'); //sacamos el sub-total
+
+            //actualizamos la tabla de cotización
+
+            $total = cnnxn_quotation_detail::where('idQuotation',$request->idQt)->sum('total'); //sacamos el sub-total
+            $tax = 0;
+
+            $query = cnnxn_quotation::where('idQt',$request->idQt)->update([
+                'tax'=>$tax,
+                'sub_total'=>$total,
+                'total'=>$total
+            ]);
+
+          }
+
+
         }
      
 
@@ -114,23 +172,14 @@ class QuotationController extends Controller
     }
 
     public function show_totals($id)
-    {
-      $sub_total = cnnxn_quotation_detail::where('idQuotation',$id)->sum('total');
+    {      
       $summary = cnnxn_quotation::where('idQt',$id)->get();
-
-      $data = [
-        'sub_total'=>$sub_total,
-        'summary'=>$summary
-      ];
-
-      return $data;
+      return $summary;
     }
     public function add_quantity(Request $request, $line)
     {
       $id_qt = $request->id; //obtemos el id de la cotizacion
-      
       $unit_price_query = cnnxn_quotation_detail::where('id',$line)->get();
-      
       $unit_price = $unit_price_query[0]->unit_price;
       $new_price = $unit_price * $request ->quantity;
       $new_price;
@@ -149,6 +198,7 @@ class QuotationController extends Controller
       $update_total = cnnxn_quotation::where('idQt',$id_qt)->update([
         'tax' => $tax,
         'total' => $grand_total,
+        'sub_total'=> $total
       ]);
 
 
@@ -168,6 +218,7 @@ class QuotationController extends Controller
       $update_total = cnnxn_quotation::where('idQt',$id_qt)->update([
         'tax' => $tax,
         'total' => $grand_total,
+        'sub_total'=>$total
       ]);
 
 
@@ -309,6 +360,17 @@ class QuotationController extends Controller
             Mail::to($customer_query[0]->email)->send($mailable);
         }
         
+    }
+    public function destroy($id)
+    {
+      //eliminamos los detalles
+      $details = cnnxn_quotation_detail::where('idQuotation',$id)->delete(); 
+
+      // luego eliminamos la cotizacion
+      $quotation = cnnxn_quotation::where('idQt',$id)->delete();
+
+      return 1;
+      
     }
 
 }

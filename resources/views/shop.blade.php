@@ -1,7 +1,7 @@
 @extends('template.store')
 <?php use App\Models\cnnxn_categorie ?>
 @section('content')
-<div class="container categories">
+<div class="container-fluid categories">
 		<div class="row">
 			<div class="col-12 col-md-3">
 				<div class="categories-menu">
@@ -31,7 +31,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="container">
+	<div class="container-fluid">
 		<div class="compromise">
 			<div class="row">
 				<div class="col-md-8">
@@ -68,7 +68,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="container">
+	<div class="container-fluid">
 		<div class="block">
 			<div class="row">
 				<div class="col-md-5">
@@ -84,7 +84,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="container mt-4">
+	<div class="container-fluid mt-4">
 		<div class="top-ten">
 			<div class="top-ten-title">
 				<p>Te recomendamos</p>
@@ -126,7 +126,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="container">
+	<div class="container-fluid">
 		<div class="banner-container">
 			<div class="img-banner">
 				<img src="img/banner-side01.jpg" class="img-fluid" alt="">
@@ -145,7 +145,7 @@
 		</div>
 	</div>			
 	<!-- categorias destacadas -->
-	<div class="container mt-4">
+	<div class="container-fluid mt-4">
 		<div class="top-ten">
 			<div class="top-ten-title">
 				<p>Categorías</p>
@@ -197,7 +197,7 @@
 		</div>
 	</div>
 	<!-- prin big-->
-	<div class="container mt-4">
+	<div class="container-fluid mt-4">
 		<div class="row">
 			<div class="col-md-7 big-img">
 				<img src="img/big_rubber.png" class="img-fluid" alt="">
@@ -214,7 +214,7 @@
 		</div>
 	</div>
 	<!-- populares-->
-	<div class="container mt-4">
+	<div class="container-fluid mt-4">
 		<div class="top-ten">
 			<div class="top-ten-title">
 				<p>Nuestros sellos</p>

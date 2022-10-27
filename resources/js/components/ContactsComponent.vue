@@ -36,7 +36,7 @@
 		  <div class="modal-dialog modal-dialog-scrollable">
 		    <div class="modal-content rounded-0">
 		      	<div class="modal-header rounded-0 bg-color">
-		        	<h5 class="modal-title text-white" id="staticBackdropLabel">{{modal_title}}</h5>
+		        	<h5 class="modal-title" id="staticBackdropLabel">{{modal_title}}</h5>
 		        	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		      	</div>
 		      	<div class="modal-body">

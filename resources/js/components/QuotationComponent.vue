@@ -1,75 +1,87 @@
 <template>
     <div class="container">
-        <div class="row">
-            <div class="col-md-2">
-                <div class="card-box-std p-2">
-                    <ul class="my-list">
-                        <li><a class="mr-2" href="" @click.prevent="sendMail">Enviar</a></li>
-                        <li><a class="mr-2" :href="'/get_quotation_pdf/'+customer+'/'+id+'/down'">Descargar PDF</a></li>
-                        <li><a :class="['mr-2']" href="#" @click.prevent="approved">Enviar a Factura</a></li>
-                        <li><a href="#" @click="deleteQuotation" >Eliminar</a></li>
-                    </ul>
-                </div>
-                <div class="card-box-std p-3 mt-3">
-                    <div class="d-grid gap-2 col-12 mx-auto mb-3">
-                        <button :class="['btn', 'btn-danger', 'rounded-0', 'm-0', 'mr-2']" @click="openModal()">Agregar Artículos</button>
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link my-link-nav text-primary" href="" @click.prevent="openModal">Agregar Artículos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link my-link-nav" href="" @click.prevent="sendMail"><span class="bi bi-send"></span> Enviar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link my-link-nav" :href="'/get_quotation_pdf/'+customer+'/'+id+'/down'"><span class="bi bi-download"></span> Descargar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link my-link-nav" href="#" @click.prevent="approved"><span class="bi bi-file-earmark-ruled"></span> Facturar</a>
+                </li>
+                <li class="nav-item"><a href="" class="nav-link text-danger" v-if="status==0">Marcar como Enviada</a></li>
+                <li class="nav-item d-flex align-items-center">
+                    <div class="dropdown">
+                      <a href="#" class="nav-link my-link-nav" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        Generar Pago
+                      </a>
+
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <li class="d-flex justify-content-between align-items-center p-3">
+                            <input type="text">
+                            <a href="" class="btn btn-sm btn-danger rounded-0"><span class="bi bi-check-square"></span></a>
+                        </li>
+                      </ul>
                     </div>
-                    <!-- con iva -->
-                    <div class="my-form-group d-flex justify-content-between align-items-center">
-                        <p class="m-0 p-0" v-if="tax==1">Con Factura</p>
-                        <p class="m-0 p-0" v-if="tax==0">Sin Factura</p>
-                        <label class="switch">
-                          <input type="checkbox"  v-model ="tax" @change="tax_free">
-                          <span class="slider"></span>
-                        </label>
-                    </div>
-                    <!-- con iva -->
-                    <hr>
-                    <div class="my-form-group">
-                        <h5 class="m-0 mr-2 p-0 align-self-center">Descuentos</h5>
-                        <div class="d-grid gap-2 col-12 mx-auto mb-3 mt-1">
-                            <a href="#money" class="btn btn-danger rounded-0" data-bs-toggle="collapse">Descuento $</a>
-                            <div class="collapse" id="money">
-                                <div class="d-flex justify-content-between">
-                                    <input type="text" class="form-control form-control-sm rounded-0 shadow-none" ref="money" v-model="money">
-                                    <button class="btn btn-dark btn-sm " @click="addDiscount(1)"><span class="bi bi-check-square"></span></button>
-                                </div>
+                </li>
+                 <li class="nav-item d-flex align-items-center dropstart">
+                    <div class="dropdown">
+                      <a href="#" class="nav-link my-link-nav" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        Agregar Descuento
+                      </a>
+
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <li class="p-3">
+                            <label for="">Descuento en Dinero</label>
+                            <div class="menu-fields d-flex justify-content-between align-items-center ">
+                                <input type="text" ref="money" v-model="money" width="48">
+                                <a class="btn btn-danger btn-sm rounded-0 " @click.prevent="addDiscount(1)"><span class="bi bi-check-square"></span></a>
                             </div>
-                        </div>
-                        <div class="d-grid gap-2 col-12 mx-auto mb-3 mt-1">
-                            <a href="#percent" class="btn btn-danger rounded-0" data-bs-toggle="collapse">Descuento %</a>
-                            <div class="collapse" id="percent">
-                                <div class="d-flex justify-content-between">
-                                    <div class="d-flex justify-content-between">
-                                        <select name="" id="" ref="percent" v-model="percent" class="form-control">
-                                            <option value="0">0%</option>
-                                            <option value="5">5%</option>
-                                            <option value="10">10%</option>
-                                            <option value="15">15%</option>
-                                            <option value="20">20%</option>
-                                            <option value="25">25%</option>
-                                            <option value="30">30%</option>
-                                        </select>
-                                        <button class="btn btn-dark btn-sm" @click="addDiscount(2)"><span class="bi bi-check-square"></span></button>
-                                    </div>
-                                </div>
+                        </li>
+                        <li class="p-3">
+                            <label for="">Descuento en porcentaje</label>
+                            <div class="menu-fields d-flex justify-content-between align-items-center ">
+                                <select  id="" ref="percent" v-model="percent" class="w-100">
+                                    <option value="0">0%</option>
+                                    <option value="5">5%</option>
+                                    <option value="10">10%</option>
+                                    <option value="15">15%</option>
+                                    <option value="20">20%</option>
+                                    <option value="25">25%</option>
+                                    <option value="30">30%</option>
+                                </select>
+                                <a href="" class="btn btn-danger btn-sm" @click.prevent="addDiscount(2)"><span class="bi bi-check-square"></span></a>
                             </div>
-                        </div>                       
+                        </li>
+                      </ul>
                     </div>
-                    <hr>
-                    <div class="my-form-group">
-                        <h5 class="m-0 mr-2 p-0 align-self-center">Cambiar Estatus</h5>
-                        <div class="d-grid gap-2 col-12 mx-auto mb-3 mt-1">
-                            <p v-if="status==0">Cotización en borrador</p>
-                            <button class="btn btn-danger rounded-0" v-if="status==1" @click="change_status(2)">Aprobada</button>
-                            <button class="btn btn-danger rounded-0" v-if="status==2" @click="change_status(3)">Pagada</button>
-                            <button class="btn btn-danger rounded-0" v-if="status==3" @click="change_status(4)">Facturar</button>
-                        </div>
-                    </div>
-                </div>
+                </li>
+                <li class="nav-item"><a href="" class="nav-link text-danger" v-if="status==2">Generar orden de Trabajo</a></li>
+                <li class="nav-item"><a href="" class="nav-link text-danger" v-if="status==3">Generar orden de Trabajo</a></li>
+                <!--
+                    0 Borrador
+                    1 Enviada
+                    2 Pagada tota / parcial
+                    3 Enviar OT
+                    4 Generar Pago total
+                    5 Cerrar
+                -->
+              </ul>
             </div>
-            
-            <div class="col-md-10">
+          </div>
+        </nav>
+        <div class="row">
+            <div class="col-md-12">
                 <div class="card-box-std p-3">
                     <div class="row">
                         <div class="col-md-5">
@@ -92,6 +104,8 @@
                             <h5 class="mt-1" v-if="status==2"><span class="badge bg-success">Aprobada</span></h5>
                             <h5 class="mt-1" v-if="status==3"><span class="badge bg-danger">Pagada</span></h5>
                             <h5 class="mt-1" v-if="status==4"><span class="badge bg-dark">Facturada</span></h5>
+                            <p class="m-0 p-0 text-primary" v-if="tax==1">Con Factura</p>
+                            <p class="m-0 p-0 text-danger" v-if="tax==0">Sin Factura</p>
                         </div>
                     </div>
                 </div>
@@ -99,80 +113,89 @@
                     <div class="card-box-std p-3" v-if="lines == 0">
                         <p>No hay articulos en tu cotización</p>
                     </div>
-                    <table class="my-table-quotation" v-if="lines != 0">
-                        <thead>
-                            <tr>
-                                <th>CANT.</th>
-                                <th>ARTÍCULO</th>
-                                <th>MODELO</th>
-                                <th>P/UNITARIO</th>
-                                <th>TOTAL</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="line in lines">
-                                <td>
-                                    <input type="number" :value="line.quantity"  :id="line.id" @change="addQuantity(line.id)" :disabled = "disabled == 1">
-                                </td>
-                                <td>{{line.name}}</td>
-                                <td>{{line.model}}</td>
-                                <td>{{line.unit_price}}</td>
-                                
-                                <td>
-                                    <div class="d-flex justify-content-between">
-                                        <p class="m-0">{{line.total}}</p>
-                                        <a href="" @click.prevent="deleteLine(line.id)" :class="[display]">X</a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th colspan="3"></th>
-                                <th >Sub-Total</th>
-                                <td>${{total.amount}}</td>
-                            </tr>
-                            <tr>
-                                <th colspan="3"></th>
-                                <th>Dcto %</th>
-                                <td>${{total.percent}}</td>
-                            </tr>
-                            <tr>
-                                <th colspan="3"></th>
-                                <th>Dcto $</th>
-                                <td>${{total.money}}</td>
-                            </tr>
-                            <tr v-if="tax==1">
-                                <th colspan="3"></th>
-                                <th>IVA</th>
-                                <td>
-                                    <div>
-                                        <p class="m-0">${{total.tax}}</p>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr v-if="total.advance > 0">
-                                <th colspan="3"></th>
-                                <th>Anticipo</th>
-                                <td>{{total.advance}}</td>
-                            </tr>                    
-                            <tr>
-                                <th colspan="3"></th>
-                                <th>Total</th>
-                                <td>${{total.total}}</td>
-                            </tr>
-                        </tfoot>
+                    <div class="table-container" v-if="lines != 0">
+                        
+                        <table class="table table-bordered mt-4">
+                            <thead>
+                                <tr>
+                                    <th>CANT.</th>
+                                    <th>ARTÍCULO</th>
+                                    <th>MODELO</th>
+                                    <th>P/UNITARIO</th>
+                                    <th>TOTAL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="line in lines">
+                                    <td>
+                                        <input type="number" :value="line.quantity"  :id="line.id" @change="addQuantity(line.id)" :disabled = "disabled == 1">
+                                    </td>
+                                    <td>{{line.name}}</td>
+                                    <td>{{line.model}}</td>
+                                    <td>{{line.unit_price}}</td>
+                                    
+                                    <td>
+                                        <div class="d-flex justify-content-between">
+                                            <p class="m-0">{{line.total}}</p>
+                                            <a href="" @click.prevent="deleteLine(line.id)" :class="[display]">X</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="3"></th>
+                                    <th >Sub-Total</th>
+                                    <td>${{total.sub_total}}</td>
+                                </tr>
+                                <tr v-if="total.percent_discount < 0">
+                                    <th colspan="3"></th>
+                                    <th>Dcto % <span class="text-danger">({{total.percent}}%)</span></th>
+                                    <td class="d-flex justify-content-between">${{total.percent_discount}} <a href="#" @click.prevent="delete_discount(1)"><span class="bi bi-x-circle-fill"></span></a></td>
+                                </tr>
+                                <tr  v-if="total.money_discount < 0">
+                                    <th colspan="3"></th>
+                                    <th>Dcto $</th>
+                                    <td class="d-flex justify-content-between">${{total.money_discount}}<a href="#" @click.prevent="delete_discount(2)"><span class="bi bi-x-circle-fill"></span></a></td>
+                                </tr>
+                                <tr v-if="tax==1">
+                                    <th colspan="3"></th>
+                                    <th>IVA</th>
+                                    <td>
+                                        <div>
+                                            <p class="m-0">${{total.tax}}</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr v-if="total.advance > 0">
+                                    <th colspan="3"></th>
+                                    <th>Anticipo</th>
+                                    <td>{{total.advance_payment}}</td>
+                                </tr>
+                                <tr v-if="total.advance > 0">
+                                    <th colspan="3"></th>
+                                    <th>Saldo</th>
+                                    <td>{{total.balance}}</td>
+                                </tr>                    
+                                <tr>
+                                    <th colspan="3"></th>
+                                    <th>Total</th>
+                                    <td>${{total.total}}</td>
+                                </tr>
+                            </tfoot>
                     </table>
+                    </div>
+                    <a href="#" @click.prevent="deleteQuotation"><span class="bi bi-trash"></span> Eliminar</a>
                 </div>
-            </div>
+            </div>            
         </div>
 
         <!-- modal agregar articulo del catalogo -->
         <div class="modal fade" id="addArticle" tabindex="-1" role="dialog" aria-labelledby="exampleModal3Label" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content rounded-0 ">
-                    <div class="modal-header bg-color text-white rounded-0">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <div class="modal-header  rounded-0">
+                        <h5 class="modal-title" id="exampleModalLabel">Agregar Articulos</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -241,14 +264,7 @@
                 disabled:0,
                 tax:"",
                 status:"",
-                total:{
-                    amount:"", //esto es el sub-total
-                    percent:"", // esto es el porcentaje de dcto
-                    money:"", //esto es el descuetno en dinero con porcentaje
-                    tax:"", 
-                    total:"", //esto es el gran total
-                    advance:""
-                },
+                total:[],
             }
         },
         methods:{
@@ -266,7 +282,7 @@
                 var me = this;
                 var url = "/quotations_add_line";
                 axios.post(url,{
-                    'id':me.id,//id de cotizacion
+                    'idQt':me.id,//id de cotizacion
                     'quantity':quantity,//cantidad
                     'article':item,//id de articulo
                 }).then(function(response){
@@ -372,53 +388,8 @@
             showTotals(){
                 var me = this;
                 var url = "/show_totals/"+ this.id;
-                axios.get(url).then(function(response){
-                    var tax = response.data.summary[0].with_tax;
-                    if (tax == 1) {
-                        //sacamos el subtotal
-                        var sub_total = response.data.sub_total;                      
-                        var tax = sub_total/1.16;
-                        var fix = tax.toFixed(2);
-                        me.total.amount = fix;
-                        //traemo el descuento en $
-                        me.total.money = response.data.summary[0].money_discount;
-                        var money = response.data.summary[0].money_discount;
-                        //traemo el descuento en %
-                        me.total.percent = response.data.summary[0].percent_discount;
-                        var percent = response.data.summary[0].percent_discount;
-                        //hacemos la cuenta 
-                        var firt_discount = fix/100 * percent;
-                        var second_discount = fix - firt_discount;
-                        var money_discount = second_discount - money;
-                        
-                        //sacamos el iva
-                        var total_tax = money_discount/100 * 16;
-                        me.total.tax = total_tax.toFixed(2); 
-                        
-                        //sacamos el gran total
-                        var gran_total = money_discount + total_tax;
-                        me.total.total = gran_total.toFixed(2);
-                    } else{
-                        //sacamos el subtotal
-                        me.total.amount = response.data.sub_total;
-                        
-                        //traemos el descuento en $
-                        me.total.money = response.data.summary[0].money_discount;
-                        var money = response.data.summary[0].money_discount;
-                        
-                        //traemo el descuento en %
-                        me.total.percent = response.data.summary[0].percent_discount;
-                        var percent = response.data.summary[0].percent_discount;
-                        
-                        //hacemos la cuenta 
-                        var firt_discount = response.data.sub_total / 100 * percent;
-                        var second_discount = response.data.sub_total - firt_discount;
-                        var money_discount = second_discount - money;
-                        me.total.tax = ""
-                        me.total.total = response.data.sub_total;
-                    }
-                    
-                    
+                axios.get(url).then(function(response){                   
+                    me.total = response.data[0];
                 })
             },
             addQuantity(line){
@@ -476,7 +447,13 @@
                     $('#articles_table').DataTable();
                 });
             },
+            delete_discount(data){
+                if (data == 1) {
+                    //descuento en d
+                }else{
 
+                }   
+            }
 
         },
         mounted(){

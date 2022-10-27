@@ -52,11 +52,9 @@
         </nav>
     </div>
 	 <div class="main">
-        <div class="container-fluid">
-            <div id="app">
-                @yield('content')
-            </div>
-        </div>                      
+        <div id="app">
+            @yield('content')
+        </div>
     </div>   
     <div id="toaster">
         <div class="toaster-icon">
