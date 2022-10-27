@@ -10,7 +10,7 @@
 </head>
 <body>
 	<div class="top-header">
-		<div class="container">
+		<div class="container-fluid">
 			<div class="row">
 				<div class="col-12 col-md-8 top-links">
 					<div class="header-group">
@@ -27,7 +27,7 @@
 		</div>
 	</div>
 	<div class="main-header">
-		<div class="container">
+		<div class="container-fluid">
 			<div class="row p-0 header-container">
 				<div class="col-md-4 col-12 header-logo">
 					<a href="/"><img src="{{asset('img/logoweb.png')}}" class="img-fluid" alt=""></a>
@@ -60,7 +60,7 @@
 		</div>
 	</div>
 	<div class="normal-menu">
-		<div class="container">
+		<div class="container-fluid">
 			<div class="normal-menu-list">
 				<ul>
 					<li><a href="">Politicas de envios</a></li>
