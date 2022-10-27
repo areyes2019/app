@@ -28,8 +28,8 @@
 
                       <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <li class="d-flex justify-content-between align-items-center p-3">
-                            <input type="text">
-                            <a href="" class="btn btn-sm btn-danger rounded-0"><span class="bi bi-check-square"></span></a>
+                            <input type="text" v-model="payment">
+                            <a href="#" @click.prevent="add_payment" class="btn btn-sm btn-danger rounded-0"><span class="bi bi-check-square"></span></a>
                         </li>
                       </ul>
                     </div>
@@ -66,12 +66,12 @@
                       </ul>
                     </div>
                 </li>
-                <li class="nav-item"><a href="" class="nav-link text-danger" v-if="status==2">Generar orden de Trabajo</a></li>
+                <li class="nav-item"><a href="" class="nav-link text-danger" v-if="quotation.status==2">Generar orden de Trabajo</a></li>
                 <li class="nav-item"><a href="" class="nav-link text-danger" v-if="status==3">Generar orden de Trabajo</a></li>
                 <!--
                     0 Borrador
                     1 Enviada
-                    2 Pagada tota / parcial
+                    2 Pagada total / parcial
                     3 Enviar OT
                     4 Generar Pago total
                     5 Cerrar
@@ -106,6 +106,7 @@
                             <h5 class="mt-1" v-if="status==4"><span class="badge bg-dark">Facturada</span></h5>
                             <p class="m-0 p-0 text-primary" v-if="tax==1">Con Factura</p>
                             <p class="m-0 p-0 text-danger" v-if="tax==0">Sin Factura</p>
+                            <h4 v-if="total.advance_payment == total.total">PAGADO</h4>
                         </div>
                     </div>
                 </div>
@@ -167,15 +168,15 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr v-if="total.advance > 0">
+                                <tr v-if="total.advance_payment > 0">
                                     <th colspan="3"></th>
                                     <th>Anticipo</th>
-                                    <td>{{total.advance_payment}}</td>
+                                    <td>${{total.advance_payment}}</td>
                                 </tr>
-                                <tr v-if="total.advance > 0">
+                                <tr v-if="total.balance > 0">
                                     <th colspan="3"></th>
                                     <th>Saldo</th>
-                                    <td>{{total.balance}}</td>
+                                    <td class="d-flex justify-content-between">${{total.balance}} <a href=""><span class="bi bi-check-square"></span></a></td>
                                 </tr>                    
                                 <tr>
                                     <th colspan="3"></th>
@@ -227,6 +228,7 @@
             </div>
         </div>
         <!-- agregar articulo del catalogo -->
+
         <!-- Advertencia doble articulo -->
         <div class="modal fade" id="modal_warning" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog modal-dialog-scrollable">
@@ -235,7 +237,7 @@
                     <div class="body-warning">
                         <center><span class="bi bi-exclamation-diamond warning-icon"></span>
                         <p class="m-0 warning-title">¡Opss!</p>
-                        <p class="m-0 warning-text">Este Artículo ya esta agregad.</p>
+                        <p class="m-0 warning-text">{{warning}}</p>
                         <p class="m-0 warning-ref text-danger">¿Desas continuar?</p>
                         </center>
                     </div>
@@ -265,6 +267,8 @@
                 tax:"",
                 status:"",
                 total:[],
+                payment:"",
+                warning:"",
             }
         },
         methods:{
@@ -287,7 +291,8 @@
                     'article':item,//id de articulo
                 }).then(function(response){
                     if (response.data==1) {
-                        $('#modal_warning').modal('show');
+                        var warning_text = "Este articulo ya esta agregado";
+                        me.warning_modal(warning_text)
                     }
                     me.showDetails();
                     me.showTotals();
@@ -453,7 +458,28 @@
                 }else{
 
                 }   
+            },
+            add_payment(){
+                var me = this;
+                var url = '/add_payment';
+                axios.post(url,{
+                    'slug':me.slug,
+                    'payment':me.payment
+                }).then(function(response){
+                    if (response.data==0) {
+                        var warning_text = "El pago introducido es superior al monto de la cotización";
+                        me.warning_modal(warning_text);
+                    }else{
+                        me.showDetails();
+                        me.showTotals();
+                    }
+                })
+            },
+            warning_modal(data){
+                this.warning = data;
+                $('#modal_warning').modal('show');
             }
+
 
         },
         mounted(){

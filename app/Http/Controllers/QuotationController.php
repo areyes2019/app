@@ -372,5 +372,24 @@ class QuotationController extends Controller
       return 1;
       
     }
+    public function add_payment(Request $request)
+    {
+        //traemos el total
+        $total_query = cnnxn_quotation::where('slug',$request->slug)->get();
+        $total = $total_query[0]->total;
+        $balance = $total-$request->payment;
+
+        if ($request->payment > $total) {
+          return 0;
+        }else if ($request->payment<=$total) {
+          $query = cnnxn_quotation::where('slug',$request->slug)->update([
+            'advance_payment'=>$request->payment,
+            'balance'=>$balance,
+            'status'=>2
+          ]);
+          return 1;
+        }
+
+    }
 
 }

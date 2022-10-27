@@ -111,5 +111,6 @@ Route::group(['middleware'=>'auth'],function(){
     Route::post('/tax_add',[QuotationController::class,'tax_free'])->name('tax_free');
     Route::post('/add_discount',[QuotationController::class,'add_discount'])->name('add_discount');
     Route::get('/get_quotation_pdf/{id}/{id_qt}/{try}', [QuotationController::class,'get_pdf'])->name('get_quotation_pdf');
+    Route::post('/add_payment/',[QuotationController::class,'add_payment'])->name('add_payment');
 });
 
