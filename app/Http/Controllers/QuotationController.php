@@ -255,6 +255,8 @@ class QuotationController extends Controller
     }
     public function add_discount(Request $request)
     {
+        
+
       if ($request->type == 1) {
         $query = cnnxn_quotation::where('slug',$request->slug)->update([
             'money_discount'=> $request->discount
@@ -265,9 +267,22 @@ class QuotationController extends Controller
         ]);
       }
 
-      if ($query) {
-        return true;
-      }
+      //traer el subtotal 
+      $sub_total = cnnxn_quotation::where('slug', $request->slug)->get();
+      //descontar el dinero
+      $has_discount = $sub_total[0]->sub_total - $sub_total[0]->money_discount;
+      //descontar en porcentaje
+      $has_percent = $has_discount / 100 * $sub_total[0]->percent_discount;
+      $total_discount = $has_discount - $has_percent;
+      //agregar el iva y gran total
+      $has_tax = $total_discount + $sub_total[0]->tax;
+
+      //actualizar
+      cnnxn_quotation::where('slug',$request->slug)->update([
+        'total'=>$has_tax,
+        'percent_money'=> $has_percent
+      ]);
+
     }
     public function get_pdf($id, $id_qt,$try)
     {

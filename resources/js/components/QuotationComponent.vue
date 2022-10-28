@@ -149,12 +149,12 @@
                                     <th >Sub-Total</th>
                                     <td>${{total.sub_total}}</td>
                                 </tr>
-                                <tr v-if="total.percent_discount < 0">
+                                <tr v-if="total.percent_discount > 0">
                                     <th colspan="3"></th>
-                                    <th>Dcto % <span class="text-danger">({{total.percent}}%)</span></th>
-                                    <td class="d-flex justify-content-between">${{total.percent_discount}} <a href="#" @click.prevent="delete_discount(1)"><span class="bi bi-x-circle-fill"></span></a></td>
+                                    <th>Dcto % <span class="text-danger">({{total.percent_discount}}%)</span></th>
+                                    <td class="d-flex justify-content-between">${{total.percent_money}} <a href="#" @click.prevent="delete_discount(1)"><span class="bi bi-x-circle-fill"></span></a></td>
                                 </tr>
-                                <tr  v-if="total.money_discount < 0">
+                                <tr  v-if="total.money_discount > 0">
                                     <th colspan="3"></th>
                                     <th>Dcto $</th>
                                     <td class="d-flex justify-content-between">${{total.money_discount}}<a href="#" @click.prevent="delete_discount(2)"><span class="bi bi-x-circle-fill"></span></a></td>
@@ -421,6 +421,8 @@
                 })
             },
             addDiscount(data){
+                
+                var discount = "";
                 
                 if (data==1) {
                     //el descuento es en dinero
