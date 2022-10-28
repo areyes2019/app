@@ -107,6 +107,7 @@
                             <p class="m-0 p-0 text-primary" v-if="tax==1">Con Factura</p>
                             <p class="m-0 p-0 text-danger" v-if="tax==0">Sin Factura</p>
                             <h4 v-if="total.advance_payment == total.total">PAGADO</h4>
+                            <h4>Anticipo sugerido {{total.advance}}</h4>
                         </div>
                     </div>
                 </div>
@@ -149,15 +150,15 @@
                                     <th >Sub-Total</th>
                                     <td>${{total.sub_total}}</td>
                                 </tr>
-                                <tr v-if="total.percent_discount > 0">
-                                    <th colspan="3"></th>
-                                    <th>Dcto % <span class="text-danger">({{total.percent_discount}}%)</span></th>
-                                    <td class="d-flex justify-content-between">${{total.percent_money}} <a href="#" @click.prevent="delete_discount(1)"><span class="bi bi-x-circle-fill"></span></a></td>
-                                </tr>
                                 <tr  v-if="total.money_discount > 0">
                                     <th colspan="3"></th>
                                     <th>Dcto $</th>
-                                    <td class="d-flex justify-content-between">${{total.money_discount}}<a href="#" @click.prevent="delete_discount(2)"><span class="bi bi-x-circle-fill"></span></a></td>
+                                    <td class="d-flex justify-content-between">${{total.money_discount}}<a href="#" @click.prevent="delete_discount(1)"><span class="bi bi-x-circle-fill"></span></a></td>
+                                </tr>
+                                <tr v-if="total.percent_discount > 0">
+                                    <th colspan="3"></th>
+                                    <th>Dcto % <span class="text-danger">({{total.percent}}%)</span></th>
+                                    <td class="d-flex justify-content-between">${{total.percent_discount}} <a href="#" @click.prevent="delete_discount(2)"><span class="bi bi-x-circle-fill"></span></a></td>
                                 </tr>
                                 <tr v-if="tax==1">
                                     <th colspan="3"></th>
@@ -168,17 +169,17 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr v-if="total.advance_payment > 0">
+                                <tr v-if="total.payment > 0">
                                     <th colspan="3"></th>
                                     <th>Anticipo</th>
-                                    <td>${{total.advance_payment}}</td>
+                                    <td>${{total.payment}}</td>
                                 </tr>
-                                <tr v-if="total.balance > 0">
+                                <tr v-if="total.payment > 0">
                                     <th colspan="3"></th>
                                     <th>Saldo</th>
-                                    <td class="d-flex justify-content-between">${{total.balance}} <a href=""><span class="bi bi-check-square"></span></a></td>
+                                    <td class="d-flex justify-content-between">${{total.balance}} <a href="#"><span class="bi bi-check-square"></span></a></td>
                                 </tr>                    
-                                <tr>
+                                <tr v-if="total.payment == 0">
                                     <th colspan="3"></th>
                                     <th>Total</th>
                                     <td>${{total.total}}</td>
@@ -187,6 +188,7 @@
                     </table>
                     </div>
                     <a href="#" @click.prevent="deleteQuotation"><span class="bi bi-trash"></span> Eliminar</a>
+                    <a href="#" class="ml-3" @click.prevent="deleteQuotation"><span class="bi bi-receipt"></span> Ver Ticket</a>
                 </div>
             </div>            
         </div>
@@ -394,7 +396,7 @@
                 var me = this;
                 var url = "/show_totals/"+ this.id;
                 axios.get(url).then(function(response){                   
-                    me.total = response.data[0];
+                    me.total = response.data;
                 })
             },
             addQuantity(line){
@@ -412,9 +414,10 @@
             },
             deleteLine(line){
                 var me = this;
-                var url = '/delete_line/'+line;
+                var url = '/delete_line';
                 axios.post(url,{
-                    'id_qt':me.id
+                    'id_qt':me.id,
+                    'id_line':line
                 }).then(function(response){
                     me.showDetails();
                     me.showTotals();
@@ -455,11 +458,15 @@
                 });
             },
             delete_discount(data){
-                if (data == 1) {
-                    //descuento en d
-                }else{
-
-                }   
+                var me = this;
+                var url = '/delete_discount';
+                axios.post(url,{
+                    'slug':me.slug,
+                    'id':data
+                }).then(function(response){
+                    me.showDetails();
+                    me.showTotals();
+                })
             },
             add_payment(){
                 var me = this;

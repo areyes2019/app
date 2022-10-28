@@ -129,7 +129,6 @@ class QuotationController extends Controller
             cnnxn_quotation::where('idQt',$request->idQt)->update([
                 'tax'=>$tax,
                 'sub_total'=>$sub_total,
-                'total'=>$total,
             ]);
 
           }else{
@@ -151,9 +150,7 @@ class QuotationController extends Controller
             $tax = 0;
 
             $query = cnnxn_quotation::where('idQt',$request->idQt)->update([
-                'tax'=>$tax,
                 'sub_total'=>$total,
-                'total'=>$total
             ]);
 
           }
@@ -173,8 +170,62 @@ class QuotationController extends Controller
 
     public function show_totals($id)
     {      
-      $summary = cnnxn_quotation::where('idQt',$id)->get();
-      return $summary;
+      //ver si la cotizacion tiene lineas
+      $tax_query = cnnxn_quotation::where('idQt',$id)->get();
+      $query = $tax_query[0]->with_tax;
+
+      $has_lines = cnnxn_quotation_detail::where('idQuotation',$id)->count();
+      if ($has_lines == 0) {
+        cnnxn_quotation::where('idQt',$id)->update([
+          'money_discount'=>0,
+          'tax'=>0,
+          'sub_total'=>0,
+          'total'=>0,
+          'percent_discount'=>0,
+          'percent_money'=>0,
+          'balance'=>0,
+          'advance_payment'=>0,
+        ]);
+      }else{
+
+        //obtener el subtotal
+        $summary = cnnxn_quotation::where('idQt',$id)->get();
+        $sub_total = $summary[0]->sub_total;
+        //Obtener el descuento en porcentaje
+        $percent_discount = $sub_total/100 * $summary[0]->percent_discount;
+        //Obtener el descuento en dinero (implícito)
+        //Sumar los descuentos
+        $discount_sum = $percent_discount + $summary[0]->money_discount;
+        //Quitar los descuentos al sub total
+        $sub_total_primary = $sub_total - $discount_sum;
+        // Agregar IVA
+        $has_tax = $sub_total_primary + $summary[0]->tax;
+        // Mostrar Anticipo
+        $advance = $has_tax / 2;
+        // Mostrar lo que se pago (implisito)
+        // Mostrar el saldo
+        $balance = $has_tax - $summary[0]->advance_payment ;
+        // Mostrar el Saldo total
+
+        cnnxn_quotation::where('idQt',$id)->update([
+          'total'=>$has_tax,
+          'balance'=>$balance
+        ]);
+        $data = [
+          'sub_total'=> $sub_total,
+          'money_discount'=> $summary[0]->money_discount,
+          'percent_discount'=> number_format($percent_discount,2),
+          'percent'=> $summary[0]->percent_discount,
+          'tax'=> $summary[0]->tax,
+          'has_tax'=> number_format($has_tax,2),
+          'advance'=> number_format($advance,2), 
+          'payment'=> $summary[0]->advance_payment,
+          'balance'=> number_format($balance,2),
+          'total'=>number_format($has_tax,2)
+        ];
+
+        return $data;
+      }
     }
     public function add_quantity(Request $request, $line)
     {
@@ -182,43 +233,36 @@ class QuotationController extends Controller
       $unit_price_query = cnnxn_quotation_detail::where('id',$line)->get();
       $unit_price = $unit_price_query[0]->unit_price;
       $new_price = $unit_price * $request ->quantity;
-      $new_price;
 
       $query = cnnxn_quotation_detail::where('id',$line)->update([
         'quantity'=>$request->quantity,
         'total'=>$new_price
       ]);
 
-      //sacamos el total de la cotizacion nuevamente
+      //hay que sacar el total
 
       $total = cnnxn_quotation_detail::where('idQuotation',$id_qt)->sum('total');
-      $tax = $total /100 * 16; //sacamos el iva
-      $grand_total = $total + $tax;
 
-      $update_total = cnnxn_quotation::where('idQt',$id_qt)->update([
-        'tax' => $tax,
-        'total' => $grand_total,
-        'sub_total'=> $total
+      cnnxn_quotation::where('idQt',$id_qt)->update([
+          'sub_total'=>$total,
       ]);
+      
 
 
     }
-    public function delete_line(Request $request,$id)
+    public function delete_line(Request $request)
     {
-      $query = cnnxn_quotation_detail::where('id',$id)->delete();
-
-      $id_qt = $request->id_qt; //obtemos el id de la cotizacion
-      
+      $line = $request->id_line;
+      $id_qt = $request->id_qt;
+      $query = cnnxn_quotation_detail::where('id',$line)->delete();      
       //sacamos el total de la cotizacion nuevamente
 
-      $total = cnnxn_quotation_detail::where('idQuotation',$id_qt)->sum('total');
+      $total = cnnxn_quotation_detail::where('idQuotation',$request->id_qt)->sum('total');
       $tax = $total /100 * 16; //sacamos el iva
       $grand_total = $total + $tax;
 
-      $update_total = cnnxn_quotation::where('idQt',$id_qt)->update([
-        'tax' => $tax,
-        'total' => $grand_total,
-        'sub_total'=>$total
+      $update_total = cnnxn_quotation::where('idQt', $id_qt)->update([
+        'sub_total'=>$total,
       ]);
 
 
@@ -269,18 +313,54 @@ class QuotationController extends Controller
 
       //traer el subtotal 
       $sub_total = cnnxn_quotation::where('slug', $request->slug)->get();
-      //descontar el dinero
-      $has_discount = $sub_total[0]->sub_total - $sub_total[0]->money_discount;
-      //descontar en porcentaje
-      $has_percent = $has_discount / 100 * $sub_total[0]->percent_discount;
-      $total_discount = $has_discount - $has_percent;
-      //agregar el iva y gran total
-      $has_tax = $total_discount + $sub_total[0]->tax;
+      
+      //sacamos el descuento en porcentaje
+      $percent = $sub_total[0]->sub_total /100 * $sub_total[0]->percent_discount; 
+
+      //sumamos los dos descuentos
+      $discounts = $percent + $sub_total[0]->money_discount;
+
+      $plus_tax = $discounts + $sub_total[0]->tax; 
+      
 
       //actualizar
       cnnxn_quotation::where('slug',$request->slug)->update([
-        'total'=>$has_tax,
-        'percent_money'=> $has_percent
+        'total'=>$plus_tax,
+        'percent_money'=> $percent
+      ]);
+      return $percent;
+
+    }
+    public function delete_discount(Request $request)
+    {
+      if ($request->id == 1) {
+        // Descuento en dinero
+        $delete = cnnxn_quotation::where('slug', $request->slug)->update([
+            'money_discount'=>0
+        ]);
+      }else{
+        //Descuento en porcentaje
+        $delete = cnnxn_quotation::where('slug', $request->slug)->update([
+            'percent_discount'=>0,
+            'percent_money'=>0
+        ]);
+      }
+      
+      //traer el subtotal 
+      $sub_total = cnnxn_quotation::where('slug', $request->slug)->get();
+      
+      //sacamos el descuento en porcentaje
+      $percent = $sub_total[0]->sub_total /100 * $sub_total[0]->percent_discount; 
+
+      //sumamos los dos descuentos
+      $discounts = $percent + $sub_total[0]->money_discount;
+
+      $plus_tax = $discounts + $sub_total[0]->tax; 
+      
+
+      //actualizar
+      cnnxn_quotation::where('slug',$request->slug)->update([
+        'total'=>$plus_tax,
       ]);
 
     }
