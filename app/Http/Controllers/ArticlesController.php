@@ -86,7 +86,6 @@ class ArticlesController extends Controller
             'dealer'=> '',
             'price'=>'numeric|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
             'provider'=> 'required',
-            're_order'=> '',
             'family'=>'required',
             'short_desc'=>'' ,
             'long_desc'=> '',
@@ -100,7 +99,6 @@ class ArticlesController extends Controller
             'cost.numeric'      =>'Solo números',
             'dealer.numeric'    =>'Solo numeros',
             'provider.required' =>'Es necesario agregar un proveedor',
-            're_order.max'      =>'Máximo dos digitos',
             'family.required'   =>'Es necesario agregar una familia',
             'cataloge.required' =>'Se requiere un catálogo'
         ])->validate();
