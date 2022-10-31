@@ -137,7 +137,7 @@
 							<div class="input-layer">
 								<span class="bi bi-people input-icon"></span>
 								<select name="" id="" v-model="data.provider" class="input-control" @change="get_cataloge(data.provider)">
-									<option :value="supplier.idContact" v-for="supplier in suppliers">{{supplier.name}}</option>
+									<option :value="supplier.idContact" v-for="supplier in suppliers">{{supplier.company}}</option>
 								</select>
 							</div>
 						</div>
@@ -161,7 +161,7 @@
 								<optgroup :label="parent.name" v-for="parent in parent_list">
 									<option :value="child.idCategorie"  v-if="child.main == parent.idCategorie" v-for="child in child_list">{{child.name}}</option>
 								</optgroup>
-								<option :value="single.idCategorie" v-for="single in single_list" class="text-primary">{{single.name}}</option>
+								<option :value="single.categorie" v-for="single in single_list" class="text-primary">{{single.name}}</option>
 							</select>
 						</div>
 					</div>
@@ -195,13 +195,17 @@
 		      			</div>
 		      		</div>
 		      		<div class="row">
-		      			<div class="col-md-12">
-		      				<label for="">Descripción Corta</label>
-		      				<textarea name="" id="" cols="30" rows="5" class="input-control" v-model="data.short"></textarea>
+		      			<div class="col-12">
+		      				<div class="form-group">
+			      				<label for="">Descripción Corta</label>
+			      				<textarea name="" id="" cols="30" rows="5" class="form-control rounded-0 shadow-none" v-model="data.short"></textarea>
+		      				</div>
 		      			</div>
 		      			<div class="col-md-12">
-		      				<label for="">Descripción Larga</label>
-		      				<textarea name="" id="" cols="30" rows="5" class="input-control" v-model="data.long"></textarea>
+		      				<div class="form-group">
+			      				<label for="">Descripción Larga</label>
+			      				<textarea name="" id="" cols="30" rows="5" class="form-control rounded-0 shadow-none" v-model="data.long"></textarea>
+		      				</div>
 		      			</div>
 		      			
 		      		</div>		      		
@@ -289,7 +293,7 @@
 							<div class="input-layer">
 								<span class="bi bi-people input-icon"></span>
 								<select name="" id="" v-model="product.provider" class="input-control" @change="get_cataloge(product.provider)">
-									<option :value="supplier.idContact" v-for="supplier in suppliers">{{supplier.name}}</option>
+									<option :value="supplier.idContact" v-for="supplier in suppliers">{{supplier.company}}</option>
 								</select>
 							</div>
 						</div>

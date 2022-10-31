@@ -70,7 +70,7 @@ class ArticlesController extends Controller
             'family'=> $request->family,
             'short_desc'=> $request->short,
             'long_desc'=> $request->long,
-            'idCategorie'=> $request->categorie,
+            'categorie'=> $request->categorie,
             'cataloge'=> $request->cataloge,
         ];
 
@@ -85,13 +85,12 @@ class ArticlesController extends Controller
             'cost'=> 'required|numeric|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
             'dealer'=> '',
             'price'=>'numeric|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
-            'discount'=> 'max:2',
             'provider'=> 'required',
             're_order'=> '',
             'family'=>'required',
             'short_desc'=>'' ,
             'long_desc'=> '',
-            'idCategorie'=>'',
+            'categorie'=>'',
             'cataloge'=>'required',
         ],[
             'name.required'     =>'Se requiere un nombre de artículo',
@@ -101,7 +100,6 @@ class ArticlesController extends Controller
             'cost.numeric'      =>'Solo números',
             'dealer.numeric'    =>'Solo numeros',
             'provider.required' =>'Es necesario agregar un proveedor',
-            'discount.max'      =>'Máximo dos digitos',
             're_order.max'      =>'Máximo dos digitos',
             'family.required'   =>'Es necesario agregar una familia',
             'cataloge.required' =>'Se requiere un catálogo'

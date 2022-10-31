@@ -45,6 +45,8 @@ Vue.component('cataloges-component', require('./components/CatalogesComponent.vu
 Vue.component('categories-component', require('./components/CategoriesComponent.vue').default);
 Vue.component('quotations-component', require('./components/QuotationsComponent.vue').default);
 Vue.component('quotation-component', require('./components/QuotationComponent.vue').default);
+Vue.component('orders-component', require('./components/OrdersComponent.vue').default);
+Vue.component('order-component', require('./components/OrderComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

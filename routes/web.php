@@ -9,6 +9,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\QuotationsController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\OrdersController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -113,5 +114,19 @@ Route::group(['middleware'=>'auth'],function(){
     Route::post('/add_discount',[QuotationController::class,'add_discount'])->name('add_discount');
     Route::get('/get_quotation_pdf/{id}/{id_qt}/{try}', [QuotationController::class,'get_pdf'])->name('get_quotation_pdf');
     Route::post('/add_payment/',[QuotationController::class,'add_payment'])->name('add_payment');
+
+    //bancos
+    Route::get('/inventory/',[InventoryController::class,'index'])->name('inventory');
+
+    //pedidos a proveedor
+    Route::get('/orders/',[OrdersController::class,'index'])->name('orders');
+    Route::get('/order_page/{id}',[OrdersController::class,'orders_page'])->name('orders_page');
+    Route::post('/order_new/',[OrdersController::class,'store'])->name('orders_new');
+    Route::get('/articles_show_providers/{id}',[OrdersController::class,'show_articles'])->name('articles_show_providers');
+    Route::post('/order_add_line/',[OrdersController::class,'add_line'])->name('add_line');
+    Route::get('/order_show_line/{id}',[OrdersController::class,'show_line'])->name('show_line');
+    Route::get('/order_totals/{id}',[OrdersController::class,'order_totals'])->name('order_totals');
+    Route::post('order_pdf',[OrdersController::class,'pdf'])->name('order_pdf');
+    Route::get('/orders_show/',[OrdersController::class,'orders_show'])->name('orders_show');
 });
 
