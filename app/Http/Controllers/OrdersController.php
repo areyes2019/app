@@ -17,7 +17,7 @@ class OrdersController extends Controller
     public function orders_page($id)
     {
         
-        //aqui enviamos los datos de la cotizacion
+       //aqui enviamos los datos de la cotizacion
         $query = cnnxn_Order::where('slug',$id)->get();
         //buscamos el nombre 
         $supplier_name = Contact::where('idContact',$query[0]->idSupplier)->get();
@@ -81,25 +81,26 @@ class OrdersController extends Controller
         $query = cnnxn_order_detail::where('idOrder', $id)->sum('total');
         return $query;
     }
-    public function pdf(Request $request)
+    public function pdf($supplier, $order)
     {
+
         //obernemos los datos del provedor
-        $supplier_data = Contact::where('idContact',$request->supplier)->get();
+        $supplier_data = Contact::where('idContact',$supplier)->get();
         $supplier = trim($supplier_data[0]->company);
         //totales de la orden de compra
-        $sub_total = cnnxn_order_detail::where('idOrder',$request->order)->sum('total');
+        $sub_total = cnnxn_order_detail::where('idOrder',$order)->sum('total');
         $tax = $sub_total /100 *16;
         $total = $sub_total + $tax;
 
         // detalles de la orden de compra
 
-        $details = cnnxn_order_detail::where('idOrder',$request->order)->get();
+        $details = cnnxn_order_detail::where('idOrder',$order)->join('cnnxn_articles','cnnxn_articles.idArticle','=', 'cnnxn_order_details.article')->get();
         
         $totals_data=[
             'sub_total'=>$sub_total,
             'tax'=>number_format($tax,2),
             'total'=>number_format($total,2),
-            'idOrder'=>$request->order
+            'idOrder'=>$order
         ];
 
         $data = [
@@ -108,10 +109,11 @@ class OrdersController extends Controller
             'totals'=>$totals_data,
         ];
 
+        //return view('orders.order_pdf',['supplier'=>$supplier_data, 'totals'=>$totals_data, 'details'=>$details]);
+        //return $details;
 
-        $pdf = \PDF::loadView('orders.pdf',$data);
-        return $pdf->download('QT.pdf');
-        //return $data;
+        $pdf = PDF::loadView('orders.order_pdf',['supplier'=>$supplier_data, 'totals'=>$totals_data, 'details'=>$details]);
+        return $pdf->download('QT-'.$supplier.'_'.$order.'.pdf');
     }
     public function orders_show()
     {
@@ -122,6 +124,9 @@ class OrdersController extends Controller
                 'cnnxn_contacts.company',
                 'cnnxn_orders.status',
                 'cnnxn_orders.sub_total',
+                'cnnxn_orders.link',
+                'cnnxn_orders.total',
+                'cnnxn_orders.slug',
             )
             ->get();
         return $query;

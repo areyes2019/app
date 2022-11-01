@@ -14,7 +14,7 @@
                     <a class="nav-link my-link-nav" href="" @click.prevent="sendMail"><span class="bi bi-send"></span> Enviar</a>
                 </li>
                 <li class="nav-item">
-                    <a  href="#" @click.prevent="pdf" class="nav-link my-link-nav"><span class="bi bi-download"></span> Descargar</a>
+                    <a  :href="'/order_pdf/'+supplier+'/'+order" class="nav-link my-link-nav"><span class="bi bi-download"></span> Descargar</a>
                 </li>
                 <li class="nav-item"><a href="" class="nav-link text-danger" v-if="status==0">Marcar como pagada</a></li>
                 <li class="nav-item d-flex align-items-center">
@@ -403,11 +403,8 @@
             },
             pdf(){
                 var me = this;
-                var url = '/order_pdf'
-                axios.post(url,{
-                    'supplier':me.supplier,
-                    'order':me.order
-                }).then(function(response){
+                var url = '/order_pdf/'+me.supplier+'/'+me.order;
+                axios.get(url).then(function(response){
 
                 })
             }

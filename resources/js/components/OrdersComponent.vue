@@ -17,24 +17,23 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Status</th>
                                     <th>Fecha</th>
                                     <th>Proveedor</th>
-                                    <th>Contacto</th>
                                     <th>Vinculada a</th>
                                     <th>Monto</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>5</td>
-                                    <td>{{date = new Date().toLocaleDateString()}}</td>
-                                    <td>Sellos Kimu</td>
-                                    <td>Lili Rodiriquex</td>
-                                    <td>1256</td>
-                                    <td>$2503</td>
+                                <tr v-for="data in general_data ">
+                                    <td>{{data.idOrder}}</td>
+                                    <td>{{new Date(data.created_at).toLocaleDateString()}}</td>
+                                    <td>{{data.company}}</td>
+                                    <td>{{data.link}}</td>
+                                    <td>{{data.total}}</td>
                                     <td>
-                                       <button class="btn btn-danger rounded-0 btn-sm" @click="toQuotation(data.slug)">Ver</button>
+                                       <button class="btn btn-danger rounded-0 btn-sm" @click="toOrder(data.slug)">Ver</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -101,8 +100,8 @@
                 me.table();
               })
             },
-            toQuotation(data){
-              window.location.href = 'quotation_page'+'/'+data;
+            toOrder(data){
+              window.location.href = '/order_page/'+data;
             },
             //esta funcion abre el modal clientes y muestra la lista de clientes
             new_qt(){

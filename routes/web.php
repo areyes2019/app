@@ -126,7 +126,7 @@ Route::group(['middleware'=>'auth'],function(){
     Route::post('/order_add_line/',[OrdersController::class,'add_line'])->name('add_line');
     Route::get('/order_show_line/{id}',[OrdersController::class,'show_line'])->name('show_line');
     Route::get('/order_totals/{id}',[OrdersController::class,'order_totals'])->name('order_totals');
-    Route::post('order_pdf',[OrdersController::class,'pdf'])->name('order_pdf');
+    Route::get('/order_pdf/{supplier}/{order}',[OrdersController::class,'pdf'])->name('order_pdf');
     Route::get('/orders_show/',[OrdersController::class,'orders_show'])->name('orders_show');
 });
 

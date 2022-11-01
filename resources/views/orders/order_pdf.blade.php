@@ -81,22 +81,6 @@
             <tr>
                 <td style="vertical-align: top; padding: 15px;">
                     <img src="{{asset('img/logo2.png')}}" width="150">
-                    <h4>Orden De Compra</h4>
-                </td>
-                <td style="vertical-align: top;">
-                    <p>
-                        <strong>Tel 461 358 10 90</strong><br>
-                        ventas@sellopronto.com.mx <br>
-                        www.sellopronto.com.mx<br>
-                    </p>
-                    <p style="margin-top: 12px">
-                    <strong>Bancomer</strong><br>
-                    Cta: 1423666980<br>
-                    Clave: 012180014236669805 <br><br>
-                    <strong>Santander</strong> <br>
-                    Cta: 60-55724843-3 <br>
-                    Clave: 014822605572484338
-                    </p>
                 </td>
                 <td align="top" style="vertical-align: top;">
                     <p><strong>Sello Pronto Celaya</strong> <br>
@@ -121,39 +105,34 @@
     <div class="info">
         <table width="100%" style="padding: 15px;">
             <tr>
-                <td style="vertical-align: top;">
-                    <strong>Para: {{$supplier['company']}}</strong> <br>
-                    Comecialiadora Universal<br>
-                    Att: sellos<br>
-                </td>
-                <td style="vertical-align: top;">
-                    <strong>Presupuesto No.</strong><br>
-                    QT-{{$totals['idOrder']}}<br><br>
-                </td>
-                <td style="vertical-align: top;">
-                   <strong>Monto total:</strong><br>
-                    <span style="font-weight: bolder; font-size: 35px;">${{$totals['total']}}</span>
-                </td>
+               <td><h2>Orden de Cotización {{$totals['idOrder']}}</h2></td>
+            </tr>
+            <tr>
+                <td><h3>Distribuidora Universal Kimu</h3></td>
+            </tr>
+            <tr>
+                <td><h4>Con Guia del cliente</h4></td>
             </tr>
         </table>
     </div>
     <div class="resumen" style="margin-top: 10px; padding: 15px;">
         <table id="customers">
-            <tr>
-                <th>Cant.</th>
-                <th>Artículo</th>
-                <th>Modelo</th>
-                <th>P/U</th>
-                <th>Total</th>
-            </tr>
-            @foreach($details as $detail)
-            <tr>
-                <td>{{$detail->quantity}}</td>
-                <td>{{$detail->article}}</td>
-                <td>${{$detail->unit_price}}</td>
-                <td>${{$detail->total}}</td>
-            </tr>
-            @endforeach
+          <tr>
+            <th>Cant.</th>
+            <th>Artículo</th>
+            <th>Modelo</th>
+            <th>P/U</th>
+            <th>Total</th>
+          </tr>
+          @foreach ($details as $item)
+          <tr>
+            <td>{{$item->quantity}}</td>
+            <td>{{$item->name}}</td>
+            <td>{{$item->model}}</td>
+            <td>${{$item->cost}}</td>
+            <td>${{$item->total}}</td>
+          </tr>
+          @endforeach
         </table>
     </div>
     <div class="deco">
@@ -177,11 +156,7 @@
         </table>
     </div>
     <div class="footer">
-        <ul>
-            <li>Cotización expresada en pesos Mexicanos</li>
-            <li>Esta cotización estará vigente durante 30 días naturales</li>
-            <li>Los precios pueden sufrir modificaciones sin previo aviso</li>
-        </ul>
+        <p>Tenga la bondad de confirmar esta solicitud</p>
     </div>
 </body>
 </html>
