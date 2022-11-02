@@ -196,14 +196,14 @@ class ArticlesController extends Controller
             'discount'=>'numeric',
             'idProvider'=>'required',
         ],[
-            'cataloge_name.required' => 'El nombre del catálogo  es obligatorio',
+            'cataloge_name.required' => 'El nombre del catalogo  es obligatorio',
             'discount.numeric' => 'El descuento solo debe llevar valores numéricos',
             'supplier.required' => 'Es obligatorio agregar un proveedor',
         ]
         );
 
         cnnxn_Cataloge::create($validated);
-        return true; 
+        return true;
 
     }
     public function show_cataloges()
