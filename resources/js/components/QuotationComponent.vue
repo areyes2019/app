@@ -20,7 +20,7 @@
                     <a class="nav-link my-link-nav" href="#" @click.prevent="approved"><span class="bi bi-file-earmark-ruled"></span> Facturar</a>
                 </li>
                 <li class="nav-item"><a href="" class="nav-link text-danger" v-if="status==0">Marcar como Enviada</a></li>
-                <li class="nav-item d-flex align-items-center">
+                <li class="nav-item d-flex align-items-center" v-if="total.payment==0">
                     <div class="dropdown">
                       <a href="#" class="nav-link my-link-nav" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                         Generar Pago
@@ -42,25 +42,10 @@
 
                       <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <li class="p-3">
-                            <label for="">Descuento en Dinero</label>
+                            <label for="">Agrega un porcentaje</label>
                             <div class="menu-fields d-flex justify-content-between align-items-center ">
-                                <input type="text" ref="money" v-model="money" width="48">
-                                <a class="btn btn-danger btn-sm rounded-0 " @click.prevent="addDiscount(1)"><span class="bi bi-check-square"></span></a>
-                            </div>
-                        </li>
-                        <li class="p-3">
-                            <label for="">Descuento en porcentaje</label>
-                            <div class="menu-fields d-flex justify-content-between align-items-center ">
-                                <select  id="" ref="percent" v-model="percent" class="w-100">
-                                    <option value="0">0%</option>
-                                    <option value="5">5%</option>
-                                    <option value="10">10%</option>
-                                    <option value="15">15%</option>
-                                    <option value="20">20%</option>
-                                    <option value="25">25%</option>
-                                    <option value="30">30%</option>
-                                </select>
-                                <a href="" class="btn btn-danger btn-sm" @click.prevent="addDiscount(2)"><span class="bi bi-check-square"></span></a>
+                                <input type="text" ref="money" v-model="money" width="48" placeholder="%">
+                                <a class="btn btn-danger btn-sm rounded-0 " @click.prevent="addDiscount()"><span class="bi bi-check-square"></span></a>
                             </div>
                         </li>
                       </ul>
@@ -100,10 +85,11 @@
                                 </p>
                             </div>
                             <h5 class="mt-1" v-if="status==0"><span class="badge bg-secondary">Borrador</span></h5>
-                            <h5 class="mt-1" v-if="status==1"><span class="badge bg-primary">Enviada</span></h5>
-                            <h5 class="mt-1" v-if="status==2"><span class="badge bg-success">Aprobada</span></h5>
-                            <h5 class="mt-1" v-if="status==3"><span class="badge bg-danger">Pagada</span></h5>
-                            <h5 class="mt-1" v-if="status==4"><span class="badge bg-dark">Facturada</span></h5>
+                            <h5 class="mt-1" v-else-if="status==1"><span class="badge bg-primary">Enviada</span></h5>
+                            <h5 class="mt-1" v-else-if="status==2"><span class="badge bg-success">Anticipo</span></h5>
+                            <h5 class="mt-1" v-else-if="status==3"><span class="badge bg-success">Elaborando</span></h5>
+                            <h5 class="mt-1" v-else-if="status==4"><span class="badge bg-danger">Pagada</span></h5>
+                            <h5 class="mt-1" v-else="status==5"><span class="badge bg-dark">Facturada</span></h5>
                             <p class="m-0 p-0 text-primary" v-if="tax==1">Con Factura</p>
                             <p class="m-0 p-0 text-danger" v-if="tax==0">Sin Factura</p>
                             <h4 v-if="total.advance_payment == total.total">PAGADO</h4>
@@ -147,20 +133,15 @@
                             <tfoot>
                                 <tr>
                                     <th colspan="3"></th>
-                                    <th >Sub-Total</th>
-                                    <td>${{total.sub_total}}</td>
+                                    <th >Importe</th>
+                                    <td>${{total.amount}}</td>
                                 </tr>
-                                <tr  v-if="total.money_discount > 0">
+                                <tr  v-if="total.discount > 0">
                                     <th colspan="3"></th>
-                                    <th>Dcto $</th>
-                                    <td class="d-flex justify-content-between">${{total.money_discount}}<a href="#" @click.prevent="delete_discount(1)"><span class="bi bi-x-circle-fill"></span></a></td>
+                                    <th>Dcto. <strong>{{total.percent}}%</strong></th>
+                                    <td class="d-flex justify-content-between">${{total.discount}}<a href="#" @click.prevent="delete_discount(1)"><span class="bi bi-x-circle-fill"></span></a></td>
                                 </tr>
-                                <tr v-if="total.percent_discount > 0">
-                                    <th colspan="3"></th>
-                                    <th>Dcto % <span class="text-danger">({{total.percent}}%)</span></th>
-                                    <td class="d-flex justify-content-between">${{total.percent_discount}} <a href="#" @click.prevent="delete_discount(2)"><span class="bi bi-x-circle-fill"></span></a></td>
-                                </tr>
-                                <tr v-if="tax==1">
+                                <tr>
                                     <th colspan="3"></th>
                                     <th>IVA</th>
                                     <td>
@@ -169,21 +150,22 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr v-if="total.payment > 0">
-                                    <th colspan="3"></th>
-                                    <th>Anticipo</th>
-                                    <td>${{total.payment}}</td>
-                                </tr>
-                                <tr v-if="total.payment > 0">
-                                    <th colspan="3"></th>
-                                    <th>Saldo</th>
-                                    <td class="d-flex justify-content-between">${{total.balance}} <a href="#"><span class="bi bi-check-square"></span></a></td>
-                                </tr>                    
-                                <tr v-if="total.payment == 0">
+                                <tr>
                                     <th colspan="3"></th>
                                     <th>Total</th>
                                     <td>${{total.total}}</td>
                                 </tr>
+                                <tr>
+                                    <th colspan="3"></th>
+                                    <th v-if="total.balance == 0">Pago Total</th>
+                                    <th v-else>Anticipo</th>
+                                    <td>${{total.payment}}</td>
+                                </tr>
+                                <tr>
+                                    <th colspan="3"></th>
+                                    <th>Saldo</th>
+                                    <td class="d-flex justify-content-between">${{total.balance}} <a href="#" @click.prevent="total_payment(total.balance)"><span class="bi bi-check-square"></span></a></td>
+                                </tr>                    
                             </tfoot>
                     </table>
                     </div>
@@ -423,17 +405,10 @@
                     me.showTotals();
                 })
             },
-            addDiscount(data){
+            addDiscount(){
                 
                 var discount = "";
-                
-                if (data==1) {
-                    //el descuento es en dinero
-                    var discount = this.$refs.money.value;
-                }else if(data==2){
-                    //el descuento es en porcentaje
-                    var discount = this.$refs.percent.value;
-                }
+                var discount = this.$refs.money.value;
 
                 var me = this;
                 var url = '/add_discount';
@@ -443,13 +418,17 @@
                     'id':id,
                     'slug':slug,
                     'discount':discount,
-                    'type':data,
                 }).then(function(response){
-                    me.percent = response.data;
-                    me.showDetails();
-                    me.showTotals();
-                    me.percent = "";
-                    me.money = "";
+                    
+                    if (response.data == 0) {
+                        var warning_text = "No puedes asignar descuentos sin tener artículos agreagados";
+                        me.warning_modal(warning_text);
+                    }else{
+                        me.percent = response.data;
+                        me.showDetails();
+                        me.showTotals();
+                        me.money = "";
+                    }
                 })
             },
             table(){
@@ -475,6 +454,7 @@
                     'slug':me.slug,
                     'payment':me.payment
                 }).then(function(response){
+
                     if (response.data==0) {
                         var warning_text = "El pago introducido es superior al monto de la cotización";
                         me.warning_modal(warning_text);
@@ -482,6 +462,20 @@
                         me.showDetails();
                         me.showTotals();
                     }
+                })
+            },
+            total_payment(data){
+                var me = this;
+                var url = '/total_payment'
+                axios.post(url,{
+                    'slug':me.slug,
+                    'payment':data
+                }).then(function(response){
+                    me.showDetails();
+                    me.showTotals();
+                    var title = "Felicidades";
+                    var message = "Has acreditado el pago";
+                    toaster(title,message);
                 })
             },
             warning_modal(data){

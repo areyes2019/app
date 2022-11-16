@@ -114,6 +114,7 @@ Route::group(['middleware'=>'auth'],function(){
     Route::post('/add_discount',[QuotationController::class,'add_discount'])->name('add_discount');
     Route::get('/get_quotation_pdf/{id}/{id_qt}/{try}', [QuotationController::class,'get_pdf'])->name('get_quotation_pdf');
     Route::post('/add_payment/',[QuotationController::class,'add_payment'])->name('add_payment');
+    Route::post('/total_payment/',[QuotationController::class,'total_payment'])->name('total_payment');
 
     //bancos
     Route::get('/inventory/',[InventoryController::class,'index'])->name('inventory');
