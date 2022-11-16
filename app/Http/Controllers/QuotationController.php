@@ -321,57 +321,31 @@ class QuotationController extends Controller
         
         //este es el gran total
         $quotation_total = cnnxn_quotation_detail::where('idQuotation', $quotation)->sum('total');
-        //este es el descuento en dinero
-        $money = $quotation_query[0]->money_discount;
-        $discount = number_format($money,2); 
-        //este es el descuento en porcenteje
-        $percent  = $quotation_query[0]->percent_discount;
+        
+        //aplicamos el descuento
 
-        if ($quotation_query[0]->with_tax == 1) {
-          //monto sin iva
-          $among_tax = $quotation_total / 1.16;
-          $amount = number_format($among_tax,2);
-          
-          //porcentaje pasado a dinero
-          $percent_to = $among_tax /100 * $percent;
-          $percent_to_money = number_format($percent_to,2);
-          
-          //suma de descuentos 
-          $discount_sum = $money + $percent_to;
-          //aplicados a la sub-total
-          $discount_result = $among_tax - $discount_sum;
+        $discount = $quotation_total /100 * $quotation_query[0]->discount;
+        
+        $with_discount = $quotation_total - $discount;
 
-          //aplicamos el iva 
-          $tax_value = $discount_result / 100*16;
-          $tax = number_format($tax_value,2); //este es el iva que vamos a mostrar
-          $total = number_format($discount_result+$tax_value,2);
-        }elseif($quotation_query[0]->with_tax==0){
-          //monto total
-          $amount = number_format($quotation_total,2);
-          
-          //porcentaje pasado a dinero
-          $percent_to = $quotation_total /100 * $percent;
-          $percent_to_money = number_format($percent_to,2);
-          
-          //suma de descuentos 
-          $discount_sum = $money + $percent_to;
-          //aplicados a la sub-total
-          $discount_result = $quotation_total - $discount_sum;
-
-          //aplicamos el iva 
-          $tax_value = 0;
-          $tax = number_format($tax_value,2); //este es el iva que vamos a mostrar
-          $total = number_format($discount_result+$tax_value,2);
+        //aplicamos el iva
+        if ($quotation_query[0]->with_tax==1) {
+          $tax = $with_discount /100 * 16;
+        }else{
+          $tax = 0;
         }
+        //mostramos el total
+        $total = $with_discount + $tax;
+
+        
         
         $data = [
 
-            'sub_total'     =>$amount, //aparece en el resumen
-            'discount'      =>$discount, //descuento en dinero
-            'percent'       =>$percent, //cantidad en porcentaje
-            'money'         =>$percent_to_money,  //porcentaja padado a dinero
-            'tax'           =>$tax,  //impustesto
-            'total'         =>$total, // gran total
+            'sub_total'     =>number_format($quotation_total,2), //aparece en el resumen
+            'discount'      =>number_format($discount,2), //descuento en dinero
+            'percent'       =>number_format($quotation_query[0]->discount,0), //cantidad en porcentaje
+            'tax'           =>number_format($tax,2),  //impustesto
+            'total'         =>number_format($total,2), // gran total
         ];
         
         $mega_pack=[
@@ -381,6 +355,8 @@ class QuotationController extends Controller
             'totals'    => $data
         ];
         
+        //return view('quotations.pdf')->with($mega_pack);
+
         $file_name = str_replace(' ','_',$customer_query[0]->company_name);
         $pdf = PDF::loadView('quotations.pdf',$mega_pack);
         if ($try == "down") {

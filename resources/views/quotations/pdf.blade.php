@@ -10,6 +10,9 @@
             padding: 0;
             font-family: sans-serif;
         }
+        @page {
+                margin: 0cm 0cm;
+            }
         .header{
             font-size: 10px;
         }
@@ -23,21 +26,7 @@
             color: white;
             font-size: 12px;
         }
-        .footer{
-            margin-top: 15px;
-            font-size: 12px;
-        }
-        .footer p{
-            padding:15px;
-            color: #57606f;
-            margin-top: 120px;
-        }
-        .footer ul{
-            padding: 20px;
-            color: #57606f;
-            margin-top: 100px;
-            margin-left: 90;
-        }
+        
         #customers {
           font-family: Arial, Helvetica, sans-serif;
           border-collapse: collapse;
@@ -54,6 +43,13 @@
         #customers td, #customers th {
           border: 1px solid #ddd;
           padding: 8px;
+          font-size: 15px;
+        }
+
+        #customers th span{
+            font-weight: bolder;
+            font-size: 16px;
+            color: yellow;
         }
         #customers tr:nth-child(even){background-color: #f2f2f2;}
         #customers th {
@@ -72,6 +68,16 @@
         .cuenta{
             width: 50%;
             margin-left: 365px;
+        }
+        .footer{
+            position: fixed; 
+            bottom: 0cm; 
+            left: 0cm; 
+            right: 0cm;
+            height: 2cm;
+            background-color: grey;
+            padding: 20px;
+            color: white; 
         }
     </style>
 </head>
@@ -123,9 +129,9 @@
                 @foreach($customer as $customer)
                 <td style="vertical-align: top;">
                     <strong>Para:</strong> <br>
-                    {{$customer->company_name}}<br>
-                    Att: {{$customer->contact}}<br>
-                    {{$customer->phone}} <br>
+                    {{$customer->company}}<br>
+                    Att: {{$customer->name}}<br>
+                    {{$customer->mobile}} <br>
                     Correo: {{$customer->email}} <br>
                 </td>
                 @endforeach
@@ -174,11 +180,7 @@
                 <td>${{$totals['sub_total']}}</td>
             </tr>
             <tr>
-                <th>DESCUENTO %{{$totals['percent']}}</th>
-                <td>${{$totals['money']}}</td>
-            </tr>
-            <tr>
-                <th>DESCUENTO $</th>
+                <th>DESCUENTO <span>{{$totals['percent']}}%</span></th>
                 <td>${{$totals['discount']}}</td>
             </tr>
             <tr>
@@ -186,18 +188,16 @@
                 <td>${{$totals['tax']}}</td>
             </tr>
             <tr>
-                <th>TOTAL</th>
+                <th>SALDO</th>
                 <td>${{$totals['total']}}</td>
             </tr>
            
         </table>
     </div>
     <div class="footer">
-        <ul>
-            <li>Cotización expresada en pesos Mexicanos</li>
-            <li>Esta cotización estará vigente durante 30 días naturales</li>
-            <li>Los precios pueden sufrir modificaciones sin previo aviso</li>
-        </ul>
+        <center><p>Copyright México 2022</p></center>
+        <center><p>Cotización expresada en pesos Mexicanos. Esta cotización estará vigente durante 30 días naturales. Los precios pueden sufrir modificaciones sin previo aviso</p></center>
+        <center>ventas@sellospronto.com.mx</center>
     </div>
 </body>
 </html>
