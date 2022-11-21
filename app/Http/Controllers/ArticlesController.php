@@ -268,7 +268,7 @@ class ArticlesController extends Controller
         ]);*/
 
         if ($files = $request->file('image')) {
-            $path = public_path('/img_cataloge/');
+            $path = public_path('img_cataloge');
             $name = $files->getClientOriginalName();
             $files->move($path,$name);
 
