@@ -11,7 +11,7 @@
 	@foreach ($article as $item)
 	<div class="row">
 		<div class="col-md-8 col-12 p-3 article-img">
-			<img src="{{asset('storage/'.$item->img_url)}}" class="img-fluid" alt="">
+			<img src="{{asset('storage/cataloge/'.$item->img_url)}}" class="img-fluid" alt="">
 		</div>
 		<div class="col-md-4 col-12 p-3 article-features">
 			<p>{{$item->name}}</p>
