@@ -268,14 +268,16 @@ class ArticlesController extends Controller
         ]);*/
 
         if ($files = $request->file('image')) {
-            $path = public_path('img_cataloge');
-            $name = $files->getClientOriginalName();
-            $files->move($path,$name);
+            
 
-            //actualiamos la table
+            $name = $files->getClientOriginalName();
+            $files->storeAs('public/cataloge',$name);
+
             $insert = cnnxn_Article::where('idArticle',$request->id_article)->update([
                 'img_url'=> $name
             ]);
+
+
             if ($insert) {
                 return true;
             }

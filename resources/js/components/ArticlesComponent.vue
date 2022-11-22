@@ -49,7 +49,7 @@
 						<tr v-for="article in table">
 							<td>{{article.idArticle}}</td>
 							<td>
-								<a href=""><img :src="'img_cataloge/'+article.img_url" alt="" width="40"></a>
+								<a href=""><img :src="'storage/cataloge/'+article.img_url" alt="" width="40"></a>
 							</td>
 							<td>{{article.name}}</td>
 							<td>{{article.model}}</td>
