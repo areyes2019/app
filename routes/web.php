@@ -39,9 +39,9 @@ Route::get('admin', function () {
 });
 
 //ruta temporal para agregar el public
-Route::get('/linkstorage', function () {
+/*Route::get('/linkstorage', function () {
     Artisan::call('storage:link');
-});
+});*/
 
 Route::group(['middleware'=>'auth'],function(){
     Route::get('/home', [HomeController::class, 'index'])->name('home');
