@@ -65,13 +65,52 @@ class ShopController extends Controller
     }
     public function update_categorie(Request $request,$id)
     {
-        $url = str_replace(" ", "_", $request->name);
-        $to_lower = strtolower($url);
-        $query = cnnxn_categorie::where('idCategorie',$id)->update([
-            'name'=> $request->name,
-            'slug'=> $to_lower,
+
+        $validated = $request->validate([
+            'name'=>'unique:cnnxn_categories,name',
+            'slug'=>'required'
+        ],[
+            'name.unique'=>'Este nombre ya esta asignado',
+            'slug.required'=>'El campo es requerido'
         ]);
-        return $to_lower;
+
+        $query = cnnxn_categorie::where('idCategorie',$id)->update($validated);
+        if ($query) {
+            return true;
+        }
+    }
+    public function update_child(Request $request, $id)
+    {
+        if ($request->main == 0) {
+            $validated = $request->validate([
+                'name'=>'unique:cnnxn_categories,name',
+                'slug'=>'required',
+                'is_parent'=>'required'
+            ],[
+                'name.unique'=>'Este nombre ya esta asignado',
+                'slug.required'=>'El campo es requerido',
+                'is_parent.required'=>'El campo es requerido'
+            ]);
+        }else{
+
+            $validated = $request->validate([
+                'name'=>'required',
+                'slug'=>'required',
+                'main'=>'required',
+                'is_parent'=>'required'
+            ],[
+                'name.required'=>'El nombre es requerido',
+                'slug.required'=>'El campo es requerido',
+                'main.required'=>'El campo es requerido',
+                'is_parent.required'=>'El campo es requerido'
+            ]);
+        }
+        
+
+        $query = cnnxn_categorie::where('idCategorie',$id)->update($validated);
+        if ($query) {
+            return true;
+        }
     }
     public function categories_list()
     {

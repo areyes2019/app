@@ -87,6 +87,7 @@ Route::group(['middleware'=>'auth'],function(){
     Route::post('/add_categorie',[ShopController::class,'add_categorie'])->name('add_categorie');
     Route::get('/delete_categorie/{id}',[ShopController::class,'delete_categorie'])->name('delete_categorie');
     Route::post('/update_categorie/{id}',[ShopController::class,'update_categorie'])->name('update_categorie');
+    Route::post('/update_child/{id}',[ShopController::class,'update_child'])->name('update_child');
     Route::get('/show_categorie/{id}',[ShopController::class,'show_categorie'])->name('show_categorie');
     Route::get('/is_parent/',[ShopController::class,'is_parent'])->name('is_parent');    
     

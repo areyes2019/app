@@ -2,32 +2,33 @@
     <div class="container">
         <div class="row">
             <div class="col-md-5">
-                <div class="card-box p-3">
+                <div>
                     <small class="m-0 text-danger" v-if="categorie_error">{{categorie_error}}</small><br>
                     <small class="m-0 text-danger" v-if="main_error">{{main_error}}</small>
-                    <div class="my-form-group">
-                        <span class="bi bi-file-check input-icon"></span>
-                        <input type="text"  class="input-control" v-model="categorie" placeholder="Nombre de Categoría">
+                    <div class="form-group">
+                        <input type="text"  class="form-control" v-model="categorie" placeholder="Nombre de Categoría">
                     </div>
                     <label for="">Selecciona una sub-categoría</label>
-                    <div class="my-form-group">
-                        <span class="bi bi-person input-icon"></span>
-                        <select class="input-control" v-model="child">
+                    <div class="form-group">
+                        <select class="form-control" v-model="child">
                             <option value="0" v-model="child">Principal</option>
                             <option :value="item.idCategorie" v-for="(item,index) in list" v-model="child">{{item.name}}</option>
                         </select>
                     </div>
-                    <div class="my-form-group">
-                        <button class="btn my-btn" @click="add_category()"><span class="bi bi-save"></span> Guardar</button>
+                    <div class="form-group">
+                        <button class="btn btn-danger mt-3" @click="add_category()"><span class="bi bi-save"></span> Guardar</button>
                     </div>
                 </div>
             </div>
             <div class="col-md-7">
                 <div class="card-box-std p-3">
+                    <div class="alert alert-danger" role="alert" v-if="error">
+                      {{error}}
+                    </div>
                     <div class="card-container" v-for="item in list">
                         <div class="card-list-item" >
                             <div class="dialog-text">
-                                <p>{{item.name}}</p>
+                                <p class="m-0">{{item.name}}</p>
                             </div>
                             <div class="list-action">
                                 <a href="#" @click.prevent="delete_categorie(1,item.idCategorie)"><span class="bi bi-trash text-danger"></span></a>
@@ -35,18 +36,32 @@
                             </div>
                         </div>
                         <!-- update toggle -->
-                        <div class="card-list-item collapse close_toggle" :id='item.slug'>
+                        <div class="card-list-toggle collapse close_toggle" :id='item.slug'>
                             <div class="my-form-group-inline">
-                                <span class="bi bi-pencil-square input-icon"></span>
-                                <input type="text" id="" class="input-control" v-model="update_name = item.name">
+                                <input type="text" id="" class="input-control" v-model="item.name" :ref="item.idCategorie">
                             </div>                            
-                            <button class="btn my-btn-sm" @click.prevent="update(item.idCategorie)"><span class="bi bi-check"></span></button>
+                            <button class="btn btn-sm btn-danger" @click.prevent="update(item.idCategorie)"><span class="bi bi-check"></span></button>
                         </div>
+                        <!-- Lista de sub-categorias -->
                         <div class="card-list-child" v-for="child in children" v-if="child.main==item.idCategorie">
-                            <p>{{child.name}}</p>
-                            <div class="list-action">
-                                <a href="#"><span class="bi bi-trash" @click.prevent="delete_categorie(2,child.idCategorie)"></span></a>
-                                <a href="#" @click.prevent="update_modal(2,child.idCategorie)"><span class="bi bi-pencil"></span></a>
+                            <div class="list-child">
+                                <p>{{child.name}}</p>
+                                <div class="list-action">
+                                    <a href="#"><span class="bi bi-trash" @click.prevent="delete_categorie(2,child.idCategorie)"></span></a>
+
+                                    <a :href="'#'+child.slug" data-bs-toggle="collapse"><span class="bi bi-pencil text-primary"></span></a>
+                                </div>
+                            </div>
+                            <!-- update toggle -->
+                            <div class="card-list-toggle collapse close_toggle" :id='child.slug'>
+                                <div class="my-form-group-inline">
+                                    <input type="text" id="" class="input-control" v-model="child.name" :ref="child.idCategorie">
+                                    <select class="input-control" v-model="child_update" :ref="'int'+child.idCategorie">
+                                        <option value="0">Sin cambio</option>
+                                        <option :value="item_update.idCategorie" v-for="(item_update,index) in list">{{item_update.name}}</option>
+                                    </select>
+                                    <button class="btn btn-sm btn-danger" @click="update_child(child.idCategorie)"><span class="bi bi-check"></span></button>
+                                </div>                            
                             </div>
                         </div>
                     </div>
@@ -90,7 +105,9 @@
                 delete_id:"",
                 warning:"",
                 view:"d-none",
-                update_name:"",  
+                update_name:"",
+                child_update:"",
+                error:""  
             }
         },
         methods:{
@@ -161,20 +178,51 @@
                 })
             },
             update(data){
+                var name = this.$refs[data][0].value;
+                var slug = name.replace(/ /g,'_').toLowerCase();
                 var me = this;
                 var url = "/update_categorie/"+ data;
                 axios.post(url,{
-                    'name':me.update_name,
+                    'name':name,
+                    'slug':slug
                 }).then(function(response){
-                    me.update_name = "";
                     $('.close_toggle').collapse('hide');
                     var title = "Felicidades";
                     var message = "Categoría Actualizada";
                     toaster(title,message);
                     me.get_data();
-                });
-                
-                //$('#update').modal('show');
+                    me.error = "";
+                }).catch(
+                    function(errors){
+                        me.error = errors.response.data.errors.name[0];
+                    }
+                );
+
+            },
+            update_child(data){
+                var name = this.$refs[data][0].value;
+                var nick = 'int'+data;
+                var sub_categorie = this.$refs[nick][0].value;
+                var slug = name.replace(/ /g,'_').toLowerCase();
+                var me = this;
+                var url = "/update_child/"+ data;
+                axios.post(url,{
+                    'name':name,
+                    'slug':slug,
+                    'main':sub_categorie,
+                    'is_parent':0
+                }).then(function(response){
+                    $('.close_toggle').collapse('hide');
+                    var title = "Felicidades";
+                    var message = "Categoría Actualizada";
+                    toaster(title,message);
+                    me.get_data();
+                    me.error = "";
+                }).catch(
+                    function(errors){
+                        me.error = errors.response.data.errors.name[0];
+                    }
+                );
             }
         },
         mounted() {
