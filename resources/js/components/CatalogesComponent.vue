@@ -175,7 +175,7 @@
 				var me = this;
 				var url = "/add_cataloge";
 				axios.post(url,{
-					'supplier':me.cataloge.supplier,
+					'idProvider':me.cataloge.supplier,
 					'name':me.cataloge.cataloge_name,
 					'discount':me.cataloge.discount
 				}).then(function(response){

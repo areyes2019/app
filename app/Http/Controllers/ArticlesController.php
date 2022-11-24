@@ -68,6 +68,7 @@ class ArticlesController extends Controller
             'provider'=> $request->provider,
             're_order'=> $request->re_order,
             'family'=> $request->family,
+            'img_url'=> $request->family,
             'short_desc'=> $request->short,
             'long_desc'=> $request->long,
             'categorie'=> $request->categorie,
@@ -87,6 +88,7 @@ class ArticlesController extends Controller
             'price'=>'numeric|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
             'provider'=> 'required',
             'family'=>'required',
+            'img_url'=>'',
             'short_desc'=>'' ,
             'long_desc'=> '',
             'categorie'=>'',
@@ -191,7 +193,8 @@ class ArticlesController extends Controller
     }
     public function add_cataloge(Request $request)
     {
-        $validated = $request->validate([
+
+        /*$validated = $request->validate([
             'cataloge_name'=>'required',
             'discount'=>'numeric',
             'idProvider'=>'required',
@@ -200,10 +203,12 @@ class ArticlesController extends Controller
             'discount.numeric' => 'El descuento solo debe llevar valores numéricos',
             'supplier.required' => 'Es obligatorio agregar un proveedor',
         ]
-        );
+        );*/
 
-        cnnxn_Cataloge::create($validated);
-        return true;
+        $query = cnnxn_Cataloge::create($request->all());
+        if ($query) {
+            return true;
+        }
 
     }
     public function show_cataloges()
