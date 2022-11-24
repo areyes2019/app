@@ -33,7 +33,7 @@ class ArticlesImport implements ToCollection, WithHeadingRow
             '*.provider'=> 'required',
             '*.re_order'=> '',
             '*.family'=>'required',
-            '*.img_url'=>'required',
+            '*.img_url'=>'',
             '*.short_desc'=>'' ,
             '*.long_desc'=> '',
             '*.categorie'=> 'required',
