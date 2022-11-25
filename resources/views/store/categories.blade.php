@@ -42,7 +42,7 @@
 					<div class="col-md-3 col-2 p-2">
 						<div class="top-ten-item">
 							<a href="/shop_item/{{$article->idArticle}}/{{$article->categorie}}"><img src="{{ asset('storage/cataloge/'.$article->img_url) }}" class="img-fluid" alt=""></a>
-							<p><a href="">{{$article->model}}</a></p>
+							<p><a href="/shop_item/{{$article->idArticle}}/{{$article->categorie}}">{{$article->model}}</a></p>
 							<p>{{$article->name}}</p>
 							<p>${{$article->price}}</p>
 						</div>
