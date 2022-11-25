@@ -15,7 +15,7 @@
 		</div>
 		<div class="col-md-4 col-12 p-3 article-features">
 			<p>{{$item->name}}</p>
-			<p>{{$item->model}}</p>
+			<p>Modelo {{$item->model}}</p>
 			<p>${{$item->price}}</p>
 			<p>{{$item->short_desc}}</p>
 			<img src="{{asset('img/bancos.png')}}" class="img-fluid" alt="">
