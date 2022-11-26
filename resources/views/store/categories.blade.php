@@ -32,17 +32,16 @@
 			</ul>
 		</div>
 		<div class="col-md-8 col-12">
-			<div class="top-ten">
-				<div class="top-ten-title">
-					<p></p>
+			<div class="categorie-box">
+				<div class="categorie-title">
 					<p>{{$title}}</p>
 				</div>
 				<div class="row">
 					@foreach ($articles as $article )
-					<div class="col-md-3 col-2 p-2">
-						<div class="top-ten-item">
+					<div class="col-md-3 col-6">
+						<div class="categorie-item">
 							<a href="/shop_item/{{$article->idArticle}}/{{$article->categorie}}"><img src="{{ asset('storage/cataloge/'.$article->img_url) }}" class="img-fluid" alt=""></a>
-							<p><a href="/shop_item/{{$article->idArticle}}/{{$article->categorie}}">{{$article->model}}</a></p>
+							<a href="/shop_item/{{$article->idArticle}}/{{$article->categorie}}">Modelo {{$article->model}}</a>
 							<p>{{$article->name}}</p>
 							<p>${{$article->price}}</p>
 						</div>
