@@ -40,7 +40,7 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-8">
-			<img src="{{asset('img/order.png')}}" alt="">
+			<img class="img-fluid" src="{{asset('img/order.png')}}" alt="">
 		</div>
 		<div class="col-md-4">
 			<div class="compromise">
