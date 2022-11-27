@@ -58,4 +58,12 @@ class StoreController extends Controller
     {
         return view('store.expert');
     }
+    public function shipping()
+    {
+        return view ('store/shipping');
+    }
+    public function purchase()
+    {
+        return view ('store/purchase');
+    }
 }

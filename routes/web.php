@@ -30,6 +30,8 @@ Route::get('/dashboard', function(){
     return view('template.dashboard');
 });
 
+Route::get('/shipping', [StoreController::class, 'shipping']);
+Route::get('/purchase', [StoreController::class, 'purchase']);
 Route::get('admin', function () {
     if (Auth()->user()) {
         return redirect(route('home'));

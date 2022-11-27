@@ -55,7 +55,7 @@
 				<li><a href="">Nosotros</a></li>
 				<li><a href="">Contacto</a></li>
 				<li><a href="">Políticas</a></li>
-				<li><a href="">Envíos</a></li>
+				<li><a href="{{url('shipping')}}">Envíos</a></li>
 			</ul>
 		</div>
 	</div>
@@ -63,9 +63,9 @@
 		<div class="container-fluid">
 			<div class="normal-menu-list">
 				<ul>
-					<li><a href="">Politicas de envios</a></li>
+					<li><a href="{{url('shipping')}}">Politicas de envios</a></li>
 					<li><a href="">Nosotros</a></li>
-					<li><a href="">Metodo de compra</a></li>
+					<li><a href="{{url('purchase')}}">Metodo de compra</a></li>
 					<li><a href="">Contacto</a></li>
 				</ul>
 				<a href=""><span class="bi bi-bag"></span> Cotizador</a>
