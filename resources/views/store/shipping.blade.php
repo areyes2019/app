@@ -8,7 +8,7 @@
 					<p>Nuestros envíos son super seguros</p>
 					<p>Tu envío llega por que llega</p>
 					<p>Hemos creado a lo argo de 10 años una estrategia segura con los proveedores de paquetería mas confiables de México</p>
-					<img src="{{asset('img/carrier.png')}}" alt="">
+					<img class="img-fluid" src="{{asset('img/carrier.png')}}" alt="">
 
 				</div>
 			</div>
