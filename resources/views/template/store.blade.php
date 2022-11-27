@@ -52,10 +52,10 @@
 		</div>
 		<div class="mobile-menu-body collapse" id="mobile-menu">
 			<ul>
+				<li><a href="{{url('shipping')}}">Politicas de envios</a></li>
 				<li><a href="">Nosotros</a></li>
+				<li><a href="{{url('purchase')}}">Metodo de compra</a></li>
 				<li><a href="">Contacto</a></li>
-				<li><a href="">Políticas</a></li>
-				<li><a href="{{url('shipping')}}">Envíos</a></li>
 			</ul>
 		</div>
 	</div>
