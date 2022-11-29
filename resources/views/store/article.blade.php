@@ -20,10 +20,11 @@
 			<p>{{$item->short_desc}}</p>
 			<img src="{{asset('img/bancos.png')}}" class="img-fluid" alt="">
 			<p>Es bueno que sepas</p>
-			<p class="feature-icon-list"><span class="bi bi-exclamation-diamond"></span> Siempre enviaremos un diseño a tu correo para aprobación</p>
+			<p class="feature-icon-list"><span class="bi bi-hand-thumbs-up"></span> Lo fabricamos hasta que tu lo APRUEBAS</p>
 			<p class="feature-icon-list"><span class="bi bi-chat-dots"></span> Tus sellos pueden ser en cualquier idioma</p>
 			<p class="feature-icon-list"><span class="bi bi-wallet2"></span> Pago 100% seguro</p>
 			<p class="feature-icon-list"><span class="bi bi-hand-thumbs-up"></span> Tus sellos se fabrican hasta que tengamos tu aprobación</p>
+			<p class="feature-icon-list"><span class="bi bi-cash-coin"></span> Todos nuestros precios incuyen iva</p>
 			<p class="ink-color">Puedes escoger el color de tu preferencia</p>
 			<img src="{{asset('img/colors.png')}}" class="img-fluid" alt="">
 			<button class="btn rounded-0"><span class="bi bi-whatsapp"></span> Me interesa</button>

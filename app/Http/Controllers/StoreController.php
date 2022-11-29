@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\cnnxn_categorie;
 use App\Models\cnnxn_Article;
 use App\Http\Requests\CategoriesRequest;
+use App\Models\cnnxn_config;
 class StoreController extends Controller
 {
     public function shop()
@@ -14,7 +15,8 @@ class StoreController extends Controller
         //mostramos categorias single
         $single = cnnxn_categorie::where('main',0)->where('is_parent',0)->get();
         $parent = cnnxn_categorie::where('is_parent',1)->get();
-        return view('shop',['single'=>$single,'parent'=>$parent]);
+        $config = cnnxn_config::all();
+        return view('shop',['single'=>$single,'parent'=>$parent, 'hooks'=>$config]);
     }
 
     public function shop_item($id, $data)

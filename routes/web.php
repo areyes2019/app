@@ -10,6 +10,7 @@ use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\QuotationsController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\OrdersController;
+use App\Http\Controllers\ConfigController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -134,5 +135,10 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('/order_totals/{id}',[OrdersController::class,'order_totals'])->name('order_totals');
     Route::get('/order_pdf/{supplier}/{order}',[OrdersController::class,'pdf'])->name('order_pdf');
     Route::get('/orders_show/',[OrdersController::class,'orders_show'])->name('orders_show');
+
+    //configuracion
+    Route::get('/config/',[ConfigController::class,'index'])->name('config');
+    Route::post('/main_upload',[ConfigController::class,'main_img'])->name('main_upload');
+
 });
 

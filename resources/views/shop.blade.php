@@ -128,20 +128,22 @@
 	</div>
 	<div class="container-fluid">
 		<div class="banner-container">
+			@foreach ($hooks as $img )
 			<div class="img-banner">
-				<img src="img/banner-side01.jpg" class="img-fluid" alt="">
+				<img src="storage/multiporpouse/{{$img->img01}}" class="img-fluid" alt="">
 				<button class="btn my-btn-red">Me intresa</button>
 			</div>
 			<div class="img-banner-side">
 				<div class="banner01">
-					<img src="img/banner-side01.jpg" class="img-fluid" alt="">
+					<img src="storage/multiporpouse/{{$img->img02}}" class="img-fluid" alt="">
 					<button class="btn my-btn-red">Me intresa</button>
 				</div>
 				<div class="banner02">
-					<img src="img/banner-side01.jpg" class="img-fluid" alt="">
+					<img src="storage/multiporpouse/{{$img->img03}}" class="img-fluid" alt="">
 					<button class="btn my-btn-red">Me intresa</button>
 				</div>
 			</div>
+			@endforeach
 		</div>
 	</div>			
 	<!-- categorias destacadas -->
