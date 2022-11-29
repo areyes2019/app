@@ -126,6 +126,8 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- harea de hooks-->
 	<div class="container-fluid">
 		<div class="banner-container">
 			@foreach ($hooks as $img )
@@ -146,6 +148,8 @@
 			@endforeach
 		</div>
 	</div>			
+	<!-- harea de hooks-->
+
 	<!-- categorias destacadas -->
 	<div class="container-fluid mt-4">
 		<div class="top-ten">
