@@ -1,69 +1,65 @@
 <template>
     <div class="container">
-        <div class="row">
-            <div class="col-md-5">
-                <div>
-                    <small class="m-0 text-danger" v-if="categorie_error">{{categorie_error}}</small><br>
-                    <small class="m-0 text-danger" v-if="main_error">{{main_error}}</small>
-                    <div class="form-group">
-                        <input type="text"  class="form-control" v-model="categorie" placeholder="Nombre de Categoría">
+        <div class="form-group-new">
+            <div class="my-form-group">
+                <label for="">Asignar nombre a la categoría</label>
+                <input type="text"  class="form-control" v-model="categorie" placeholder="Nombre de Categoría">
+                <small class="m-0 text-danger" v-if="categorie_error">{{categorie_error}}</small>
+                <small class="m-0 text-danger" v-if="main_error">{{main_error}}</small>
+            </div>
+            <div class="my-form-group">
+                <label for="">Selecione sub-categoría</label>
+                <select class="form-control" v-model="child">
+                    <option value="0" v-model="child">Principal</option>
+                    <option :value="item.idCategorie" v-for="(item,index) in list" v-model="child">{{item.name}}</option>
+                </select>
+            </div>
+            <div class="my-form-group">
+                <button class="btn btn-danger" @click="add_category()"><span class="bi bi-save"></span> Guardar</button>
+            </div>
+        </div>
+        <div class="card-box-std p-3">
+            <div class="alert alert-danger" role="alert" v-if="error">
+              {{error}}
+            </div>
+            <div class="card-container" v-for="item in list">
+                <div class="card-list-item" >
+                    <div class="dialog-text">
+                        <p class="m-0">{{item.idCategorie}} - {{item.name}}</p>
                     </div>
-                    <label for="">Selecciona una sub-categoría</label>
-                    <div class="form-group">
-                        <select class="form-control" v-model="child">
-                            <option value="0" v-model="child">Principal</option>
-                            <option :value="item.idCategorie" v-for="(item,index) in list" v-model="child">{{item.name}}</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-danger mt-3" @click="add_category()"><span class="bi bi-save"></span> Guardar</button>
+                    
+                    <div class="list-action">
+                        <a href="#" @click.prevent="delete_categorie(1,item.idCategorie)"><span class="bi bi-trash text-danger"></span></a>
+                        <a :href="'#'+item.slug" data-bs-toggle="collapse"><span class="bi bi-pencil text-primary"></span></a>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-7">
-                <div class="card-box-std p-3">
-                    <div class="alert alert-danger" role="alert" v-if="error">
-                      {{error}}
+                <!-- update toggle -->
+                <div class="card-list-toggle collapse close_toggle" :id='item.slug'>
+                    <div class="my-form-group-inline">
+                        <input type="text" id="" class="input-control" v-model="item.name" :ref="item.idCategorie">
+                    </div>                            
+                    <button class="btn btn-sm btn-danger" @click.prevent="update(item.idCategorie)"><span class="bi bi-check"></span></button>
+                </div>
+                <!-- Lista de sub-categorias -->
+                <div class="card-list-child" v-for="child in children" v-if="child.main==item.idCategorie">
+                    <div class="list-child">
+                        <p class="m-0">{{child.idCategorie}} - {{child.name}}</p>
+                        <div class="list-action">
+                            <input type="checkbox" class="m-0">
+                            <a href="#"><span class="bi bi-trash" @click.prevent="delete_categorie(2,child.idCategorie)"></span></a>
+                            <a :href="'#'+child.slug" data-bs-toggle="collapse"><span class="bi bi-pencil text-primary"></span></a>
+                        </div>
                     </div>
-                    <div class="card-container" v-for="item in list">
-                        <div class="card-list-item" >
-                            <div class="dialog-text">
-                                <p class="m-0">{{item.name}}</p>
-                            </div>
-                            <div class="list-action">
-                                <a href="#" @click.prevent="delete_categorie(1,item.idCategorie)"><span class="bi bi-trash text-danger"></span></a>
-                                <a :href="'#'+item.slug" data-bs-toggle="collapse"><span class="bi bi-pencil text-primary"></span></a>
-                            </div>
-                        </div>
-                        <!-- update toggle -->
-                        <div class="card-list-toggle collapse close_toggle" :id='item.slug'>
-                            <div class="my-form-group-inline">
-                                <input type="text" id="" class="input-control" v-model="item.name" :ref="item.idCategorie">
-                            </div>                            
-                            <button class="btn btn-sm btn-danger" @click.prevent="update(item.idCategorie)"><span class="bi bi-check"></span></button>
-                        </div>
-                        <!-- Lista de sub-categorias -->
-                        <div class="card-list-child" v-for="child in children" v-if="child.main==item.idCategorie">
-                            <div class="list-child">
-                                <p>{{child.name}}</p>
-                                <div class="list-action">
-                                    <a href="#"><span class="bi bi-trash" @click.prevent="delete_categorie(2,child.idCategorie)"></span></a>
-
-                                    <a :href="'#'+child.slug" data-bs-toggle="collapse"><span class="bi bi-pencil text-primary"></span></a>
-                                </div>
-                            </div>
-                            <!-- update toggle -->
-                            <div class="card-list-toggle collapse close_toggle" :id='child.slug'>
-                                <div class="my-form-group-inline">
-                                    <input type="text" id="" class="input-control" v-model="child.name" :ref="child.idCategorie">
-                                    <select class="input-control" v-model="child_update" :ref="'int'+child.idCategorie">
-                                        <option value="0">Sin cambio</option>
-                                        <option :value="item_update.idCategorie" v-for="(item_update,index) in list">{{item_update.name}}</option>
-                                    </select>
-                                    <button class="btn btn-sm btn-danger" @click="update_child(child.idCategorie)"><span class="bi bi-check"></span></button>
-                                </div>                            
-                            </div>
-                        </div>
+                    <!-- update toggle -->
+                    <div class="card-list-toggle collapse close_toggle" :id='child.slug'>
+                        <div class="my-form-group-inline">
+                            <input type="text" id="" class="input-control" v-model="child.name" :ref="child.idCategorie">
+                            <select class="input-control" v-model="child_update" :ref="'int'+child.idCategorie">
+                                <option value="0">Sin cambio</option>
+                                <option :value="item_update.idCategorie" v-for="(item_update,index) in list">{{item_update.name}}</option>
+                            </select>
+                            <button class="btn btn-sm btn-danger" @click="update_child(child.idCategorie)"><span class="bi bi-check"></span></button>
+                        </div>                            
                     </div>
                 </div>
             </div>

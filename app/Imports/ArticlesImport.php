@@ -64,26 +64,7 @@ class ArticlesImport implements ToCollection, WithHeadingRow
                 'cataloge'=>$row['cataloge'],
             ]);
         };
-        /*return new cnnxn_Article([
-            'name'      =>$row['nombre'],
-            'model'     =>$row['modelo'],
-            'lines'     =>$row['lineas'],
-            'size'      =>$row['size'],
-            'stock'     =>$row['stock'],
-            'cost'      =>$row['precio'],
-            'dealer'    =>$row['precio_may'],
-            'price'     =>$row['precio_pub'],
-            'discount'  =>$row['descuento'],
-            'type'      =>$row['tipo'],
-            'provider'  =>$row['proveedor'],
-            're_order'  =>$row['re_orden'],
-            'visible'   =>$row['visible'],
-            'family'    =>$row['familia'],
-            'short_desc'=>$row['desc_corta'],
-            'long_desc' =>$row['desc_larga'],
-            'idCategorie'=>$row['categoria'],
-            'cataloge'=>$row['catalogo'],
-        ]);*/
+       
     }
     
     

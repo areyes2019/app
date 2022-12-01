@@ -11,6 +11,7 @@ use App\Http\Controllers\QuotationsController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\AccountingController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -139,6 +140,10 @@ Route::group(['middleware'=>'auth'],function(){
     //configuracion
     Route::get('/config/',[ConfigController::class,'index'])->name('config');
     Route::post('/main_upload',[ConfigController::class,'main_img'])->name('main_upload');
+
+    //modulo de contabilidad
+    Route::get('/accounting/',[AccountingController::class,'index'])->name('accounting');
+
 
 });
 
