@@ -133,8 +133,8 @@
 					</div>
 					<label for="">Asignar Proveedor</label>
 					<div class="form-group">
-						<div class="input-layer">
-							<div class="input-layer">
+						<div class="form-group">
+							<div class="form-group">
 								<span class="bi bi-people input-icon"></span>
 								<select name="" id="" v-model="data.provider" class="input-control" @change="get_cataloge(data.provider)">
 									<option :value="supplier.idContact" v-for="supplier in suppliers">{{supplier.company}}</option>
@@ -145,7 +145,7 @@
 					</div>
 					<label for="">Agregar Família</label>
 					<div class="my-form-group">
-						<div class="input-layer">
+						<div class="form-group">
 							<span class="bi bi-people input-icon"></span>
 							<select name="" id="" v-model="data.family" class="input-control">
 								<option :value="member.idFamily" v-for="member in family">{{member.family_name}}</option>
@@ -155,7 +155,7 @@
 					</div>
 					<label for="">Agregar Categoría</label>
 					<div class="my-form-group">
-						<div class="input-layer">
+						<div class="form-group">
 							<span class="bi bi-people input-icon"></span>
 							<select name="" id="" v-model="data.categorie" class="input-control">
 								<optgroup :label="parent.name" v-for="parent in parent_list">
@@ -167,7 +167,7 @@
 					</div>
 					<label for="">Agregar a catálogo</label>
 					<div class="my-form-group">
-						<div class="input-layer">
+						<div class="form-group">
 							<span class="bi bi-people input-icon"></span>
 							<select  v-model="data.cataloge" class="input-control">
 									<option :value="ctl.idCataloge"  v-for="ctl in cataloge">{{ctl.cataloge_name}}</option>
@@ -179,7 +179,7 @@
 		      		<div class="row">
 		      			<div class="col-md-6">
 							<div class="my-form-group">
-								<div class="input-layer">
+								<div class="form-group">
 									<span class="bi bi-box input-icon"></span>
 									<input type="number" min="1" v-model="data.re_order" class="input-control" placeholder="Cant. Re-orden">
 								</div>
@@ -187,7 +187,7 @@
 		      			</div>
 		      			<div class="col-md-6">
 							<div class="my-form-group">
-								<div class="input-layer">
+								<div class="form-group">
 									<span class="bi bi-cash-coin input-icon"></span>
 									<input type="text" v-model="data.discount" class="input-control" placeholder="Descuento %">
 								</div>
@@ -227,93 +227,63 @@
 		        	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		      	</div>
 		      	<div class="modal-body" >
-		      		<div class="my-form-group">
-		      			<div class="input-layer">
-							<span class="bi bi-pencil input-icon"></span>
-							<input type="text" v-model="product.name" class="input-control" placeholder="Nombre del Sello">
-		      			</div>
-						<small class="text-danger m-0 p-0">{{errors.name}}</small>
+	      			<div class="form-group">
+	      				<label for="" class="mr-1">Nombre</label>
+						<input type="text" v-model="product.name" class="form-control shadow-none rounded-0" placeholder="Nombre del Sello">
+	      			</div>
+					<div class="form-group">
+						<label for="">Modelo</label>
+						<input type="text" v-model="product.model" class="form-control shadow-none rounded-0" placeholder="Modelo">
 					</div>
-					<div class="my-form-group">
-						<div class="input-layer">
-							<span class="bi bi-pencil input-icon"></span>
-							<input type="text" v-model="product.model" class="input-control" placeholder="Modelo">
-						</div>
-					</div>
+					<small class="text-danger m-0 p-0">{{errors.name}}</small>
 					<div class="row">
 						<div class="col-md-6">
-							<div class="my-form-group">
-								<div class="input-layer">
-									<span class="bi bi-pencil input-icon"></span>
-									<input type="number" min="1" v-model="product.lines" class="input-control" placeholder="Líneas sugeridas">
-								</div>
+							<div class="form-group">
+								<label for="">Líneas</label>
+								<input type="number" min="1" v-model="product.lines" class="form-control shadow-none rounded-0" placeholder="Líneas sugeridas">
 							</div>
 						</div>
 						<div class="col-md-6">
-							<div class="my-form-group">
-								<div class="input-layer">
-									<span class="bi bi-pencil input-icon"></span>
-									<input type="text" v-model="product.size" class="input-control" placeholder="Tamaño">
-								</div>
+							<div class="form-group">
+								<label for="">Tamaño</label>
+								<input type="text" v-model="product.size" class="form-control shadow-none rounded-0" placeholder="Tamaño">
 							</div>
 						</div>
 					</div>
-					<div class="my-form-group d-flex justify-content-between">
+					<div class="my-form-group d-flex justify-content-between mt-3">
 						<p class="m-0 p-0">¿Se agrega al stock?</p>
 						<label class="switch">
 						  <input type="checkbox" v-model="product.stock" :value="1">
 						  <span class="slider"></span>
 						</label>
 					</div>
-					<div class="my-form-group d-flex justify-content-between">
+					<div class="my-form-group d-flex justify-content-between mt-3">
 						<p class="m-0 p-0">Visible</p>
 						<label class="switch">
 						  <input type="checkbox" v-model="product.visible" :value="1">
 						  <span class="slider"></span>
 						</label>
 					</div>					
-					<div class="my-form-group">
-						<div class="input-layer">
-							<span class="bi bi-currency-exchange input-icon"></span>
-							<input type="text" v-model="product.cost" class="input-control" placeholder="Precio Proveedor">
-						</div>
+					<div class="form-group">
+						<label for="">Precio Proveedor</label>
+						<input type="text" v-model="product.cost" class="form-control shadow-none rounded-0" placeholder="Precio Proveedor">
 						<small class="text-danger">{{errors.cost}}</small>
 					</div>
-					<div class="my-form-group">
-						<div class="input-layer">
-							<span class="bi bi-currency-exchange input-icon"></span>
-							<input type="text" v-model="product.price" class="input-control" placeholder="Precio Público">
-						</div>
+					<div class="form-group">
+						<label for="">Precio Distribuidor</label>
+						<input type="text" v-model="product.dealer" class="form-control shadow-none rounded-0" placeholder="Precio Proveedor">
+						<small class="text-danger">{{errors.cost}}</small>
+					</div>
+					<div class="form-group">
+						<label for="">Precio Público</label>
+						<input type="text" v-model="product.price" class="form-control shadow-none rounded-0" placeholder="Precio Público">
 						<small class="text-danger m-0">{{errors.price}}</small><br>
 						<small class="text-danger m-0">{{errors.price_decimal}}</small>
 					</div>
-					<label for="">Asignar Proveedor</label>
-					<div class="my-form-group">
-						<div class="input-layer">
-							<div class="input-layer">
-								<span class="bi bi-people input-icon"></span>
-								<select name="" id="" v-model="product.provider" class="input-control" @change="get_cataloge(product.provider)">
-									<option :value="supplier.idContact" v-for="supplier in suppliers">{{supplier.company}}</option>
-								</select>
-							</div>
-						</div>
-						<small class="text-danger">{{errors.provider}}</small>
-					</div>
-					<label for="">Agregar Família</label>
-					<div class="my-form-group">
-						<div class="input-layer">
-							<span class="bi bi-people input-icon"></span>
-							<select name="" id="" v-model="product.family" class="input-control">
-								<option :value="member.idFamily" v-for="member in family">{{member.family_name}}</option>
-							</select>
-						</div>
-						<small class="m-0 p-0 text-danger">{{errors.family}}</small>
-					</div>
 					<label for="">Agregar Categoría</label>
 					<div class="my-form-group">
-						<div class="input-layer">
-							<span class="bi bi-people input-icon"></span>
-							<select name="" id="" v-model="product.categorie" class="input-control">
+						<div class="form-group">
+							<select name="" id="" v-model="product.categorie" class="form-control shadow-none rounded-0">
 								<optgroup :label="parent.name" v-for="parent in parent_list">
 									<option :value="child.idCategorie"  v-if="child.main == parent.idCategorie" v-for="child in child_list">{{child.name}}</option>
 								</optgroup>
@@ -323,9 +293,8 @@
 					</div>
 					<label for="">Agregar a catálogo</label>
 					<div class="my-form-group">
-						<div class="input-layer">
-							<span class="bi bi-people input-icon"></span>
-							<select  v-model="product.cataloge" class="input-control">
+						<div class="form-group">
+							<select  v-model="product.cataloge" class="form-control shadow-none rounded-0">
 									<option :value="ctl.idCataloge"  v-for="ctl in cataloge">{{ctl.cataloge_name}}</option>
 							</select>
 						</div>
@@ -334,18 +303,18 @@
 					
 		      		<div class="row">
 		      			<div class="col-md-6">
+		      				<label for="">Reorden</label>
 							<div class="my-form-group">
-								<div class="input-layer">
-									<span class="bi bi-box input-icon"></span>
-									<input type="number" min="1" v-model="product.re_order" class="input-control" placeholder="Cant. Re-orden">
+								<div class="form-group">
+									<input type="number" min="1" v-model="product.re_order" class="form-control shadow-none rounded-0" placeholder="Cant. Re-orden">
 								</div>
 							</div>
 		      			</div>
 		      			<div class="col-md-6">
+		      				<label for="">Descuento</label>
 							<div class="my-form-group">
-								<div class="input-layer">
-									<span class="bi bi-cash-coin input-icon"></span>
-									<input type="text" v-model="product.discount" class="input-control" placeholder="Descuento %">
+								<div class="form-group">
+									<input type="text" v-model="product.discount" class="form-control shadow-none rounded-0" placeholder="Descuento %">
 								</div>
 							</div>
 		      			</div>
@@ -353,11 +322,11 @@
 		      		<div class="row">
 		      			<div class="col-md-12">
 		      				<label for="">Descripción Corta</label>
-		      				<textarea name="" id="" cols="30" rows="5" class="input-control" v-model="product.short"></textarea>
+		      				<textarea name="" id="" cols="30" rows="5" class="form-control shadow-none rounded-0" v-model="product.short"></textarea>
 		      			</div>
 		      			<div class="col-md-12">
 		      				<label for="">Descripción Larga</label>
-		      				<textarea name="" id="" cols="30" rows="5" class="input-control" v-model="product.long"></textarea>
+		      				<textarea name="" id="" cols="30" rows="5" class="form-control shadow-none rounded-0" v-model="product.long"></textarea>
 		      			</div>
 		      			
 		      		</div>		      		
@@ -590,7 +559,9 @@
             },
             showModal(data){
             	//console.log(data);
-
+            	this.getProviders();
+				this.getFamily();
+				this.is_parent();
             	var me = this;
             	var url = '/articles/'+data
                 axios.get(url).then(function(response){
@@ -637,6 +608,7 @@
                 	'size':me.update[0].size,
                 	'stock':me.update[0].stock,
                 	'cost':me.update[0].cost,
+                	'dealer':me.update[0].dealer,
                 	'price':me.update[0].price,
                 	'discount':me.update[0].discount,
                 	'provider':me.update[0].provider,
