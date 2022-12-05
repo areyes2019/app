@@ -3,6 +3,12 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="Sello Pronto" />
+	<meta property="og:description" content="Todo tipo de sellos de goma. Envio a todo México" />
+	<meta property="og:image" content="{{asset('img/logo2.png')}}" />
+	<meta property="og:image:width" content="828" />
+	<meta property="og:image:height" content="450" />
 	<title>Sello Pronto</title>
 	<link rel="stylesheet" href="{{asset('css/app.css')}}">	
 	<link rel="stylesheet" href="{{asset('css/store.css')}}">
