@@ -328,7 +328,10 @@
 		      				<label for="">Descripción Larga</label>
 		      				<textarea name="" id="" cols="30" rows="5" class="form-control shadow-none rounded-0" v-model="product.long"></textarea>
 		      			</div>
-		      			
+		      			<div class="col-md-12">
+		      				<label for="">Imágen</label>
+		      				<input type="text" v-model="product.img_url" class="form-control shadow-none rounded-0" >
+		      			</div>
 		      		</div>		      		
 		      	</div>
 		      <div class="modal-footer">
@@ -617,6 +620,7 @@
                 	'family':me.update[0].family,
                 	'short_desc':me.update[0].short_desc,
                 	'long_desc':me.update[0].long_desc,
+                	'img_url':me.update[0].img_url,
                 	'categorie':me.update[0].categorie,
                 	'cataloge':me.update[0].cataloge,
                 	'_token':me.csrf,

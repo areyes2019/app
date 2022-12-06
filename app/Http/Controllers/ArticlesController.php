@@ -163,7 +163,8 @@ class ArticlesController extends Controller
             'visible'   => $request->visible,
             'family'    => $request->family,
             'short_desc'=> $request->short_desc,
-            'long_desc'=> $request->short_desc,
+            'long_desc' => $request->short_desc,
+            'img_url'   => $request->img_url,
             'categorie' => $request->categorie,
             'cataloge'  => $request->cataloge,
 
