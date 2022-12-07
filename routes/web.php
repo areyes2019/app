@@ -124,7 +124,7 @@ Route::group(['middleware'=>'auth'],function(){
     Route::post('/total_payment/',[QuotationController::class,'total_payment'])->name('total_payment');
 
     //bancos
-    Route::get('/inventory/',[InventoryController::class,'index'])->name('inventory');
+    //Route::get('/inventory/',[InventoryController::class,'index'])->name('inventory');
 
     //pedidos a proveedor
     Route::get('/orders/',[OrdersController::class,'index'])->name('orders');
@@ -140,6 +140,8 @@ Route::group(['middleware'=>'auth'],function(){
     //configuracion
     Route::get('/config/',[ConfigController::class,'index'])->name('config');
     Route::post('/main_upload',[ConfigController::class,'main_img'])->name('main_upload');
+    Route::post('/profit',[ConfigController::class,'profit']);
+    Route::post('/profit_global',[ConfigController::class,'profit_global']);
 
     //modulo de contabilidad
     Route::get('/accounting/',[AccountingController::class,'index'])->name('accounting');

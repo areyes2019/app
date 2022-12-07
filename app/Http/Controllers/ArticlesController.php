@@ -7,6 +7,7 @@ use App\Models\cnnxn_Article;
 use App\Models\cnnxn_Cataloge;
 use App\Models\Contact;
 use App\Models\cnnxn_Family;
+use App\Models\cnnxn_config;
 use App\Http\Requests\ArticleRequest;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ArticlesImport;
@@ -19,7 +20,9 @@ class ArticlesController extends Controller
      */
     public function index()
     {
-        return view('articles.index');
+        $query = cnnxn_config::all();
+        $percent=  $query[0]->percent;
+        return view('articles.index')->with('percent',$percent);
     }
 
 
@@ -147,14 +150,20 @@ class ArticlesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
-        $query = cnnxn_Article::where('idArticle',$id)->update([
+        //el valor original de la goma
+
+        $rubber_query = cnnxn_Article::where('idArticle',$id)->get();
+        $ruber_cost = $rubber_query[0]->rubber;
+
+        if ($ruber_cost == $request->rubber) {
+           $query = cnnxn_Article::where('idArticle',$id)->update([
             'name'      => $request->name,
             'model'     => $request->model,
             'lines'     => $request->lines,
             'size'      => $request->size,
             'stock'     => $request->stock,
             'cost'      => $request->cost,
+            'rubber'    => $request->rubber,
             'dealer'    => $request->dealer,
             'price'     => $request->price,
             'discount'  => $request->discount,
@@ -168,7 +177,42 @@ class ArticlesController extends Controller
             'categorie' => $request->categorie,
             'cataloge'  => $request->cataloge,
 
-        ]);
+            ]); 
+        }else{
+
+            $query_benefit = cnnxn_config::all();
+            $percent = $query_benefit[0]->percent; //margen de utlidad en dinero
+
+            $mechanic = $request->cost; //costo del mecanismo
+            $rubber = $request->rubber; //cosoto de la goma
+            $total = $mechanic + $rubber; //sumamos mecanismo mas goma
+            $profit = $total + $percent; // sumamos el beneficio
+            $price = number_format($profit,0);
+            
+            $query = cnnxn_Article::where('idArticle',$id)->update([
+                'name'      => $request->name,
+                'model'     => $request->model,
+                'lines'     => $request->lines,
+                'size'      => $request->size,
+                'stock'     => $request->stock,
+                'cost'      => $request->cost,
+                'rubber'    => $request->rubber,
+                'dealer'    => $request->dealer,
+                'price'     => $price,
+                'discount'  => $request->discount,
+                'provider'  => $request->provider,
+                're_order'  => $request->re_order,
+                'visible'   => $request->visible,
+                'family'    => $request->family,
+                'short_desc'=> $request->short_desc,
+                'long_desc' => $request->short_desc,
+                'img_url'   => $request->img_url,
+                'categorie' => $request->categorie,
+                'cataloge'  => $request->cataloge,
+
+            ]);
+        }
+
         
         if ($query) {
             return true;

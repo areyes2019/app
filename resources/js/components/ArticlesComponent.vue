@@ -29,18 +29,20 @@
 				<button class="btn btn-danger btn-sm rounded-0" @click.prevent="add_article"><span class="bi bi-box"></span> Agregar artículo</button>
 			</div>
 			<div class="card-body">
-				<table class="table table-bordered" id="articles_table">
+				<table class="my-table" id="articles_table">
 					<thead>
 						<tr>
 							<th>#</th>
 							<th></th>
 							<th>Nombre</th>
-							<th>Modelo</th>
-							<th>Tamaño</th>
-							<th>Familia</th>
-							<th>Precio Prov.</th>
-							<th>Precio Dist.</th>
-							<th>Precio Púb.</th>
+							<th>Mod.</th>
+							<th>Tam.</th>
+							<th>Fam.</th>
+							<th>Mec.</th>
+							<th>Goma</th>
+							<th class="d-none"></th>
+							<th>Total</th>
+							<th>Precio</th>
 							<th>
 							</th>
 						</tr>
@@ -56,8 +58,10 @@
 							<td>{{article.size}}</td>
 							<td>{{article.family_name}}</td>
 							<td>{{article.cost}}</td>
-							<td>{{article.dealer}}</td>
-							<td>{{article.price}}</td>
+							<td>{{article.rubber}}</td>
+							<td class="d-none">{{sum = parseFloat(article.cost) + parseFloat(article.rubber)}}</td>
+							<td>{{res = sum.toFixed(2)}}</td>
+							<td class="bg-secondary text-white font-weight-bold">{{article.price}}</td>
 							<td>
 								<a href="#" @click.prevent="showModal(article.idArticle)"><span class="bi bi-pencil-square"></span></a>
 								<a href="#" @click.prevent="deleteData(article.idArticle)"><span class="bi bi-trash"></span></a>
@@ -270,9 +274,9 @@
 						<small class="text-danger">{{errors.cost}}</small>
 					</div>
 					<div class="form-group">
-						<label for="">Precio Distribuidor</label>
-						<input type="text" v-model="product.dealer" class="form-control shadow-none rounded-0" placeholder="Precio Proveedor">
-						<small class="text-danger">{{errors.cost}}</small>
+						<label for="">Precio de la Goma</label>
+						<input type="text" v-model="product.rubber" class="form-control shadow-none rounded-0" placeholder="Precio Proveedor">
+						<small class="text-danger">{{errors.rubber}}</small>
 					</div>
 					<div class="form-group">
 						<label for="">Precio Público</label>
@@ -280,6 +284,13 @@
 						<small class="text-danger m-0">{{errors.price}}</small><br>
 						<small class="text-danger m-0">{{errors.price_decimal}}</small>
 					</div>
+					<!-- <div class="form-group">
+						<label for="">Precio Distribuidor</label>
+						<input type="text" v-model="product.dealer" class="form-control shadow-none rounded-0" placeholder="Precio Proveedor">
+						<small class="text-danger">{{errors.cost}}</small>
+					</div>
+					-->
+					
 					<label for="">Agregar Categoría</label>
 					<div class="my-form-group">
 						<div class="form-group">
@@ -388,13 +399,14 @@
 <script>
 	import DataTable from 'datatables.net-bs5'
 	export default{
+		props:['percent'],
 		data(){
 			return{
 				//aqui van los datos del artículo
 				data:{
 					_token:document.querySelector('#csrf').getAttribute('content'),
 				},
-				table:[],
+				table:{},
 				//aqui recibimos los errores
 				errors:{},
 				//mostrar cataogos
@@ -601,9 +613,8 @@
             	})
             },
             updateData(data){    
-                //console.log(data);
                 let me =this;
-                var url = "/articles/"+data
+                var url = "/articles/"+data;
                 axios.put(url,{
                 	'name':me.update[0].name,
                 	'model':me.update[0].model,
@@ -611,6 +622,7 @@
                 	'size':me.update[0].size,
                 	'stock':me.update[0].stock,
                 	'cost':me.update[0].cost,
+                	'rubber':me.update[0].rubber,
                 	'dealer':me.update[0].dealer,
                 	'price':me.update[0].price,
                 	'discount':me.update[0].discount,
