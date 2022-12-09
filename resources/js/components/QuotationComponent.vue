@@ -390,8 +390,9 @@
                 if (window.confirm("¿Realmente quieres eliminar esta cotización?")) {
                     axios.get(url+me.id).then(function(response){
                         if (response.data = 1) {
-                            alert('Registro elminado');   
-                            window.location.href = "/quotations/";
+                            alert('Registro elminado');
+                            window.history.back();   
+                            //window.location.href = "/quotations/";
                         }else{
                             alert('No se elmino el registro');
                         }
