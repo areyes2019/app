@@ -145,6 +145,7 @@ Route::group(['middleware'=>'auth'],function(){
 
     //modulo de contabilidad
     Route::get('/accounting/',[AccountingController::class,'index'])->name('accounting');
+    Route::post('/add_accounting/',[AccountingController::class,'add_accounting'])->name('add_accounting');
 
 
 });

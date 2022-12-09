@@ -8,7 +8,7 @@
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
               <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link my-link-nav text-primary" href="" @click.prevent="openModal">Agregar Artículos</a>
+                    <a class="nav-link my-link-nav text-primary" v-if="status < 3" href="" @click.prevent="openModal">Agregar Artículos</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link my-link-nav" href="" @click.prevent="sendMail"><span class="bi bi-send"></span> Enviar</a>
@@ -17,10 +17,10 @@
                     <a class="nav-link my-link-nav" :href="'/get_quotation_pdf/'+customer+'/'+id+'/down'"><span class="bi bi-download"></span> Descargar</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link my-link-nav" href="#" @click.prevent="approved"><span class="bi bi-file-earmark-ruled"></span> Facturar</a>
+                    <a class="nav-link my-link-nav" href="#" @click.prevent="approved"><span class="bi bi-file-earmark-ruled"></span>Facturar</a>
                 </li>
                 <li class="nav-item"><a href="" class="nav-link text-danger" v-if="status==0">Marcar como Enviada</a></li>
-                <li class="nav-item d-flex align-items-center" v-if="total.payment==0">
+                <li class="nav-item d-flex align-items-center" v-if="status < 3">
                     <div class="dropdown">
                       <a href="#" class="nav-link my-link-nav" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                         Generar Pago
@@ -34,7 +34,7 @@
                       </ul>
                     </div>
                 </li>
-                 <li class="nav-item d-flex align-items-center dropstart">
+                 <li class="nav-item d-flex align-items-center dropstart" v-if="status < 3">
                     <div class="dropdown">
                       <a href="#" class="nav-link my-link-nav" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                         Agregar Descuento
@@ -56,10 +56,9 @@
                 <!--
                     0 Borrador
                     1 Enviada
-                    2 Pagada total / parcial
-                    3 Enviar OT
-                    4 Generar Pago total
-                    5 Cerrar
+                    2 Pago parcial
+                    3 Pago total
+                    4 Cerrar
                 -->
               </ul>
             </div>
@@ -86,14 +85,14 @@
                             </div>
                             <h5 class="mt-1" v-if="status==0"><span class="badge bg-secondary">Borrador</span></h5>
                             <h5 class="mt-1" v-else-if="status==1"><span class="badge bg-primary">Enviada</span></h5>
-                            <h5 class="mt-1" v-else-if="status==2"><span class="badge bg-success">Anticipo</span></h5>
-                            <h5 class="mt-1" v-else-if="status==3"><span class="badge bg-success">Elaborando</span></h5>
-                            <h5 class="mt-1" v-else-if="status==4"><span class="badge bg-danger">Pagada</span></h5>
+                            <h5 class="mt-1" v-else-if="status==2"><span class="badge bg-success">Anticipo Pagado</span></h5>
+                            <h5 class="mt-1" v-else-if="status==3"><span class="badge bg-success">Pago Total</span></h5>
+                            <h5 class="mt-1" v-else-if="status==4"><span class="badge bg-danger">Cerrada</span></h5>
                             <h5 class="mt-1" v-else="status==5"><span class="badge bg-dark">Facturada</span></h5>
                             <p class="m-0 p-0 text-primary" v-if="tax==1">Con Factura</p>
                             <p class="m-0 p-0 text-danger" v-if="tax==0">Sin Factura</p>
                             <h4 v-if="total.advance_payment == total.total">PAGADO</h4>
-                            <h4>Anticipo sugerido {{total.advance}}</h4>
+                            <h4>Anticipo sugerido ${{total.advance}}</h4>
                         </div>
                     </div>
                 </div>
@@ -115,17 +114,18 @@
                             </thead>
                             <tbody>
                                 <tr v-for="line in lines">
-                                    <td>
+                                    <td v-if="status < 3">
                                         <input type="number" :value="line.quantity"  :id="line.id" @change="addQuantity(line.id)" :disabled = "disabled == 1">
                                     </td>
+                                    <td v-if="status == 3">{{line.quantity}}</td>
+                                    <td v-else-if="status == 4">{{line.quantity}}</td>
                                     <td>{{line.name}}</td>
                                     <td>{{line.model}}</td>
                                     <td>{{line.unit_price}}</td>
-                                    
                                     <td>
                                         <div class="d-flex justify-content-between">
                                             <p class="m-0">{{line.total}}</p>
-                                            <a href="" @click.prevent="deleteLine(line.id)" :class="[display]">X</a>
+                                            <a v-if="status < 3" href="" @click.prevent="deleteLine(line.id)">X</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -164,7 +164,7 @@
                                 <tr>
                                     <th colspan="3"></th>
                                     <th>Saldo</th>
-                                    <td class="d-flex justify-content-between">${{total.balance}} <a href="#" @click.prevent="total_payment(total.balance)"><span class="bi bi-check-square"></span></a></td>
+                                    <td class="d-flex justify-content-between">${{total.balance}} <a v-if="status < 3" href="#" @click.prevent="total_payment(total.balance)"><span class="bi bi-check-square"></span></a></td>
                                 </tr>                    
                             </tfoot>
                     </table>
@@ -228,6 +228,30 @@
                 </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Ok</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- modal tipy de ingreso-->
+        <div class="modal fade" id="payment_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content rounded-0">
+                <div class="modal-body">
+                    <div class="body-warning">
+                        <center><span class="bi bi-exclamation-diamond warning-icon"></span>
+                        <p class="m-0 warning-title">¡Hola!</p>
+                        <p class="m-0 warning-text">Puedes meter esta cotizacion a contabilidad</p>
+                        <p class="m-0 warning-ref text-danger">¿Desas continuar?</p>
+                        </center>
+                    </div>
+                    <center>
+                        <button class="btn btn-danger"  @click="add_accounting(1)">Elaborado Local</button>
+                        <button class="btn btn-primary" @click="add_accounting(2)">Elaborado Foraneo</button>
+                    </center>
+                </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
               </div>
             </div>
           </div>
@@ -467,22 +491,39 @@
             total_payment(data){
                 var me = this;
                 var url = '/total_payment'
+                var value = data.replace(',','');
                 axios.post(url,{
                     'slug':me.slug,
-                    'payment':data
+                    'payment':value
                 }).then(function(response){
+                    me.payment_modal();
                     me.showDetails();
                     me.showTotals();
-                    var title = "Felicidades";
-                    var message = "Has acreditado el pago";
-                    toaster(title,message);
                 })
+            },
+            add_accounting(data){
+                var me = this;
+                var url = '/add_accounting';
+                axios.post(url,{
+                    'id':me.id,
+                    'type':data
+                }).then(function(response){
+                        window.location.reload();
+                        /*me.showTotals();
+                        me.showDetails();
+                        var title = "Felicidades";
+                        var message = "Has ha contabilizado esta cotización";
+                        toaster(title,message);
+                        $('#payment_modal').modal('hide');*/
+                })
+            },
+            payment_modal(){
+                $('#payment_modal').modal('show');
             },
             warning_modal(data){
                 this.warning = data;
                 $('#modal_warning').modal('show');
-            }
-
+            },
 
         },
         mounted(){

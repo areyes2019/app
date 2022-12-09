@@ -114,6 +114,10 @@ class QuotationController extends Controller
             $with_tax = $price / 1.16;
             $add = new cnnxn_quotation_detail;
             $add->quantity = $request->quantity;
+            $add->cost = $query[0]->cost;
+            $add->rubber = $query[0]->rubber;
+            $add->total_cost = $query[0]->cost * $request->quantity;
+            $add->total_rubber = $query[0]->rubber * $request->quantity;
             $add->article = $request->article;
             $add->unit_price = $with_tax;
             $add->total = $with_tax * $request->quantity;
@@ -136,6 +140,10 @@ class QuotationController extends Controller
             $price = $query[0]->price;
             $add = new cnnxn_quotation_detail;
             $add->quantity = $request->quantity;
+            $add->cost = $query[0]->cost;
+            $add->rubber = $query[0]->rubber;
+            $add->total_cost = $query[0]->cost * $request->quantity;
+            $add->total_rubber = $query[0]->rubber * $request->quantity;
             $add->article = $request->article;
             $add->unit_price = $price;
             $add->total = $price * $request->quantity;
@@ -182,9 +190,11 @@ class QuotationController extends Controller
         //aplicamos el iva
         $tax = $new_price /100 * 16;
         $with_tax = $new_price + $tax;
+        $advance = $with_tax / 2;
       }else{
         $tax = 0;
         $with_tax = $new_price;
+        $advance = $with_tax / 2;
       }
       $balance = $with_tax - $query[0]->payment;
       $data = [
@@ -195,6 +205,7 @@ class QuotationController extends Controller
         'payment'=>   number_format($query[0]->payment,2),
         'balance'=>   number_format($balance,2),
         'total'=>     number_format($with_tax,2),
+        'advance' =>  number_format($advance,2)
       ];
 
       return $data;
@@ -206,9 +217,13 @@ class QuotationController extends Controller
       $unit_price = $unit_price_query[0]->unit_price;
       $new_price = $unit_price * $request ->quantity;
 
+      $article = cnnxn_Article::where('idArticle',$unit_price_query[0]->article)->get();
+      
       $query = cnnxn_quotation_detail::where('id',$line)->update([
         'quantity'=>$request->quantity,
-        'total'=>$new_price
+        'total'=>$new_price,
+        'total_cost'=> $article[0]->cost * $request->quantity,
+        'total_rubber'=> $article[0]->rubber * $request->quantity
       ]);
 
       //hay que sacar el total
@@ -398,14 +413,25 @@ class QuotationController extends Controller
     }
     public function total_payment(Request $request)
     {
+
        $query = cnnxn_quotation::where('slug',$request->slug)->get();
        $advance_payment = $query[0]->payment;
-       $new_amount = $advance_payment + $request->payment;
+       //$new_amount = $advance_payment + $request->payment;
+       if ($advance_payment == 0) {
+          cnnxn_quotation::where('slug',$request->slug)->update([
+            'payment'=>$request->payment,
+            'status'=> 3,
+          ]);
+       }else{
+         cnnxn_quotation::where('slug',$request->slug)->update([
+            'payment'=>$advance_payment + $request->payment,
+            'status'=> 3,
+         ]);
 
-       cnnxn_quotation::where('slug',$request->slug)->update([
-          'payment'=>$new_amount,
-          'status'=>4,
-       ]);
+       }
+
+
+
     }
 
 }
