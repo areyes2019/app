@@ -29,7 +29,7 @@
                         <div class="card-body">
                             <h5 class="card-title">Piezas vendidas</h5>
                             <h6 class="card-subtitle mb-2 text-muted">{{$mes}} {{$year}}</h6>
-                            <p class="card-text">Resumen de piezas vendidas de todos los modelos</p>
+                            <p class="card-text">Resumen de piezas vendidas</p>
                             <h4>{{$sold}}</h4>
                             <a href="#" class="card-link">Another link</a>
                         </div>

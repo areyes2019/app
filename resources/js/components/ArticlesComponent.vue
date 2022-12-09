@@ -29,7 +29,7 @@
 				<button class="btn btn-danger btn-sm rounded-0" @click.prevent="add_article"><span class="bi bi-box"></span> Agregar artículo</button>
 			</div>
 			<div class="card-body">
-				<table class="my-table" id="articles_table">
+				<table class="table my-table" id="articles_table">
 					<thead>
 						<tr>
 							<th>#</th>
