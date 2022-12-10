@@ -6,13 +6,13 @@
     		<button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Resumen</button>
   		</li>
   		<li class="nav-item" role="presentation">
-    		<button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Pendientes de Cobro</button>
+    		<button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#charge" type="button" role="tab" aria-controls="profile" aria-selected="false">Pendientes de Cobro</button>
   		</li>
   		<li class="nav-item" role="presentation">
-    		<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Gastos</button>
+    		<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#spense" type="button" role="tab" aria-controls="contact" aria-selected="false">Gastos</button>
   		</li>
   		<li class="nav-item" role="presentation">
-    		<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#credit" type="button" role="tab" aria-controls="contact" aria-selected="false">Para Facturar</button>
+    		<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#invoice" type="button" role="tab" aria-controls="contact" aria-selected="false">Para Facturar</button>
   		</li>
 	</ul>
 	<div class="tab-content" id="myTabContent">
@@ -51,15 +51,88 @@
   				</table>
   			</div>
   		</div>
-	  	<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-	  		
-	  	</div>
-	  	<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-	  		
-	  	</div>
-	  	<div class="tab-pane fade" id="credit" role="tabpanel" aria-labelledby="contact-tab">
-	  		<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione voluptate perspiciatis ullam dolor veniam tempora itaque voluptatum quas in, dolorum incidunt officia placeat facere neque ea nesciunt sunt labore, voluptatem.</p>
-	  	</div>
+	  	
+	</div>
+	<div class="tab-content" id="myTabContent">
+		<div class="tab-pane fade show" id="charge" role="tabpanel" aria-labelledby="home-tab">
+  			<div class="container mt-4">
+  				<h5>Enero 2023</h5>
+  				<table class="table table-bordered">
+  					<tr>
+  						<th>Id</th>
+  						<th>Cliente</th>
+  						<th>Anticipo</th>
+  						<th>Saldo</th>
+  						<th>Fecha</th>
+  					</tr>
+  					<tr>
+  						<td>5</td>
+  						<td>Mallas del Centro</td>
+  						<td>$2596.00</td>
+  						<td>$2596.00</td>
+  						<td>25/11/23</td>
+  					</tr>
+  				</table>
+  			</div>
+  		</div>
+	  	
+	</div>
+	<div class="tab-content" id="myTabContent">
+		<div class="tab-pane fade show" id="spense" role="tabpanel" aria-labelledby="home-tab">
+  			<div class="container mt-4">
+  				<h5>Enero 2023</h5>
+  				<form action="add_spent" method="post">
+  					@csrf
+  					<div class="row mt-3 mb-3">
+  						<div class="col">
+  							<label for="">Concepto</label>
+  							<input type="text" name="description" placeholder="Concepto del gasto" class="form-control rounded-0 shadow-none">
+  						</div>
+  						<div class="col">
+  							<label for="">Cantidad</label>
+  							<input type="text" name="amount" placeholder="Monto" class="form-control rounded-0 shadow-none">
+  						</div>
+  						<div class="col">
+  							<label for="">Referencia</label>
+  							<select name="reference" id="" class="form-control rounded-0 shadow-none">
+  								<option value="">Selecciona una opción</option>
+  								<option value="0">Sin Factura</option>
+  								<option value="1">Con Factura</option>
+  							</select>
+  						</div>
+  						<div class="col">
+  							<label for="">Tipo de Gasto</label>
+  							<select name="type" id="" class="form-control rounded-0 shadow-none">
+  								<option value="1">Impuestos</option>
+  								<option value="2">Suministros</option>
+  								<option value="3">Gastos variables</option>
+  								<option value="4">Gastos fijos</option>
+  							</select>
+  						</div>
+  						<div class="col d-flex align-items-end">
+  							<input type="submit" class="btn btn-danger rounded-0">
+  						</div>
+  					</div>
+  				</form>
+  				<table class="table table-bordered">
+  					<tr>
+  						<th>Id</th>
+  						<th>Concepto</th>
+  						<th>Facturado</th>
+  						<th>Monto</th>
+  						<th>Fecha</th>
+  					</tr>
+  					<tr>
+  						<td>5</td>
+  						<td>Pago de Gasolina</td>
+  						<td>No</td>
+  						<td>$2596.00</td>
+  						<td>25/11/23</td>
+  					</tr>
+  				</table>
+  			</div>
+  		</div>
+	  	
 	</div>
 </div>
 @endsection

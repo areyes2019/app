@@ -7,6 +7,7 @@ use App\Models\cnnxn_Article;
 use App\Models\cnnxn_quotation;
 use App\Models\cnnxn_quotation_detail;
 use App\Models\cnnxn_Accounting;
+use App\Models\cnnxn_expense;
 
 class AccountingController extends Controller
 {
@@ -41,5 +42,15 @@ class AccountingController extends Controller
             $add->save();   
         }
         return true;
+    }
+    public function add_spent(Request $request)
+    {
+        $query = new cnnxn_expense;
+        $query->type = $request->type;
+        $query->description = $request->description;
+        $query->reference = $request->reference;
+        $query->amount = $request->amount;
+        $query->save();
+        return redirect('accounting');
     }
 }

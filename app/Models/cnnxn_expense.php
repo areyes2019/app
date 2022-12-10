@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class cnnxn_expense extends Model
 {
-    use HasFactory;
+    
+    protected $fillable=[];
 }

@@ -6,8 +6,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Ventas Totales</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">{{$mes}} {{$year}}</h6>
-                            <p class="card-text">Resumen de las ventas totales</p>
+                            <h6 class="card-subtitle mb-2 text-muted">{{$month}} {{$year}}</h6>
                             <h4>${{$sales}}</h4>
                             <a href="#" class="card-link">Ir a resumen</a>
                         </div>
@@ -17,8 +16,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Utilidades netas</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">{{$mes}} {{$year}}</h6>
-                            <p class="card-text">Utilidad que se puede disponer</p>
+                            <h6 class="card-subtitle mb-2 text-muted">{{$month}} {{$year}}</h6>
                             <h4>${{$profit}}</h4>
                             <a href="#" class="card-link">Ir a resumen</a>
                         </div>
@@ -28,8 +26,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Piezas vendidas</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">{{$mes}} {{$year}}</h6>
-                            <p class="card-text">Resumen de piezas vendidas</p>
+                            <h6 class="card-subtitle mb-2 text-muted">{{$month}} {{$year}}</h6>
                             <h4>{{$sold}}</h4>
                             <a href="#" class="card-link">Another link</a>
                         </div>
@@ -39,9 +36,8 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Total de Gastos</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">{{$mes}} {{$year}}</h6>
-                            <p class="card-text">Resumen total de Gastos del mes</p>
-                            <h4>59</h4>
+                            <h6 class="card-subtitle mb-2 text-muted">{{$month}} {{$year}}</h6>
+                            <h4>${{$spent}}</h4>
                             <a href="#" class="card-link">Another link</a>
                         </div>
                     </div>
@@ -51,25 +47,25 @@
                 <div class="col-md-4">
                     <div class="card mt-4 p-0">
                       <div class="card-header">
-                        Noviembre 2022
+                        Resumen - {{$month}} {{$year}}
                       </div>
                       <div class="card-body">
                         <table class="table table-bordered">
                             <tr>
-                                <th>Entradas Brutas</th>
-                                <td>$2,593.56</td>
+                                <th>Entradas Totales </th>
+                                <td>${{$sales}}</td>
                             </tr>
                             <tr>
-                                <th>Gastos Totales</th>
-                                <td>$593.56</td>
+                                <th>Utilidades Brutas</th>
+                                <td>${{$profit}}</td>
                             </tr>
                             <tr>
-                                <th>Impuestos sobre utilidades</th>
-                                <td>$2,593.56</td>
+                                <th>Gastos</th>
+                                <td>${{$spent}}</td>
                             </tr>
                             <tr>
                                 <th>Ganancias netas</th>
-                                <td>$2,593.56</td>
+                                <td>${{$net}}</td>
                             </tr>
                             
                         </table>

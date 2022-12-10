@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\cnnxn_Accounting;
 use App\Models\cnnxn_quotation_detail;
+use App\Models\cnnxn_expense;
 
 class HomeController extends Controller
 {
@@ -28,17 +29,26 @@ class HomeController extends Controller
         $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 
         $fecha = $meses[date('n')-1];
-
         $month = date("m");
         $year = date('Y');
-        $total = cnnxn_Accounting::whereMonth('created_at',$month)->sum('amount');
-        $profit = cnnxn_Accounting::whereMonth('created_at',$month)->sum('profit');
+        $total_query = cnnxn_Accounting::whereMonth('created_at',$month)->sum('amount');
+        $profit_query = cnnxn_Accounting::whereMonth('created_at',$month)->sum('profit');
         $quantity = cnnxn_quotation_detail::whereMonth('created_at',$month)->sum('quantity');
+        $spent_query = cnnxn_expense::whereMonth('created_at',$month)->sum('amount');
+
+        $total  = number_format($total_query,2);
+        $profit = number_format($profit_query,2);
+        $spent  = number_format($spent_query,2);
+        $net = number_format($profit_query - $spent_query,2);
+        
+
         return view('home')
             ->with('sales',$total)
             ->with('profit',$profit)
             ->with('sold',$quantity)
-            ->with('mes',$fecha)
+            ->with('month',$fecha)
+            ->with('spent',$spent)
+            ->with('net',$net)
             ->with('year',$year);
     }
 }
