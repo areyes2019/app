@@ -50,7 +50,7 @@
                 <li class="side-nav-item"><a href="{{url('/config/')}}"><span class="bi bi-circle"></span>Configuración</a></li>
                 <li class="side-nav-item"><a href="{{url('/accounting/')}}"><span class="bi bi-circle"></span>Contabilidad</a></li>
                 <li class="side-nav-item"><a href="{{url('/stock/')}}"><span class="bi bi-circle"></span>Inventario</a></li>
-                <li class="side-nav-item"><a href="{{url('/stock/')}}"><span class="bi bi-circle"></span>Ordenes de Compra</a></li>
+                <li class="side-nav-item"><a href="{{url('/purchase_orders/')}}"><span class="bi bi-circle"></span>Ordenes de Compra</a></li>
                 <button class="btn btn-danger mt-4">Nueva Cotización</button>
                 <button class="btn btn-danger mt-1">Nuevo Cliente</button>
             </ul>
