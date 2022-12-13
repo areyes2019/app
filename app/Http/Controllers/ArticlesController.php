@@ -188,6 +188,7 @@ class ArticlesController extends Controller
             $rubber = $request->rubber; //cosoto de la goma
             $total = $mechanic + $rubber; //sumamos mecanismo mas goma
             $profit = $total + $percent; // sumamos el beneficio
+            $price = round($profit);
             
             $query = cnnxn_Article::where('idArticle',$id)->update([
                 'name'      => $request->name,
@@ -198,7 +199,7 @@ class ArticlesController extends Controller
                 'cost'      => $request->cost,
                 'rubber'    => $request->rubber,
                 'dealer'    => $request->dealer,
-                'price'     => $profit,
+                'price'     => $price,
                 'discount'  => $request->discount,
                 'provider'  => $request->provider,
                 're_order'  => $request->re_order,
