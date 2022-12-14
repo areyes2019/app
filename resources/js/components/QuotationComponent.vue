@@ -393,7 +393,7 @@
                         if (response.data = 1) {
                             alert('Registro elminado');
                             window.history.back();   
-                            //window.location.href = "/quotations/";
+                            window.location.href = "/quotations/";
                         }else{
                             alert('No se elmino el registro');
                         }
