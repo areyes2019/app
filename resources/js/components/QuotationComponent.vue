@@ -139,7 +139,7 @@
                                 <tr  v-if="total.discount > 0">
                                     <th colspan="3"></th>
                                     <th>Dcto. <strong>{{total.percent}}%</strong></th>
-                                    <td class="d-flex justify-content-between">${{total.discount}}<a href="#" @click.prevent="delete_discount(1)"><span class="bi bi-x-circle-fill"></span></a></td>
+                                    <td class="d-flex justify-content-between">${{total.discount}}<a href="#" @click.prevent="delete_discount(1)" v-if="status < 3"><span class="bi bi-x-circle-fill"></span></a></td>
                                 </tr>
                                 <tr>
                                     <th colspan="3"></th>
@@ -164,7 +164,7 @@
                                 <tr>
                                     <th colspan="3"></th>
                                     <th>Saldo</th>
-                                    <td class="d-flex justify-content-between">${{total.balance}} <a v-if="status < 3" href="#" @click.prevent="total_payment(total.balance)"><span class="bi bi-check-square"></span></a></td>
+                                    <td class="d-flex justify-content-between">${{total.balance}} <a v-if="status < 3" href="#" @click.prevent="payment_modal(total.balance)"><span class="bi bi-check-square"></span></a></td>
                                 </tr>                    
                             </tfoot>
                     </table>
@@ -233,7 +233,7 @@
           </div>
         </div>
 
-        <!-- modal tipy de ingreso-->
+        <!-- modal tipo de ingreso-->
         <div class="modal fade" id="payment_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content rounded-0">
@@ -245,13 +245,13 @@
                         <p class="m-0 warning-ref text-danger">¿Desas continuar?</p>
                         </center>
                     </div>
-                    <center>
-                        <button class="btn btn-danger"  @click="add_accounting(1)">Elaborado Local</button>
-                        <button class="btn btn-primary" @click="add_accounting(2)">Elaborado Foraneo</button>
-                    </center>
                 </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                <center>
+                    <button class="btn btn-danger rounded-0 btn-sm mt-3"  @click="total_payment(1)">Elaborado Local</button>
+                    <button class="btn btn-primary rounded-0 btn-sm mt-3" @click="total_payment(2)">Elaborado Foraneo</button>
+                    <button class="btn btn-secondary rounded-0 btn-sm mt-3" @click="total_payment(3)">Venta Mecanismos</button>
+                </center>
               </div>
             </div>
           </div>
@@ -277,6 +277,7 @@
                 total:[],
                 payment:"",
                 warning:"",
+                total_pay:"",
             }
         },
         methods:{
@@ -490,17 +491,26 @@
                 })
             },
             total_payment(data){
+                //el data es el tipo de trasacción
+
+                /*
+                    1 elaborado local
+                    2 elaborado foraneo
+                    3 venta mecanismos
+                */
+
                 var me = this;
-                var url = '/total_payment'
-                var value = data.replace(',','');
+                var url = '/total_payment';
+                var amount = this.total_pay;
                 axios.post(url,{
-                    'slug':me.slug,
-                    'payment':value
+                    'id':me.id,
+                    'type':data,
+                    'amount':amount,
                 }).then(function(response){
-                    me.payment_modal();
-                    me.showDetails();
-                    me.showTotals();
+                    $('#payment_modal').modal('hide');
+                    window.location.reload();
                 })
+                
             },
             add_accounting(data){
                 var me = this;
@@ -518,7 +528,8 @@
                         $('#payment_modal').modal('hide');*/
                 })
             },
-            payment_modal(){
+            payment_modal(data){
+                this.total_pay = data; //aki esta el valor
                 $('#payment_modal').modal('show');
             },
             warning_modal(data){

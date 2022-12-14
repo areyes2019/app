@@ -14,6 +14,9 @@
   		<li class="nav-item" role="presentation">
     		<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#invoice" type="button" role="tab" aria-controls="contact" aria-selected="false">Para Facturar</button>
   		</li>
+  		<li class="nav-item" role="presentation">
+    		<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#credit" type="button" role="tab" aria-controls="contact" aria-selected="false">Notas de Credito</button>
+  		</li>
 	</ul>
 	<div class="tab-content" id="myTabContent">
 		<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -108,6 +111,52 @@
   								<option value="3">Gastos variables</option>
   								<option value="4">Gastos fijos</option>
   							</select>
+  						</div>
+  						<div class="col d-flex align-items-end">
+  							<input type="submit" class="btn btn-danger rounded-0">
+  						</div>
+  					</div>
+  				</form>
+  				<table class="table table-bordered">
+  					<tr>
+  						<th>Id</th>
+  						<th>Concepto</th>
+  						<th>Facturado</th>
+  						<th>Monto</th>
+  						<th>Fecha</th>
+  					</tr>
+  					<tr>
+  						<td>5</td>
+  						<td>Pago de Gasolina</td>
+  						<td>No</td>
+  						<td>$2596.00</td>
+  						<td>25/11/23</td>
+  					</tr>
+  				</table>
+  			</div>
+  		</div> 	
+	</div>
+	<div class="tab-content" id="myTabContent">
+		<div class="tab-pane fade show" id="credit" role="tabpanel" aria-labelledby="home-tab">
+  			<div class="container mt-4">
+  				<form action="add_credit" method="post">
+  					@csrf
+  					<div class="row mt-3 mb-3">
+  						<div class="col">
+  							<label for="">Orden De Venta</label>
+  							<select name="supplier" id="" class="form-control">
+  								<option value="">Selecciona una opción...</option>
+  								<option value="">Kimu S.A de C.V</option>
+  								<option value="">Trodat S.A de C.V</option>
+  							</select>
+  						</div>
+  						<div class="col">
+  							<label for="">Orden De Venta</label>
+  							<input type="text" name="order" placeholder="Ej, Orden 45695" class="form-control rounded-0 shadow-none">
+  						</div>
+  						<div class="col">
+  							<label for="">Monto</label>
+  							<input type="text" name="amount" placeholder="Monto" class="form-control rounded-0 shadow-none">
   						</div>
   						<div class="col d-flex align-items-end">
   							<input type="submit" class="btn btn-danger rounded-0">

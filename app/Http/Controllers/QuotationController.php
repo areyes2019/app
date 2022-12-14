@@ -6,6 +6,7 @@ use App\Models\cnnxn_quotation;
 use App\Models\cnnxn_Article;
 use App\Models\Contact;
 use App\Models\cnnxn_quotation_detail;
+use App\Models\cnnxn_Accounting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use PDF;
@@ -414,22 +415,41 @@ class QuotationController extends Controller
     public function total_payment(Request $request)
     {
 
-       $query = cnnxn_quotation::where('slug',$request->slug)->get();
-       $advance_payment = $query[0]->payment;
-       //$new_amount = $advance_payment + $request->payment;
-       if ($advance_payment == 0) {
-          cnnxn_quotation::where('slug',$request->slug)->update([
-            'payment'=>$request->payment,
-            'status'=> 3,
-          ]);
-       }else{
-         cnnxn_quotation::where('slug',$request->slug)->update([
-            'payment'=>$advance_payment + $request->payment,
-            'status'=> 3,
-         ]);
+        
+        //registrar el momnto total en cotizacion
+        $query = cnnxn_quotation::where('idQt',$request->id)->update([
+            'payment'=>$request->amount,
+            'status'=> 3
+        ]);
 
-       }
+        //Extraemos el monto total
 
+        //Estraemo el gasto de produccion
+        $cost = cnnxn_quotation_detail::where('idQuotation',$request->id)->sum('total_cost');
+        $rubber = cnnxn_quotation_detail::where('idQuotation',$request->id)->sum('total_rubber');
+        
+        if ($request->type==1) {
+          // si se fabrico local
+          $percent = $cost / 100 * 10;
+          $big_total = $cost + $percent;
+        }elseif($request->type==2){
+          //si se fabricó foraneo
+          $big_total = $cost + $rubber;
+        }elseif ($request->type==3) {
+          // si solo se vendio la maquina
+          $big_total = $cost;
+        }
+        //Sacamos la utilidad
+        $profit = $request->amount - $big_total;
+
+        //vamos a registrar en contabilidad
+        $insert = new cnnxn_Accounting;
+
+        $insert->quotation        = $request->id;
+        $insert->amount           = $request->amount;
+        $insert->production_cost  = $big_total;
+        $insert->profit           = $profit;
+        $insert->save();
 
 
     }

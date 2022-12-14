@@ -8,6 +8,7 @@ use App\Models\cnnxn_quotation;
 use App\Models\cnnxn_quotation_detail;
 use App\Models\cnnxn_Accounting;
 use App\Models\cnnxn_expense;
+use App\Models\cnnxn_credit;
 
 class AccountingController extends Controller
 {
@@ -52,5 +53,14 @@ class AccountingController extends Controller
         $query->amount = $request->amount;
         $query->save();
         return redirect('accounting');
+    }
+    public function add_credit(Request $request)
+    {
+        $query = new cnnxn_credit;
+        $query->supplier = $request->supplier;
+        $query->purchase_order = $request->order;
+        $query->amount = $request->amount;
+        $query->save();
+        return redirect('/accounting/');
     }
 }
