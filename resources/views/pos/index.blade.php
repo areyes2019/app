@@ -1,4 +1,4 @@
 @extends('template.app')
 @section('content')
-<expenses-component></expenses-component>
+<sale-component></sale-component>
 @endsection

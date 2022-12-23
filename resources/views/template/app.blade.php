@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{asset('css/dashboard.css')}}">
+    <link rel="stylesheet" href="https://unpkg.com/vue-select@latest/dist/vue-select.css">
     <title>Sello Pronto</title>
 </head>
 <body>
@@ -51,8 +52,8 @@
                 <li class="side-nav-item"><a href="{{url('/accounting/')}}"><span class="bi bi-circle"></span>Contabilidad</a></li>
                 <li class="side-nav-item"><a href="{{url('/stock/')}}"><span class="bi bi-circle"></span>Inventario</a></li>
                 <li class="side-nav-item"><a href="{{url('/orders/')}}"><span class="bi bi-circle"></span>Ordenes de Compra</a></li>
+                <li class="side-nav-item"><a href="{{url('/pos/')}}"><span class="bi bi-circle"></span>POS</a></li>
                 <button class="btn btn-danger mt-4">Nueva Cotización</button>
-                <button class="btn btn-danger mt-1">Nuevo Cliente</button>
             </ul>
         </nav>
     </div>
@@ -72,5 +73,6 @@
     </div>
     <script src="{{asset('js/app.js')}}"></script>
     <script src="{{asset('js/toaster.js')}}"></script>
+    <script src="https://unpkg.com/vue-select@latest"></script>
 </body>
 </html>

@@ -48,6 +48,9 @@ Vue.component('quotation-component', require('./components/QuotationComponent.vu
 Vue.component('orders-component', require('./components/OrdersComponent.vue').default);
 Vue.component('order-component', require('./components/OrderComponent.vue').default);
 Vue.component('stock-component', require('./components/StockComponent.vue').default);
+Vue.component('expenses-component', require('./components/ExpensesComponent.vue').default);
+Vue.component('pos-component', require('./components/PosComponent.vue').default);
+Vue.component('sale-component', require('./components/SaleComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -415,10 +415,11 @@ class QuotationController extends Controller
     public function total_payment(Request $request)
     {
 
-        
+        $coma = ",";
+        $amount =  str_replace($coma,"", $request->amount);
         //registrar el momnto total en cotizacion
         $query = cnnxn_quotation::where('idQt',$request->id)->update([
-            'payment'=>$request->amount,
+            'payment'=>$amount,
             'status'=> 3
         ]);
 
@@ -440,13 +441,13 @@ class QuotationController extends Controller
           $big_total = $cost;
         }
         //Sacamos la utilidad
-        $profit = $request->amount - $big_total;
+        $profit =  $amount - $big_total;
 
         //vamos a registrar en contabilidad
         $insert = new cnnxn_Accounting;
 
         $insert->quotation        = $request->id;
-        $insert->amount           = $request->amount;
+        $insert->amount           = $amount;
         $insert->production_cost  = $big_total;
         $insert->profit           = $profit;
         $insert->save();

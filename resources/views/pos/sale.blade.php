@@ -1,4 +1,4 @@
 @extends('template.app')
 @section('content')
-<expenses-component></expenses-component>
+<pos-component :slug="'{{$slug}}'"></pos-component>
 @endsection

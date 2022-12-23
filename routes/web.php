@@ -13,6 +13,7 @@ use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\AccountingController;
 use App\Http\Controllers\StockController;
+use App\Http\Controllers\PosController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -155,6 +156,14 @@ Route::group(['middleware'=>'auth'],function(){
     Route::post('/search_stock/',[StockController::class,'search_stock'])->name('search_stock');
     Route::post('/update_stock/',[StockController::class,'update_stock'])->name('update_stock');
     Route::get('/show_stock/',[StockController::class,'show_stock'])->name('show_stock');
+    
+
+    Route::get('/pos/',[PosController::class,'index'])->name('pos');
+    Route::post('/add_sale_slug/',[PosController::class,'add_slug'])->name('add_sale_slug');
+    Route::get('/add_sale/{id}',[PosController::class,'add_sale'])->name('add_sale');
+    Route::get('/articles_list/',[PosController::class,'show'])->name('articles_list');
+    Route::get('/get_order_data/{slug}',[PosController::class,'order_data'])->name('get_order_data');
+
 
 
 
