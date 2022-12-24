@@ -155,6 +155,7 @@ Route::group(['middleware'=>'auth'],function(){
     //inventarios
     Route::get('/stock/',[StockController::class,'index'])->name('stock');
     Route::post('/search_stock/',[StockController::class,'search_stock'])->name('search_stock');
+    Route::get('/select_stock/',[StockController::class,'select_stock'])->name('select_stock');
     Route::post('/update_stock/',[StockController::class,'update_stock'])->name('update_stock');
     Route::post('/delete_stock_line/',[StockController::class,'delete_stock_line'])->name('delete_stock_line');
     Route::get('/show_stock/',[StockController::class,'show_stock'])->name('show_stock');

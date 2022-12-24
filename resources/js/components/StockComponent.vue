@@ -42,10 +42,7 @@
 					</div>
 					<div class="col">
 						<label for="">Artículo</label>
-						<input type="text" class="form-control shadow-none rounded-0" @keyup="search_list" v-model="search">
-						<div class="hlist">
-							<a  href="" @click.prevent="list_value(data.idArticle)" v-for="data in result" :id="data.idArticle">{{data.model}}</a>
-						</div>
+						<vue-select :options="result" :reduce="model => model.idArticle" class="rounded-0" v-model="article" label="model"></vue-select>
 					</div>
 					<div class="col d-flex align-items-end">
 						<button class="btn btn-danger" @click="update_stock">Guardar</button>
@@ -80,8 +77,13 @@
 	</div>
 </template>
 <script>
+	import VueSelect from 'vue-select'
+	import 'vue-select/dist/vue-select.css';
 	import datatable from 'datatables.net-bs5'
 	export default{
+		components:{
+    		VueSelect
+  		},
 		data(){
 			return{
 				data:[],
@@ -105,7 +107,14 @@
 					me.investment = response.data.investment;
 				})
 			},
-			search_list(){
+			select_stock(){
+				var me = this;
+				var url = '/select_stock';
+				axios.get(url).then(function(response){
+					me.result = response.data;
+				})
+			},
+			/*search_list(){
 				var me = this;
 				var url = 'search_stock';
 				axios.post(url,{
@@ -118,7 +127,7 @@
 						me.result = response.data;
 					}
 				})
-			},
+			},*/
 			list_value(data){
 				var text = $("#"+data).text();
 				this.search = text;
@@ -154,6 +163,7 @@
 		},
 		mounted(){
 			this.get_data();
+			this.select_stock();
 		}
 	}
 </script>

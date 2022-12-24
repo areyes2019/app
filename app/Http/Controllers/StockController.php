@@ -17,6 +17,11 @@ class StockController extends Controller
             ->with('month',$month)
             ->with('year',$year);
     }
+    public function select_stock()
+    {
+        $query = cnnxn_Article::where('re_order',">","0")->get();
+        return $query;
+    }
     public function search_stock(Request $request)
     {
         if ($request->data== null) {
