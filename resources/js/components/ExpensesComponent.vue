@@ -80,36 +80,46 @@
   		</div>
 	  	
 	</div>
+	<!-- Gastos -->
 	<div class="tab-content" id="myTabContent">
 		<div class="tab-pane fade show" id="spense" role="tabpanel" aria-labelledby="home-tab">
   			<div class="container mt-4">
-  				<h5>Enero 2023</h5>
+  				<h5>{{month}} {{year}}</h5>
   				<form action="add_spent" method="post">
-  					@csrf
   					<div class="row mt-3 mb-3">
   						<div class="col">
   							<label for="">Concepto</label>
-  							<input type="text" name="description" placeholder="Concepto del gasto" class="form-control rounded-0 shadow-none">
+  							<input type="text" v-model="data.description" placeholder="Concepto del gasto" class="form-control rounded-0 shadow-none">
   						</div>
   						<div class="col">
   							<label for="">Cantidad</label>
-  							<input type="text" name="amount" placeholder="Monto" class="form-control rounded-0 shadow-none">
+  							<input type="text" v-model="data.amount" placeholder="Monto" class="form-control rounded-0 shadow-none">
   						</div>
   						<div class="col">
-  							<label for="">Referencia</label>
-  							<select name="reference" id="" class="form-control rounded-0 shadow-none">
-  								<option value="">Selecciona una opción</option>
+  							<label for="">Facturación</label>
+  							<select v-model="data.invoice" id="" class="form-control rounded-0 shadow-none">
+  								<option value="">Seleccione...</option>
   								<option value="0">Sin Factura</option>
   								<option value="1">Con Factura</option>
   							</select>
   						</div>
   						<div class="col">
   							<label for="">Tipo de Gasto</label>
-  							<select name="type" id="" class="form-control rounded-0 shadow-none">
+  							<select v-model="data.type" id="" class="form-control rounded-0 shadow-none">
+  								<option value="">Seleccione...</option>
   								<option value="1">Impuestos</option>
   								<option value="2">Suministros</option>
   								<option value="3">Gastos variables</option>
   								<option value="4">Gastos fijos</option>
+  							</select>
+  						</div>
+  						<div class="col">
+  							<label for="">Cuenta</label>
+  							<select v-model="data.account" id="" class="form-control rounded-0 shadow-none">
+  								<option value="">Seleccione...</option>
+  								<option value="Efectivo">Efectivo</option>
+  								<option value="Santander">Santander</option>
+  								<option value="BBVA">BBVA</option>
   							</select>
   						</div>
   						<div class="col d-flex align-items-end">
@@ -119,18 +129,19 @@
   				</form>
   				<table class="table table-bordered">
   					<tr>
-  						<th>Id</th>
-  						<th>Concepto</th>
-  						<th>Facturado</th>
-  						<th>Monto</th>
   						<th>Fecha</th>
+  						<th>Concepto</th>
+  						<th>Monto</th>
+  						<th>Facturado</th>
+  						<th>Cuenta</th>
   					</tr>
-  					<tr>
-  						<td>5</td>
-  						<td>Pago de Gasolina</td>
-  						<td>No</td>
-  						<td>$2596.00</td>
-  						<td>25/11/23</td>
+  					<tr v-for = "data in list">
+  						<td>{{date_format(data.created_at)}}</td>
+  						<td>{{data.description}}</td>
+  						<td>{{data.amount}}</td>
+  						<td v-if="data.reference == 1">Facturado</td>
+  						<td v-if="data.reference == 2">Sin Factura</td>
+  						<td>{{data.account}}</td>
   					</tr>
   				</table>
   			</div>
@@ -165,14 +176,14 @@
   				</form>
   				<table class="table table-bordered">
   					<tr>
-  						<th>Id</th>
+  						<th>Fecha</th>
   						<th>Concepto</th>
   						<th>Facturado</th>
   						<th>Monto</th>
   						<th>Fecha</th>
   					</tr>
   					<tr>
-  						<td>5</td>
+  						<td></td>
   						<td>Pago de Gasolina</td>
   						<td>No</td>
   						<td>$2596.00</td>
@@ -187,17 +198,47 @@
 	</div>
 </template>
 <script>
+	import moment from "moment";
 	export default{
 		data(){
 			return{
-
+				list:[],
+				data:[],
+				moment:moment,
+				month:"",
+				year:"",
 			}
 		},
 		methods:{
+			get_data(){
+				var me = this;
+				var url = '/show_spent';
+				axios.get(url).then(function(response){
+					me.list = response.data.data;
+					me.month = response.data.month;
+					me.year = response.data.year;
+				})
+			},
+			add_data(){
+				var me = this;
+				var url = '/add_spent';
+				axios.get(url,{
+					'type':data.type,
+					'account':data.account,
+					'description':data.description,
+					'reference':data.invoice,
+					'amount':data.amount,
+				}).then(function(response){
+					me.get_data();
+				})
+			},
+			date_format(d){
+				return moment(d).format('DD-MMMM-YYYY')
+			}
 
 		},
 		mounted(){
-
+			this.get_data();
 		}
 	}
 </script>

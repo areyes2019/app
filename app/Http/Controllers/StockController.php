@@ -85,5 +85,9 @@ class StockController extends Controller
 
         return $data;
     }
+    public function delete_stock_line(Request $request)
+    {
+        $query = cnnxn_Stock::where('idStock',$request->stock)->delete();
+    }
     
 }

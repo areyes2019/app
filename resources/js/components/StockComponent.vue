@@ -44,7 +44,7 @@
 						<label for="">Artículo</label>
 						<input type="text" class="form-control shadow-none rounded-0" @keyup="search_list" v-model="search">
 						<div class="hlist">
-							<a  href="" @click.prevent="list_value(data.idArticle)" v-for="data in result" :id="data.idArticle">{{data.name}}</a>
+							<a  href="" @click.prevent="list_value(data.idArticle)" v-for="data in result" :id="data.idArticle">{{data.model}}</a>
 						</div>
 					</div>
 					<div class="col d-flex align-items-end">
@@ -62,6 +62,7 @@
 				<th>Modelo</th>
 				<th>P/U</th>
 				<th>Total</th>
+				<th></th>
 			</tr>
 			<tr v-for = "list in data">
 				<td>{{list.idStock}}</td>
@@ -71,6 +72,9 @@
 				<td>${{list.cost}}</td>
 				<td class="d-none">{{sum = list.cost * list.quantity}}</td>
 				<td>${{res = sum.toFixed(2)}}</td>
+				<td>
+					<a href="" @click.prevent="delete_line(list.idStock)"><span class="bi bi-trash"></span></a>
+				</td>
 			</tr>
 		</table>
 	</div>
@@ -132,6 +136,19 @@
 					me.article = "";
 					me.quantity = "";
 					me.search = "";
+				})
+			},
+			delete_line(data){
+				var me = this;
+				var url = '/delete_stock_line';
+				axios.post(url,{
+					'stock':data
+				}).then(function(response){
+					var title = "Felicidades";
+                    var message = "Has ha contabilizado esta cotización";
+                    toaster(title,message);
+					me.get_data();
+
 				})
 			}
 		},

@@ -33,9 +33,11 @@
         "install": "^0.13.0",
         "jquery": "^3.6.1",
         "jszip": "^3.10.1",
+        "moment": "^2.29.4",
         "npm": "^8.18.0",
         "pdfmake": "^0.2.5",
         "v-toaster": "^1.0.3",
+        "vue-moment": "^4.1.0",
         "vue-select": "^3.20.0"
     }
 }

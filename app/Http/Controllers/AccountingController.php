@@ -52,7 +52,6 @@ class AccountingController extends Controller
         $query->reference = $request->reference;
         $query->amount = $request->amount;
         $query->save();
-        return redirect('accounting');
     }
     public function add_credit(Request $request)
     {
@@ -62,5 +61,20 @@ class AccountingController extends Controller
         $query->amount = $request->amount;
         $query->save();
         return redirect('/accounting/');
+    }
+    public function show_spent()
+    {
+        $month = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+        $date  = $month[date('n')-1];
+        $period = date('m');
+        $year = date('Y');
+        $query = cnnxn_expense::whereMonth('created_at',$period)->get();
+
+        $data = [
+            'data'=>$query,
+            'month'=>$date,
+            'year'=>$year
+        ];
+        return $data;
     }
 }

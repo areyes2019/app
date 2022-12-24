@@ -149,12 +149,14 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('/accounting/',[AccountingController::class,'index'])->name('accounting');
     Route::post('/add_accounting/',[AccountingController::class,'add_accounting'])->name('add_accounting');
     Route::post('/add_spent/',[AccountingController::class,'add_spent'])->name('add_spent');
+    Route::get('/show_spent/',[AccountingController::class,'show_spent'])->name('show_spent');
     Route::post('/add_credit/',[AccountingController::class,'add_credit'])->name('add_credit');
 
     //inventarios
     Route::get('/stock/',[StockController::class,'index'])->name('stock');
     Route::post('/search_stock/',[StockController::class,'search_stock'])->name('search_stock');
     Route::post('/update_stock/',[StockController::class,'update_stock'])->name('update_stock');
+    Route::post('/delete_stock_line/',[StockController::class,'delete_stock_line'])->name('delete_stock_line');
     Route::get('/show_stock/',[StockController::class,'show_stock'])->name('show_stock');
     
 
