@@ -33,47 +33,49 @@
 		        </div>
 			</div>
 		</div>
-		<div class="card mt-4">
-			<div class="card-body">
+		<div class="card mt-4 mb-2 rounded-0">
+			<div class="card-header">
 				<div class="row">
-					<div class="col">
-						<label for="">Cantidad</label>
-						<input type="number" class="form-control shadow-none rounded-0" min="1" v-model="quantity">
-					</div>
 					<div class="col">
 						<label for="">Artículo</label>
 						<vue-select :options="result" :reduce="model => model.idArticle" class="rounded-0" v-model="article" label="model"></vue-select>
+					</div>
+					<div class="col">
+						<label for="">Cantidad</label>
+						<input type="number" class="form-control shadow-none rounded-0" min="1" v-model="quantity">
 					</div>
 					<div class="col d-flex align-items-end">
 						<button class="btn btn-danger" @click="update_stock">Guardar</button>
 					</div>
 				</div>
 			</div>
+			<div class="card-body">
+				<h3 class="mt-4">Lista de existencias</h3>
+				<table class="table table-bordered mt-1">
+					<tr>
+						<th>#</th>
+						<th>Cant</th>
+						<th>Artículo</th>
+						<th>Modelo</th>
+						<th>P/U</th>
+						<th>Total</th>
+						<th></th>
+					</tr>
+					<tr v-for = "list in data">
+						<td>{{list.idStock}}</td>
+						<td>{{list.quantity}}</td>
+						<td>{{list.name}}</td>
+						<td>{{list.model}}</td>
+						<td>${{list.cost}}</td>
+						<td class="d-none">{{sum = list.cost * list.quantity}}</td>
+						<td>${{res = sum.toFixed(2)}}</td>
+						<td>
+							<a href="" @click.prevent="delete_line(list.idStock)"><span class="bi bi-trash"></span></a>
+						</td>
+					</tr>
+				</table>
+			</div>
 		</div>
-		<h3 class="mt-4">Lista de existencias</h3>
-		<table class="table table-bordered mt-1">
-			<tr>
-				<th>#</th>
-				<th>Cant</th>
-				<th>Artículo</th>
-				<th>Modelo</th>
-				<th>P/U</th>
-				<th>Total</th>
-				<th></th>
-			</tr>
-			<tr v-for = "list in data">
-				<td>{{list.idStock}}</td>
-				<td>{{list.quantity}}</td>
-				<td>{{list.name}}</td>
-				<td>{{list.model}}</td>
-				<td>${{list.cost}}</td>
-				<td class="d-none">{{sum = list.cost * list.quantity}}</td>
-				<td>${{res = sum.toFixed(2)}}</td>
-				<td>
-					<a href="" @click.prevent="delete_line(list.idStock)"><span class="bi bi-trash"></span></a>
-				</td>
-			</tr>
-		</table>
 	</div>
 </template>
 <script>
