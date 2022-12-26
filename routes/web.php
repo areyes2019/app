@@ -138,6 +138,7 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('/order_totals/{id}',[OrdersController::class,'order_totals'])->name('order_totals');
     Route::get('/order_pdf/{supplier}/{order}',[OrdersController::class,'pdf'])->name('order_pdf');
     Route::get('/orders_show/',[OrdersController::class,'orders_show'])->name('orders_show');
+    Route::post('/delete_order_line/',[OrdersController::class,'delete_order_line']);
 
     //configuracion
     Route::get('/config/',[ConfigController::class,'index'])->name('config');

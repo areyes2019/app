@@ -131,5 +131,12 @@ class OrdersController extends Controller
             ->get();
         return $query;
     }
+    public function delete_order_line(Request $request)
+    {
+        $query = cnnxn_order_detail::where('idDetail', $request->id_line)->delete();
+        if ($query) {
+            return true;
+        }
+    }
 
 }

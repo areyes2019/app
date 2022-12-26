@@ -85,7 +85,7 @@
                                     <td>
                                         <div class="d-flex justify-content-between">
                                             <p class="m-0">{{line.total}}</p>
-                                            <a href="" @click.prevent="deleteLine(line.id)" :class="[display]">X</a>
+                                            <a href="" @click.prevent="deleteLine(line.idDetail)" :class="[display]">X</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -327,13 +327,14 @@
             },
             deleteLine(line){
                 var me = this;
-                var url = '/delete_line';
+                var url = '/delete_order_line';
                 axios.post(url,{
-                    'id_qt':me.id,
                     'id_line':line
                 }).then(function(response){
-                    me.showDetails();
-                    me.showTotals();
+                    if (response.data == 1) {
+                        me.showDetails();
+                        me.showTotals();
+                    }
                 })
             },
             addDiscount(data){
