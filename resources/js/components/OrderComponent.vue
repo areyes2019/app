@@ -93,22 +93,8 @@
                             <tfoot>
                                 <tr>
                                     <th colspan="3"></th>
-                                    <th >Sub-Total</th>
+                                    <th >Total</th>
                                     <td>${{total.sub_total}}</td>
-                                </tr>
-                                <tr>
-                                    <th colspan="3"></th>
-                                    <th>IVA</th>
-                                    <td>
-                                        <div>
-                                            <p class="m-0">${{total.tax}}</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th colspan="3"></th>
-                                    <th>Total</th>
-                                    <td>${{total.total}}</td>
                                 </tr>
                             </tfoot>
                     </table>

@@ -141,18 +141,9 @@
     <div class="cuenta" style="margin-top: 10px; padding: 15px;">
         <table id="customers">
             <tr>
-                <th>SUB_TOTAL</th>
+                <th>TOTAL</th>
                 <td>${{$totals['sub_total']}}</td>
             </tr>
-            <tr>
-                <th>IVA</th>
-                <td>${{$totals['tax']}}</td>
-            </tr>
-            <tr>
-                <th>TOTAL</th>
-                <td>${{$totals['total']}}</td>
-            </tr>
-           
         </table>
     </div>
     <div class="footer">
