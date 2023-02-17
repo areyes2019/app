@@ -139,6 +139,7 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('/order_pdf/{supplier}/{order}',[OrdersController::class,'pdf'])->name('order_pdf');
     Route::get('/orders_show/',[OrdersController::class,'orders_show'])->name('orders_show');
     Route::post('/delete_order_line/',[OrdersController::class,'delete_order_line']);
+    Route::post('/add_quantity_order/',[OrdersController::class,'add_quantity_order']);
 
     //configuracion
     Route::get('/config/',[ConfigController::class,'index'])->name('config');

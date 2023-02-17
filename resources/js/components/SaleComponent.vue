@@ -5,71 +5,69 @@
 				<a href="" class="btn btn-danger rounded-0" @click.prevent="add_order()">Agregar pedido</a>
 			</div>
 		</div>
-		<table class="table table-bordered mt-3">
-			<thead>
-				<tr>
-					<th>#</th>
-					<th>Cliente</th>
-					<th>Numero WhatsApp</th>
-					<th>Proceso</th>
-					<th>Entrega</th>
-					<th>Img</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td><input type="text"></td>
-					<td></td>
-					<td><input type="text"></td>
-					<td>
-						<select name="" id="">
-							<option value="">Escoge...</option>
-							<option value="">Anticipo</option>
-							<option value="">Diseño</option>
-							<option value="">Elaborado</option>
-							<option value="">Pagado</option>
-							<option value="">Entregado</option>
-						</select>
-					</td>
-					<td>
-						<select name="" id="">
-							<option value="">Escoge...</option>
-							<option value="">Ocurre</option>
-							<option value="">Domicilio</option>
-						</select>
-					</td>
-				<tr>
-					<td>52</td>
-					<td>Martina Marcela</td>
-					<td>461 350 9565</td>
-					<td>Pagado</td>
-					<td>A Domicilio</td>
-					<td>
-						<img src="img/model.png" alt="" width="90">
-					</td>
-				</tr>
-				<tr>
-					<td>52</td>
-					<td>Martina Marcela</td>
-					<td>461 350 9565</td>
-					<td>Pagado</td>
-					<td>Ocurre</td>
-					<td>
-						<img src="img/model.png" alt="" width="90">
-					</td>
-				</tr>
-				<tr>
-					<td>52</td>
-					<td>Martina Marcela</td>
-					<td>461 350 9565</td>
-					<td>Pagado</td>
-					<td>Ocurre</td>
-					<td>
-						<img src="img/model.png" alt="" width="90">
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="row">
+			<div class="col-3">
+				<div class="list-pos">
+					<div class="list-pos-header d-flex justify-content-between align-items-center">
+						<a href="">Hoy</a>
+						<a href="">Ayer</a>
+						<label for="">Fecha</label>
+						<input type="date">
+					</div>
+					<div class="list-pos-header d-flex justify-content-between align-items-center">
+						<label for="" class="mr-1">No.</label>
+						<input type="text" class="form-control form-control-sm rounded-0 shadow-none">
+						</div>
+					</div>
+					<div class="list-pos-child">
+						<div class="list-pos-link">
+							<p><span>Pedido:</span>456</p>
+							<p><span>Fecha:</span>12/03/23</p>
+						</div>
+						<p>Abdias Reyes Reyna</p>
+						<div class="d-flex justify-content-between align-items-center">
+							<div class="d-block">
+								<p>Envio a domicilio</p>
+								<p>Saldo: <span class="text-danger">$250.00</span></p>
+							</div>
+							<a href="" class="btn btn-danger rounded-0 btn-sm"><span class="bi bi-arrow-right-short"></span></a>
+						</div>
+					</div>
+					<div class="list-pos-child">
+						<div class="list-pos-link">
+							<p><span>Pedido:</span>456</p>
+							<p><span>Fecha:</span>12/03/23</p>
+						</div>
+						<p>Patricia Ortega Durán</p>
+						<div class="d-flex justify-content-between align-items-center">
+							<div class="d-block">
+								<p>Envio a domicilio</p>
+								<p>Saldo: <span class="text-danger">$250.00</span></p>
+							</div>
+							<a href="" class="btn btn-danger rounded-0 btn-sm"><span class="bi bi-arrow-right-short"></span></a>
+						</div>
+					</div>
+					<div class="list-pos-child">
+						<div class="list-pos-link">
+							<p><span>Pedido:</span>456</p>
+							<p><span>Fecha:</span>12/03/23</p>
+						</div>
+						<p>Esteban Labrego Martínez</p>
+						<div class="d-flex justify-content-between align-items-center">
+							<div class="d-block">
+								<p>Envio a domicilio</p>
+								<p>Saldo: <span class="text-danger">$250.00</span></p>
+							</div>
+							<a href="" class="btn btn-danger rounded-0 btn-sm"><span class="bi bi-arrow-right-short"></span></a>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+			<div class="col-9">
+
+			</div>
+		</div>																
 	</div>
 </template>
 <script>

@@ -76,7 +76,7 @@
                             <tbody>
                                 <tr v-for="line in lines">
                                     <td>
-                                        <input type="number" :value="line.quantity"  :id="line.id" @change="addQuantity(line.id)" :disabled = "disabled == 1">
+                                        <input type="number" :value="line.quantity"  :id="line.id" @change="addQuantity(line.idOrder)" :disabled = "disabled == 1">
                                     </td>
                                     <td>{{line.name}}</td>
                                     <td>{{line.model}}</td>
@@ -299,13 +299,13 @@
                 })
             },
             addQuantity(line){
-                //console.log(number);
+                //console.log(line);
                 var number = $("#"+line).val();
-                var me = this;
-                var url = '/add_quantity/'+line;
+                var me = line;
+                var url = '/add_quantity_order/';
                 axios.post(url,{
                     'quantity':number,
-                    'id':me.id
+                    'id':line
                 }).then(function(response){
                     me.showDetails();
                     me.showTotals();

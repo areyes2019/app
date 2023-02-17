@@ -28,6 +28,10 @@ class OrdersController extends Controller
                 ->with('supplier_name',$supplier_name[0]->company);
 
     }
+    public function add_quantity_order(Request $request)
+    {
+        return $request;
+    }
     public function store(Request $request)
     {
         $query = new cnnxn_Order;
