@@ -20,9 +20,9 @@ class ArticlesController extends Controller
      */
     public function index()
     {
-        $query = cnnxn_config::all();
-        $percent=  $query[0]->percent;
-        return view('articles.index')->with('percent',$percent);
+        //$query = cnnxn_config::all();
+        //$percent=  $query[0]->percent;
+        return view('articles.index'); //->with('percent',$percent);
     }
 
 
@@ -45,7 +45,7 @@ class ArticlesController extends Controller
     public function store(Request $request)
     {
         
-        if ($request->visible==true) {
+        /*if ($request->visible==true) {
             $visible = 1;
         }else{
             $visible = 0;
@@ -106,7 +106,8 @@ class ArticlesController extends Controller
             'cataloge.required' =>'Se requiere un catálogo'
         ])->validate();
 
-        $query = cnnxn_Article::create($validated);
+        $query = cnnxn_Article::create($validated);*/
+        $query = cnnxn_Article::create($request->all());
         
     }
 
@@ -294,8 +295,12 @@ class ArticlesController extends Controller
 
     public function list()
     {
-        $query = cnnxn_Article::join('cnnxn_family','cnnxn_family.idFamily','=','cnnxn_articles.family')->get();
+        
+        $query = cnnxn_Article::all();
         return $query;
+
+        /*$query = cnnxn_Article::join('cnnxn_family','cnnxn_family.idFamily','=','cnnxn_articles.family')->get();
+        return $query;*/
     }
     public function get_cataloge($id)
     {

@@ -20,8 +20,9 @@ class CreateCnnxnQuotationsTable extends Migration
             $table->decimal('amount')->nullable();
             $table->decimal('tax')->default(0);
             $table->decimal('total')->nullable();
+            $table->decimal('sub_total')->nullable();
             $table->integer('status')->default(0);
-            $table->integer('idCustomer');
+            $table->integer('idCustomer')->nullable();
             $table->timestamps();
         });
     }

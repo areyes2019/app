@@ -19,7 +19,7 @@ class StockController extends Controller
     }
     public function select_stock()
     {
-        $query = cnnxn_Article::where('re_order',">","0")->get();
+        $query = cnnxn_Article::all();
         return $query;
     }
     public function search_stock(Request $request)
@@ -64,6 +64,65 @@ class StockController extends Controller
                     'total_value'=>$new_price,
             ]);
         }
+    }
+    public function take(Request $request)
+    {
+
+        $id = $request->id;
+        $number = $request->take;
+        $query = cnnxn_Stock::where('idStock',$id)->get();
+
+        //esta es la cantidad original
+        $quantity = $query[0]->quantity;
+        //aqui hacemos la suma
+        $new_rest = $quantity - $number;
+
+        //hacemos el update
+        $less = cnnxn_Stock::where('idStock',$id)->decrement('quantity',$number);
+
+        //sacamos el articulo
+        $article = cnnxn_Article::where('idArticle',$query[0]->article)->get();
+
+        $new_total = $query[0]->cost * $new_rest;
+        $new_total_value = $article[0]->price * $new_rest;
+        
+        
+
+        //actualizamos los demas campos
+        $update = cnnxn_Stock::where('idStock',$id)->update([
+            'total'=>$new_total,
+            'total_value'=>$new_total_value,
+        ]);
+
+
+    }
+    public function take_up(Request $request)
+    {
+        $id = $request->id;
+        $number = $request->take;
+        $query = cnnxn_Stock::where('idStock',$id)->get();
+
+        //esta es la cantidad original
+        $quantity = $query[0]->quantity;
+        //aqui hacemos la suma
+        $new_rest = $quantity - $number;
+
+        //hacemos el update
+        $less = cnnxn_Stock::where('idStock',$id)->increment('quantity',$number);
+
+        //sacamos el articulo
+        $article = cnnxn_Article::where('idArticle',$query[0]->article)->get();
+
+        $new_total = $query[0]->cost * $new_rest;
+        $new_total_value = $article[0]->price * $new_rest;
+        
+        
+
+        //actualizamos los demas campos
+        $update = cnnxn_Stock::where('idStock',$id)->update([
+            'total'=>$new_total,
+            'total_value'=>$new_total_value,
+        ]);
     }
     public function show_stock()
     {

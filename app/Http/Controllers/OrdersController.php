@@ -7,6 +7,8 @@ use App\Models\cnnxn_Order;
 use App\Models\Contact;
 use App\Models\cnnxn_Article;
 use App\Models\cnnxn_order_detail;
+use App\Models\cnnxn_quotation;
+use App\Models\cnnxn_quotation_detail;
 use PDF;
 class OrdersController extends Controller
 {
@@ -17,15 +19,32 @@ class OrdersController extends Controller
     public function orders_page($id)
     {
         
+       $slug = rand(); //aqui creamos el slug
+       $query = new cnnxn_quotation;
+       $query->slug = $slug;
+       $query->type = $id;
+       $query->save();
+
+       // Ahora queremos el numero de cotizacion que generó
+        $id_order = cnnxn_quotation::where('slug',$slug)->get();
+       
+        $value = $id_order[0]->idQt; 
+
+        return view('quotations.page')
+                ->with('order',$value)
+                ->with('type',$id);
+
+       
+
        //aqui enviamos los datos de la cotizacion
-        $query = cnnxn_Order::where('slug',$id)->get();
+        /*$query = cnnxn_Order::where('slug',$id)->get();
         //buscamos el nombre 
         $supplier_name = Contact::where('idContact',$query[0]->idSupplier)->get();
         return view('orders.page')
                 ->with('idOrder', $query[0]->idOrder)
                 ->with('slug',$query[0]->slug)
                 ->with('supplier_id',$query[0]->idSupplier)
-                ->with('supplier_name',$supplier_name[0]->company);
+                ->with('supplier_name',$supplier_name[0]->company);*/
 
     }
     public function add_quantity_order(Request $request)

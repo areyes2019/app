@@ -1,7 +1,7 @@
 <template>
 	<div class="container-fluid">
 		<h3>Inventario</h3>
-		<div class="row">
+		<!-- <div class="row">
 			<div class="col-md-4">
 				<div class="card">
 		            <div class="card-body">
@@ -32,7 +32,8 @@
 		            </div>
 		        </div>
 			</div>
-		</div>
+		</div>-->
+		
 		<div class="card mt-4 mb-2 rounded-0">
 			<div class="card-header">
 				<div class="row">
@@ -53,24 +54,44 @@
 				<h3 class="mt-4">Lista de existencias</h3>
 				<table class="table table-bordered mt-1">
 					<tr>
-						<th>#</th>
 						<th>Cant</th>
 						<th>Artículo</th>
 						<th>Modelo</th>
 						<th>P/U</th>
 						<th>Total</th>
 						<th></th>
+						<th></th>
 					</tr>
 					<tr v-for = "list in data">
-						<td>{{list.idStock}}</td>
 						<td>{{list.quantity}}</td>
 						<td>{{list.name}}</td>
 						<td>{{list.model}}</td>
 						<td>${{list.cost}}</td>
 						<td class="d-none">{{sum = list.cost * list.quantity}}</td>
 						<td>${{res = sum.toFixed(2)}}</td>
-						<td>
+						<td class="d-flex justify-content-end">
 							<a href="" @click.prevent="delete_line(list.idStock)"><span class="bi bi-trash"></span></a>
+							<div class="dropdown">
+		                      <a href="#" class="nav-link my-link-nav" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"><span class="bi bi-arrow-bar-down"></span></a>
+
+		                      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+	                            <div class="d-flex justify-content-between p-2">
+	                                <input type="number" ref="money" v-model="take" width="10" min="1" style="width:55px">
+	                                <a class="btn btn-danger btn-sm rounded-0 " @click.prevent="take_out(list.idStock)"><span class="bi bi-check2-square"></span></a>
+	                            </div>
+		                      </div>
+                    		</div>
+                    		<!-- Para aumener el inventario -->
+                    		<div class="dropdown">
+		                      <a href="#" class="nav-link my-link-nav" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"><span class="bi bi-arrow-bar-up"></span></a>
+
+		                      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+	                            <div class="d-flex justify-content-between p-2">
+	                                <input type="number" ref="money" v-model="up" width="10" min="1" style="width:55px">
+	                                <a class="btn btn-danger btn-sm rounded-0 " @click.prevent="take_up(list.idStock)"><span class="bi bi-check2-square"></span></a>
+	                            </div>
+		                      </div>
+                    		</div>
 						</td>
 					</tr>
 				</table>
@@ -96,6 +117,8 @@
 				total_value:"",
 				profit:"",
 				investment:"",
+				take:"",
+				up:""
 			}
 		},
 		methods:{
@@ -135,6 +158,28 @@
 				this.search = text;
 				this.result ="";
 				this.article = data;
+			},
+			take_out(data){
+				var me = this;
+				var url = "/take_out_stock";
+				axios.post(url,{
+					'take':me.take,
+					'id':data
+				}).then(function(response){
+					me.take="";
+					me.get_data();
+				})
+			},
+			take_up(data){
+				var me = this;
+				var url = "/take_up_stock";
+				axios.post(url,{
+					'take':me.up,
+					'id':data
+				}).then(function(response){
+					me.up="";
+					me.get_data();
+				})
 			},
 			update_stock(){
 				var me = this;

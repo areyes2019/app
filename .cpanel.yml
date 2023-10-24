@@ -2,5 +2,6 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home2/sellopro/public_html/
+    - /bin/rsync -a --exclude 'index.php' public/$DEPLOYPATH
     
     

@@ -8,18 +8,18 @@
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
               <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link my-link-nav text-primary" v-if="status < 3" href="" @click.prevent="openModal">Agregar Artículos</a>
+                    <a class="nav-link my-link-nav" v-if="status < 3" href="" @click.prevent="openModal">Agregar Artículos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link my-link-nav" href="" @click.prevent="sendMail"><span class="bi bi-send"></span> Enviar</a>
+                    <a class="nav-link my-link-nav" href="#" @click.prevent="approved">Agregar artículo independiente</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link my-link-nav" :href="'/get_quotation_pdf/'+customer+'/'+id+'/down'"><span class="bi bi-download"></span> Descargar</a>
+                    <a class="nav-link my-link-nav" href="" @click.prevent="sendMail">Agregar Cliente</a>
                 </li>
+                <li class="nav-item"><a href="" class="nav-link" v-if="status==0">Agregar Envío</a></li>
                 <li class="nav-item">
-                    <a class="nav-link my-link-nav" href="#" @click.prevent="approved"><span class="bi bi-file-earmark-ruled"></span>Facturar</a>
+                    <a class="nav-link my-link-nav" :href="'/get_quotation_pdf/'+customer+'/'+id+'/down'">Descargar</a>
                 </li>
-                <li class="nav-item"><a href="" class="nav-link text-danger" v-if="status==0">Marcar como Enviada</a></li>
                 <li class="nav-item d-flex align-items-center" v-if="status < 3">
                     <div class="dropdown">
                       <a href="#" class="nav-link my-link-nav" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
@@ -53,13 +53,6 @@
                 </li>
                 <li class="nav-item"><a href="" class="nav-link text-danger" v-if="quotation.status==2">Generar orden de Trabajo</a></li>
                 <li class="nav-item"><a href="" class="nav-link text-danger" v-if="status==3">Generar orden de Trabajo</a></li>
-                <!--
-                    0 Borrador
-                    1 Enviada
-                    2 Pago parcial
-                    3 Pago total
-                    4 Cerrar
-                -->
               </ul>
             </div>
           </div>
@@ -68,7 +61,10 @@
             <div class="col-md-12">
                 <div class="card-box-std p-3">
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-3">
+                            <h4 v-if="type==1">Pedido {{order}}</h4>
+                            <h4 v-else="type==2">Cotización {{order}}</h4>
+                            <h4 class="text-primary">Adela Noriega Palafox</h4>
                             <div v-for="customer in customers">
                                 <div class="mb-3" v-for="item in quotation">
                                     <p class="m-0">No: <span>{{item.idQt}}</span></p>
@@ -92,89 +88,125 @@
                             <p class="m-0 p-0 text-primary" v-if="tax==1">Con Factura</p>
                             <p class="m-0 p-0 text-danger" v-if="tax==0">Sin Factura</p>
                             <h4 v-if="total.advance_payment == total.total">PAGADO</h4>
-                            <h4>Anticipo sugerido ${{total.advance}}</h4>
+                            <h5>Anticipo sugerido <span class="text-danger">${{total.advance}}</span></h5>
+
+                            <div class="row">
+                                <div class="col-md-12 col-12">
+                                    <label for="">Nombre</label>
+                                    <input type="text" v-model="order_name" class="form-control rounded-0 shadow-nones">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="">Telefono</label>
+                                    <input type="text" v-model="mobile" class="form-control rounded-0 shadow-nones">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="">Entrega</label>
+                                    <select v-model="delivery" id="" class="form-control rounded-0 shadow-none">
+                                        <option value="1">Ocurre</option>
+                                        <option value="2">Envio Local</option>
+                                        <option value="3">Envío Foraneo</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-danger btn-sm btn-block rounded-0 mt-2">Guardar Borador</button>
+                            
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <label for="">Artículo</label>
+                                    <vue-select :options="articles" :reduce="name => name.idArticle"  v-model="article" label="name"></vue-select>
+                                </div>
+                                <div class="col-md-2 d-flex align-items-end">
+                                    <button class="btn btn-danger rounded-0 btn-sm">Ok</button>        
+                                </div>  
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card-box-std p-3">
+                                <div class="card-box-std p-3" v-if="lines == 0">
+                                    <p>No hay articulos en tu cotización</p>
+                                </div>
+                                <div class="table-container" v-if="lines != 0">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>CANT.</th>
+                                                <th class="w-75">ARTÍCULO</th>
+                                                <th>MODELO</th>
+                                                <th>P/UNITARIO</th>
+                                                <th>TOTAL</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="line in lines">
+                                                <td v-if="status < 3">
+                                                    <input type="number" :value="line.quantity"  :id="line.id" @change="addQuantity(line.id)" :disabled = "disabled == 1" style="width: 100%;">
+                                                </td>
+                                                <td v-if="status == 3">{{line.quantity}}</td>
+                                                <td v-else-if="status == 4">{{line.quantity}}</td>
+                                                <td class="d-flex justify-content-between">{{line.name}}<a href=""><span class="bi bi-upload"></span></a></td>
+                                                <td>{{line.model}}</td>
+                                                <td>{{line.unit_price}}</td>
+                                                <td>
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="m-0">{{line.total}}</p>
+                                                        <a v-if="status < 3" href="" @click.prevent="deleteLine(line.id)">X</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th colspan="3"></th>
+                                                <th >Importe</th>
+                                                <td>${{total.amount}}</td>
+                                            </tr>
+                                            <tr  v-if="total.discount > 0">
+                                                <th colspan="3"></th>
+                                                <th>Dcto. <strong>{{total.percent}}%</strong></th>
+                                                <td class="d-flex justify-content-between">${{total.discount}}<a href="#" @click.prevent="delete_discount(1)" v-if="status < 3"><span class="bi bi-x-circle-fill"></span></a></td>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="3"></th>
+                                                <th>IVA</th>
+                                                <td>
+                                                    <div>
+                                                        <p class="m-0">${{total.tax}}</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="3"></th>
+                                                <th>Total</th>
+                                                <td>${{total.total}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="3"></th>
+                                                <th v-if="total.balance == 0">Pago Total</th>
+                                                <th v-else>Anticipo</th>
+                                                <td>${{total.payment}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="3"></th>
+                                                <th>Saldo</th>
+                                                <td class="d-flex justify-content-between">${{total.balance}} <a v-if="status < 3" href="#" @click.prevent="payment_modal(total.balance)"><span class="bi bi-check-square"></span></a></td>
+                                            </tr>                    
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-danger rounded-0" @click.prevent="deleteQuotation">Eliminar</button>
+                                    <button class="btn btn-primary ml-1 rounded-0" @click.prevent="deleteQuotation">Ticket</button>
+                                    <button class="btn btn-success ml-1 rounded-0 ">Pagar</button>
+                                    <button class="btn btn-dark ml-1 rounded-0 ">Enviar a Diseño</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="card-box-std p-3 mt-3">
-                    <div class="card-box-std p-3" v-if="lines == 0">
-                        <p>No hay articulos en tu cotización</p>
-                    </div>
-                    <div class="table-container" v-if="lines != 0">
-                        
-                        <table class="table table-bordered mt-4">
-                            <thead>
-                                <tr>
-                                    <th>CANT.</th>
-                                    <th>ARTÍCULO</th>
-                                    <th>MODELO</th>
-                                    <th>P/UNITARIO</th>
-                                    <th>TOTAL</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="line in lines">
-                                    <td v-if="status < 3">
-                                        <input type="number" :value="line.quantity"  :id="line.id" @change="addQuantity(line.id)" :disabled = "disabled == 1">
-                                    </td>
-                                    <td v-if="status == 3">{{line.quantity}}</td>
-                                    <td v-else-if="status == 4">{{line.quantity}}</td>
-                                    <td>{{line.name}}</td>
-                                    <td>{{line.model}}</td>
-                                    <td>{{line.unit_price}}</td>
-                                    <td>
-                                        <div class="d-flex justify-content-between">
-                                            <p class="m-0">{{line.total}}</p>
-                                            <a v-if="status < 3" href="" @click.prevent="deleteLine(line.id)">X</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th colspan="3"></th>
-                                    <th >Importe</th>
-                                    <td>${{total.amount}}</td>
-                                </tr>
-                                <tr  v-if="total.discount > 0">
-                                    <th colspan="3"></th>
-                                    <th>Dcto. <strong>{{total.percent}}%</strong></th>
-                                    <td class="d-flex justify-content-between">${{total.discount}}<a href="#" @click.prevent="delete_discount(1)" v-if="status < 3"><span class="bi bi-x-circle-fill"></span></a></td>
-                                </tr>
-                                <tr>
-                                    <th colspan="3"></th>
-                                    <th>IVA</th>
-                                    <td>
-                                        <div>
-                                            <p class="m-0">${{total.tax}}</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th colspan="3"></th>
-                                    <th>Total</th>
-                                    <td>${{total.total}}</td>
-                                </tr>
-                                <tr>
-                                    <th colspan="3"></th>
-                                    <th v-if="total.balance == 0">Pago Total</th>
-                                    <th v-else>Anticipo</th>
-                                    <td>${{total.payment}}</td>
-                                </tr>
-                                <tr>
-                                    <th colspan="3"></th>
-                                    <th>Saldo</th>
-                                    <td class="d-flex justify-content-between">${{total.balance}} <a v-if="status < 3" href="#" @click.prevent="payment_modal(total.balance)"><span class="bi bi-check-square"></span></a></td>
-                                </tr>                    
-                            </tfoot>
-                    </table>
-                    </div>
-                    <a href="#" @click.prevent="deleteQuotation"><span class="bi bi-trash"></span> Eliminar</a>
-                    <a href="#" class="ml-3" @click.prevent="deleteQuotation"><span class="bi bi-receipt"></span> Ver Ticket</a>
-                </div>
             </div>            
         </div>
-
         <!-- modal agregar articulo del catalogo -->
         <div class="modal fade" id="addArticle" tabindex="-1" role="dialog" aria-labelledby="exampleModal3Label" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
@@ -260,14 +292,23 @@
 </template>
 
 <script>
-   export default{
-        props:['id','slug','customer','type'],
+    import VueSelect from 'vue-select'
+    import 'vue-select/dist/vue-select.css';
+    export default{
+        props:['id','type','order','slug'],
+        components:{
+            VueSelect
+        },
         data(){
             return{
+                order_name:"",
+                delivery:"",
                 percent:"",
                 money:"",
                 quotation:[],
                 articles:[],
+                article:"",
+                name:"",
                 lines:[],
                 customers:[],
                 display:"",
@@ -281,12 +322,20 @@
             }
         },
         methods:{
+            save_data(){
+                var me = this;
+                var url = "/order_new/"
+                axios.post(url,{
+                    'name':slug,
+                    'delivery':delivery
+                }).then(function(response){})   
+            },
             openModal(){
                 var me = this;
                 axios.get('/articles_show').then(function(response) {
                     me.articles = response.data;
                     me.table();
-                    $('#addArticle').modal('show');
+                    //$('#addArticle').modal('show');
                 })
             },
             addArticle(item){
@@ -539,10 +588,11 @@
 
         },
         mounted(){
-            this.showCutomerData();
-            this.getQuotation();
+            //this.showCutomerData();
+            //this.getQuotation();
             this.showTotals();
             this.showDetails();
+            this.openModal();
         }
    }
 </script>

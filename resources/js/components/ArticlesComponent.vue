@@ -29,22 +29,15 @@
 				<button class="btn btn-danger btn-sm rounded-0" @click.prevent="add_article"><span class="bi bi-box"></span> Agregar artículo</button>
 			</div>
 			<div class="card-body">
-				<table class="table my-table" id="articles_table">
+				<table class="table table" id="articles_table">
 					<thead>
 						<tr>
 							<th>#</th>
-							<th></th>
+							<th>Img</th> <!-- aki va la imagen -->
 							<th>Nombre</th>
 							<th>Mod.</th>
-							<th>Tam.</th>
-							<th>Fam.</th>
-							<th>Mec.</th>
-							<th>Goma</th>
-							<th class="d-none"></th>
-							<th>Total</th>
 							<th>Precio</th>
-							<th>
-							</th>
+							<th>Acciones</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -55,12 +48,6 @@
 							</td>
 							<td>{{article.name}}</td>
 							<td>{{article.model}}</td>
-							<td>{{article.size}}</td>
-							<td>{{article.family_name}}</td>
-							<td>{{article.cost}}</td>
-							<td>{{article.rubber}}</td>
-							<td class="d-none">{{sum = parseFloat(article.cost) + parseFloat(article.rubber)}}</td>
-							<td>{{res = sum.toFixed(2)}}</td>
 							<td class="bg-secondary text-white font-weight-bold">{{article.price}}</td>
 							<td>
 								<a href="#" @click.prevent="showModal(article.idArticle)"><span class="bi bi-pencil-square"></span></a>
@@ -82,72 +69,22 @@
 		      	</div>
 		      	<div class="modal-body">
 		      		<div class="form-group">
-		      			<label>Nombre del Sello</label>
 						<input type="text" v-model="data.name" class="form-control rounded-0 shadow-none" placeholder="Nombre del Sello">
 						<small class="text-danger m-0 p-0">{{errors.name}}</small>
 					</div>
-					<div class="form-group">
-		      			<label>Modelo</label>
-						<input type="text" v-model="data.model" class="form-control rounded-0 shadow-none" placeholder="Nombre del Sello">
-					</div>
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-				      			<label>Lineas sugeridas</label>
-								<input type="number" min="1" v-model="data.lines" class="form-control rounded-0 shadow-none" value="1">
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="">Tamaño</label>
-								<input type="text" v-model="data.size" class="form-control rounded-0 shadow-none" placeholder="Tamaño">
-							</div>
-						</div>
-					</div>
-					<div class="my-form-group d-flex justify-content-between">
-						<p class="m-0 p-0">¿Se agrega al stock?</p>
-						<label class="switch">
-						  <input type="checkbox" v-model="data.stock" :value="1">
-						  <span class="slider"></span>
-						</label>
-					</div>
-					<div class="my-form-group d-flex justify-content-between">
-						<p class="m-0 p-0">Visible</p>
-						<label class="switch">
-						  <input type="checkbox" v-model="data.visible" :value="1">
-						  <span class="slider"></span>
-						</label>
-					</div>
-					<br>					
 					<div class="form-group mt-3">
-						<label for="">Precio Proveedor</label>
+						<input type="text" v-model="data.model" class="form-control rounded-0 shadow-none" placeholder="Modelo">
+					</div>
+					<div class="form-group mt-3">
 						<input type="text" v-model="data.cost" class="form-control rounded-0 shadow-none" placeholder="Precio Proveedor">
 						<small class="text-danger">{{errors.cost}}</small>
 					</div>
 					<div class="form-group mt-3">
-						<label for="">Precio Distribuidor</label>
-						<input type="text" v-model="data.dealer" class="form-control rounded-0 shadow-none" placeholder="Precio Distribuidor">
-						<small class="text-danger">{{errors.cost}}</small>
-					</div>
-					<div class="form-group">
-						<label for="">Precio Público</label>
-						<input type="text" v-model="data.price" class="form-control" placeholder="Precio Público">
+						<input type="text" v-model="data.price" class="form-control rounded-0 shadow-none" placeholder="Precio Público">
 						<small class="text-danger m-0">{{errors.price}}</small><br>
 						<small class="text-danger m-0">{{errors.price_decimal}}</small>
 					</div>
-					<label for="">Asignar Proveedor</label>
-					<div class="form-group">
-						<div class="form-group">
-							<div class="form-group">
-								<span class="bi bi-people input-icon"></span>
-								<select name="" id="" v-model="data.provider" class="input-control" @change="get_cataloge(data.provider)">
-									<option :value="supplier.idContact" v-for="supplier in suppliers">{{supplier.company}}</option>
-								</select>
-							</div>
-						</div>
-						<small class="text-danger">{{errors.provider}}</small>
-					</div>
-					<label for="">Agregar Família</label>
+					<!--<label for="">Agregar Família</label>
 					<div class="my-form-group">
 						<div class="form-group">
 							<span class="bi bi-people input-icon"></span>
@@ -156,8 +93,9 @@
 							</select>
 						</div>
 						<small class="m-0 p-0 text-danger">{{errors.family}}</small>
-					</div>
-					<label for="">Agregar Categoría</label>
+					</div> -->
+
+					<!--<label for="">Agregar Categoría</label>
 					<div class="my-form-group">
 						<div class="form-group">
 							<span class="bi bi-people input-icon"></span>
@@ -168,51 +106,8 @@
 								<option :value="single.categorie" v-for="single in single_list" class="text-primary">{{single.name}}</option>
 							</select>
 						</div>
-					</div>
-					<label for="">Agregar a catálogo</label>
-					<div class="my-form-group">
-						<div class="form-group">
-							<span class="bi bi-people input-icon"></span>
-							<select  v-model="data.cataloge" class="input-control">
-									<option :value="ctl.idCataloge"  v-for="ctl in cataloge">{{ctl.cataloge_name}}</option>
-							</select>
-						</div>
-						<small class="m-0 p-0 text-danger">{{errors.cataloge}}</small>
-					</div>
-					
-		      		<div class="row">
-		      			<div class="col-md-6">
-							<div class="my-form-group">
-								<div class="form-group">
-									<span class="bi bi-box input-icon"></span>
-									<input type="number" min="1" v-model="data.re_order" class="input-control" placeholder="Cant. Re-orden">
-								</div>
-							</div>
-		      			</div>
-		      			<div class="col-md-6">
-							<div class="my-form-group">
-								<div class="form-group">
-									<span class="bi bi-cash-coin input-icon"></span>
-									<input type="text" v-model="data.discount" class="input-control" placeholder="Descuento %">
-								</div>
-							</div>
-		      			</div>
-		      		</div>
-		      		<div class="row">
-		      			<div class="col-12">
-		      				<div class="form-group">
-			      				<label for="">Descripción Corta</label>
-			      				<textarea name="" id="" cols="30" rows="5" class="form-control rounded-0 shadow-none" v-model="data.short"></textarea>
-		      				</div>
-		      			</div>
-		      			<div class="col-md-12">
-		      				<div class="form-group">
-			      				<label for="">Descripción Larga</label>
-			      				<textarea name="" id="" cols="30" rows="5" class="form-control rounded-0 shadow-none" v-model="data.long"></textarea>
-		      				</div>
-		      			</div>
-		      			
-		      		</div>		      		
+					</div> -->
+					 		
 		      	</div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn my-btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -462,19 +357,19 @@
             },
             
             get_categorie(){
-            	var me = this;
+            	/*var me = this;
             	var url = 'categories_list';
             	axios.get(url).then(function(response){
 
-            	})
+            	})*/
             },
             get_cataloge(data){
-            	var me 	= this;
+            	/*var me 	= this;
             	var url = '/get_cataloge/'+data;
             	axios.get(url).then(function(response){
             		//console.log(response.data);
             		me.cataloge = response.data;
-            	}) 
+            	}) */
             },
             getProviders(){
                 var me = this;
@@ -486,7 +381,7 @@
             save_data(){
 
                 var me = this;
-                var url = "/articles";
+                var url = "articles";
                 axios.post(url,me.data).then(function(response){
 					me.getData();
                 	me.errors="";
@@ -497,7 +392,7 @@
 					toaster(title,message);
                 }).catch(function(errors){
                 	
-                	if (errors.response.data.errors) {
+                	/*if (errors.response.data.errors) {
                 		me.errors = errors.response.data.errors;
                 	}
 
@@ -544,7 +439,7 @@
 		         	 	me.errors.cataloge = errors.response.data.errors.cataloge[0];
 		         	}else{
 		         	 	me.errors.cataloge ="";
-		         	}
+		         	}*/
 		         	
 
 		         	
@@ -689,16 +584,16 @@
                     });
             },
             getFamily(){
-                var me = this;
+                /*var me = this;
                 var url = "/get_family";
                 axios.get(url).then(function(response){
                     me.family = response.data;
-                })
+                })*/
 
             },
             searchFamily(){
                 
-                var me = this;
+                /*var me = this;
                 var url = "/search_family_line/"+this.search_family;
                 if (this.search_family == "a") {
                     this.getData();
@@ -707,7 +602,7 @@
                         me.dataArray = response.data;
                     })
 
-                }
+                }*/
             },
             is_parent(){
             	var me = this;
@@ -733,8 +628,8 @@
 		mounted(){
 			this.getData();
 			this.getProviders();
-			this.getFamily();
-			this.get_categorie();
+			//this.getFamily();
+			//this.get_categorie();
 		}
 	}
 </script>

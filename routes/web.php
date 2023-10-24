@@ -70,13 +70,13 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('woo_articles_list/{id}',[WoocommerceController::class,'woo_articles_list'])->name('woo_articles_list');
     Route::get('woo_article/{id}/',[WoocommerceController::class,'woo_article'])->name('woo_article');
     Route::get('woo_get_article/{id}/{store}',[WoocommerceController::class,'woo_get_article'])->name('woo_get_article');
+    
+    //modulo de articulos
     Route::get('list',[ArticlesController::class,'list'])->name('list');
     Route::post('excel',[ArticlesController::class,'excel'])->name('excel');
-    Route::resources([
-        'articles'=>ArticlesController::class
-    ]);
+    Route::get('articles',[ArticlesController::class,'index'])->name('articles');
+    Route::resources(['articles'=>ArticlesController::class]);
     Route::post('/article_img',[ArticlesController::class,'img'])->name('article_img');
-
 
     Route::get('/cataloges',[ArticlesController::class,'cataloges'])->name('cataloges');
     Route::post('/add_cataloge',[ArticlesController::class,'add_cataloge'])->name('add_cataloge');
@@ -161,6 +161,8 @@ Route::group(['middleware'=>'auth'],function(){
     Route::post('/update_stock/',[StockController::class,'update_stock'])->name('update_stock');
     Route::post('/delete_stock_line/',[StockController::class,'delete_stock_line'])->name('delete_stock_line');
     Route::get('/show_stock/',[StockController::class,'show_stock'])->name('show_stock');
+    Route::post('/take_out_stock/',[StockController::class,'take'])->name('take_out_stock');
+    Route::post('/take_up_stock/',[StockController::class,'take_up'])->name('take_up_stock');
     
 
     Route::get('/pos/',[PosController::class,'index'])->name('pos');

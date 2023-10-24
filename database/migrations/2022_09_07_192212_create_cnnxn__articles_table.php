@@ -21,14 +21,16 @@ class CreateCnnxnArticlesTable extends Migration
             $table->string('size')->nullable();
             $table->integer('stock')->default(0);
             $table->decimal('cost');
-            $table->decimal('dealer')->nullable();
             $table->decimal('price');
             $table->integer('discount')->default(0);
             $table->integer('type')->default(0);
             $table->integer('provider')->nullable();
             $table->integer('re_order')->default(0);
             $table->integer('visible')->default(1);
-            $table->integer('family');
+            $table->string('img_url')->nullable();
+            $table->longText('short_desc')->nullable();
+            $table->longText('long_desc')->nullable();
+            $table->integer('popular')->default(0);
             $table->integer('idCategorie')->nullable();
             $table->integer('idCartridge')->nullable();
             $table->timestamps();

@@ -24,6 +24,7 @@ class CnnxnContacts extends Migration
             $table->string('zone')->nullable();
             $table->string('zip')->nullable();
             $table->string('tax_id')->nullable();
+            $table->string('company')->nullable();
             $table->integer('store_id')->nullable();
             $table->timestamps();
         });
@@ -36,6 +37,18 @@ class CnnxnContacts extends Migration
      */
     public function down()
     {
-        //
+            $table->dropColumn('idContact')->autoIncrement();
+            $table->dropColumn('type')->nullable();
+            $table->dropColumn('name')->nullable();
+            $table->dropColumn('email')->nullable();
+            $table->dropColumn('phone')->nullable();
+            $table->dropColumn('mobile')->nullable();
+            $table->dropColumn('address')->nullable();
+            $table->dropColumn('zone')->nullable();
+            $table->dropColumn('zip')->nullable();
+            $table->dropColumn('tax_id')->nullable();
+            $table->dropColumn('company')->nullable();
+            $table->dropColumn('store_id')->nullable();
+            $table->timestamps();
     }
 }

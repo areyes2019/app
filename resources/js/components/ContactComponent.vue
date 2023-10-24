@@ -48,46 +48,11 @@
 					</div>
 					<div class="my-form-group">
 						<div class="input-layer">
-							<span class="bi bi-telephone input-icon"></span>
-							<input type="text" v-model="data.phone" id="" class="input-control" placeholder="Teléfono fijo" maxlength="10">
-							<span class="text-danger" v-if="phone" >{{phone}}</span>
-						</div>
-					</div>
-					<div class="my-form-group">
-						<div class="input-layer">
 							<span class="bi bi-phone input-icon"></span>
 							<input type="text" v-model="data.mobile" id="" class="input-control" placeholder="Telefono mobil"  axlength="10">
 						</div>
 						<span class="text-danger" v-if="mobile">{{mobile}}</span>
 					</div>
-					<div class="my-form-group">
-						<div class="input-layer">
-							<span class="bi bi-geo input-icon"></span>
-	                      	<input type="text" v-model="data.address" id="" class="input-control" placeholder="Calle y numero">
-						</div>
-						<span class="text-danger" v-if="address">{{address}}</span>
-                    </div>
-                    <div class="my-form-group">
-                    	<div class="input-layer">
-							<span class="bi bi-map input-icon"></span>
-	                      	<input type="text" v-model="data.zone" id="" class="input-control" placeholder="Colonia">
-                    	</div>
-						<span class="text-danger" v-if="zone">{{zone}}</span>
-                    </div>
-                    <div class="my-form-group">
-                    	<div class="input-layer">
-							<span class="bi bi-123 input-icon"></span>
-	                      	<input type="text" v-model="data.zip" id="" class="input-control" placeholder="Código Postal">
-                    	</div>
-						<span class="text-danger" v-if="zip">{{zip}}</span>
-                    </div>
-                    <div class="my-form-group">
-                    	<div class="input-layer">
-							<span class="bi bi-credit-card-2-front input-icon"></span>
-                      		<input type="text" v-model="data.tax_id" id="" class="input-control" placeholder="RFC" >
-                      	</div>
-						<span class="text-danger" v-if="tax_id">{{tax_id}}</span>
-                    </div>
                     <div class="my-form-group d-flex justify-content-end">
                     	<button type="submit" class="btn my-btn mt-2"><span class="bi bi-upload icon"></span> Guadar</button>
                     </div>

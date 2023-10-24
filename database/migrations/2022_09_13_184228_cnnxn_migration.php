@@ -17,6 +17,8 @@ class CnnxnMigration extends Migration
             $table->id('idCategorie')->autoIncrement();
             $table->string('name')->unique();
             $table->integer('main')->default(0);
+            $table->integer('order')->default(0);
+            $table->string('slug');
             $table->timestamps();
         });
     }

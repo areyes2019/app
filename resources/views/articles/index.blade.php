@@ -1,4 +1,4 @@
 @extends('template.app')
 @section('content')
-<articles-component :percent="'{{ $percent }}'"></articles-component>
+<articles-component></articles-component>
 @endsection

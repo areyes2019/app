@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}" id="csrf">
-    <link rel="stylesheet" href="{{asset('css/app.css')}}">
+    <link rel="stylesheet" href="{{asset('css/app.css?554')}}">
     <link rel="stylesheet" href="{{asset('css/toaster.css')}}">
     <link rel="stylesheet" href="{{asset('css/icons/themify-icons.css')}}">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
@@ -15,11 +15,14 @@
 </head>
 <body>
     <div class="side-nav">
+        <!-- Logo de Iniccio-->
         <div class="side-nav-user">
-            <p>Bienvenido: {{Auth::user()->name;}}</p>
+            <p>Bienvenido:{{Auth::user()->name;}}</p>
         </div>
         <div class="side-logo">
-            <img src="{{asset('img/logoweb.png')}}">
+            <a href="{{url('admin')}}">
+                <img src="{{asset('img/logoweb.png')}}">
+            </a>
         </div>
         <div class="side-nav-nav">
             <nav>
@@ -38,8 +41,9 @@
                     <li class="side-nav-item"><a href="{{url('/pos/')}}"><span class="bi bi-circle"></span>POS</a></li>
                 </ul>
             </nav>
-            <button class="btn btn-danger mt-4">Nueva Cotización</button>
-             <a class="btn btn-danger mt-2" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><span class="bi bi-box-arrow-right"></span>Salir</a>
+            <a href="{{url('/order_page/1')}}" class="btn btn-danger mt-4 rounded-0 ">Pedido</a>
+            <a href="{{url('/order_page/2')}}" class="btn btn-danger mt-2 rounded-0 ">Cotización</a>
+             <a class="btn btn-danger mt-2 rounded-0" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><span class="bi bi-box-arrow-right"></span>Salir</a>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                 @csrf
             </form>
@@ -59,7 +63,7 @@
             <p class="toaster-message m-0 p-0"></p>
         </div>
     </div>
-    <script src="{{asset('js/app.js')}}"></script>
+    <script src="{{asset('js/app.js?lojj444')}}"></script>
     <script src="{{asset('js/toaster.js')}}"></script>
     <script src="https://unpkg.com/vue-select@latest"></script>
 </body>
