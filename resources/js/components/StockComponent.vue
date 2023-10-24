@@ -1,6 +1,6 @@
 <template>
 	<div class="container-fluid">
-		<h3>Inventario</h3>
+		<h3>Inventario actualizado</h3>
 		<!-- <div class="row">
 			<div class="col-md-4">
 				<div class="card">
