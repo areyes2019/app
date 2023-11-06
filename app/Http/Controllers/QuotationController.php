@@ -378,12 +378,10 @@ class QuotationController extends Controller
         if ($try == "down") {
             return $pdf->download('QT-'.$id_qt.'-'.$file_name.'.pdf');
         }elseif ($try = "send") {
-
             $file=$pdf->output();
-            $data['file']= $file;
-            Mail::to('reyesabdias@gmail.com')->send(new quotation($data));
-            //$file_id = 'QT-'.$id_qt.'-'.$file_name.'.pdf';
-            //$mailable = new SendQuotation($file, $file_id);
+            $file_id = 'QT-'.$id_qt.'-'.$file_name.'.pdf';
+            $mailable = new SendQuotation($file, $file_id);
+            Mail::to($customer_query[0]->email)->send($mailable);
         }
         
     }

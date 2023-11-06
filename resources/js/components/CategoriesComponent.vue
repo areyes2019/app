@@ -10,8 +10,8 @@
             <div class="my-form-group">
                 <label for="">Selecione sub-categoría</label>
                 <select class="form-control" v-model="child">
-                    <option value="0">Principal</option>
-                    <option :value="item.idCategorie" v-for="(item,index) in list">{{item.name}}</option>
+                    <option value="0" v-model="child">Principal</option>
+                    <option :value="item.idCategorie" v-for="(item,index) in list" v-model="child">{{item.name}}</option>
                 </select>
             </div>
             <div class="my-form-group">
