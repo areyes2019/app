@@ -282,7 +282,7 @@ class PosController extends Controller
 
         $order_find = cnnxn_production::where('idOrder',$request->id)->get();
 
-        $file = asset('storage/prepress/4530.png');
+        $file = asset('storage/prepress/'.$query_lines[0]->color);
 
         //aqui envaimos
         $data["email"] = "test@gmail.com";
@@ -295,7 +295,7 @@ class PosController extends Controller
         $data["notes"] = $query_lines[0]->notes; 
         $data["delivery"] = $delivery; 
         
-        Mail::to('emilianosej@gmail.com')->send(new general($data));
+        Mail::to('reyesabdias@gmail.com')->send(new general($data));
         
 
 
