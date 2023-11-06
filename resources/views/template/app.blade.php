@@ -16,9 +16,7 @@
 <body>
     <div class="side-nav">
         <!-- Logo de Iniccio-->
-        <div class="side-nav-user">
-            <p>Bienvenido:{{Auth::user()->name;}}</p>
-        </div>
+        
         <div class="side-logo">
             <a href="{{url('admin')}}">
                 <img src="{{asset('img/logoweb.png')}}">
@@ -38,18 +36,27 @@
                     <li class="side-nav-item"><a href="{{url('/accounting/')}}"><span class="bi bi-circle"></span>Contabilidad</a></li>
                     <li class="side-nav-item"><a href="{{url('/stock/')}}"><span class="bi bi-circle"></span>Inventario</a></li>
                     <li class="side-nav-item"><a href="{{url('/orders/')}}"><span class="bi bi-circle"></span>Ordenes de Compra</a></li>
-                    <li class="side-nav-item"><a href="{{url('/pos/')}}"><span class="bi bi-circle"></span>POS</a></li>
+                    <li class="side-nav-item"><a href="{{url('/sale/')}}"><span class="bi bi-circle"></span>Ventas</a></li>
                 </ul>
             </nav>
-            <a href="{{url('/order_page/1')}}" class="btn btn-danger mt-4 rounded-0 ">Pedido</a>
-            <a href="{{url('/order_page/2')}}" class="btn btn-danger mt-2 rounded-0 ">Cotización</a>
-             <a class="btn btn-danger mt-2 rounded-0" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><span class="bi bi-box-arrow-right"></span>Salir</a>
+            
+            
+
+
+            <a href="{{url('/order_page/2')}}" class="btn step-button mt-2 rounded-0 ">Nueva Cotización</a>
+            <a href="{{url('/pos/')}}" class="btn step-button mt-2 rounded-0 ">Nueva Venta</a>
+            <a class="btn step-button mt-2 rounded-0" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><span class="bi bi-box-arrow-right"></span>Salir</a>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                 @csrf
             </form>
         </div>
     </div>
 	 <div class="main">
+        <div class="main-top-bar">
+            <div class="side-nav-user">
+                <p>{{Auth::user()->name;}}</p>
+            </div>
+        </div>
         <div id="app">
             @yield('content')
         </div>
@@ -63,8 +70,18 @@
             <p class="toaster-message m-0 p-0"></p>
         </div>
     </div>
-    <script src="{{asset('js/app.js?lojj444')}}"></script>
+    <style>
+        .my-select-group > input{
+            display: none;
+        }
+        .my-select-group > input:checked + label{
+            border: 3px solid grey;
+        }
+    </style>
+    <script src="{{asset('js/app.js')}}"></script>
     <script src="{{asset('js/toaster.js')}}"></script>
     <script src="https://unpkg.com/vue-select@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 </body>
 </html>

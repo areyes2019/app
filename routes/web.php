@@ -14,6 +14,7 @@ use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\AccountingController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\PosController;
+use App\Http\Controllers\ProductionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -48,6 +49,7 @@ Route::get('admin', function () {
 /*Route::get('/linkstorage', function () {
     Artisan::call('storage:link');
 });*/
+
 
 Route::group(['middleware'=>'auth'],function(){
     Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -165,13 +167,29 @@ Route::group(['middleware'=>'auth'],function(){
     Route::post('/take_up_stock/',[StockController::class,'take_up'])->name('take_up_stock');
     
 
-    Route::get('/pos/',[PosController::class,'index'])->name('pos');
+    Route::get('/sale/',[PosController::class,'index'])->name('sale');
+    Route::get('/pos/{slug}',[PosController::class,'sale'])->name('pos');
     Route::post('/add_sale_slug/',[PosController::class,'add_slug'])->name('add_sale_slug');
-    Route::get('/add_sale/{id}',[PosController::class,'add_sale'])->name('add_sale');
+    Route::post('/add_sale/',[PosController::class,'add_sale'])->name('add_sale');
     Route::get('/articles_list/',[PosController::class,'show'])->name('articles_list');
-    Route::get('/get_order_data/{slug}',[PosController::class,'order_data'])->name('get_order_data');
+    Route::get('/get_order_data/{id}',[PosController::class,'order_data'])->name('get_order_data');
+    Route::post('/update_sale/{id}/{slug}',[PosController::class,'update'])->name('update_sale');
+    Route::get('/show_details/{id}',[PosController::class,'show_details'])->name('show_details');
+    Route::get('/delete_line_order/{id}/{slug}',[PosController::class,'delete_line'])->name('delete_line_order');
+    Route::get('/get_totals/{id}',[PosController::class,'totals'])->name('get_totals');
+    Route::post('/detail_img',[PosController::class,'img'])->name('detail_img');
+    Route::post('/add_payment_order',[PosController::class,'add_advance'])->name('add_advance');
+    Route::post('/shipping_pos',[PosController::class,'shipping'])->name('shipping_pos');
+    Route::post('/shipping_type',[PosController::class,'shipping_type'])->name('shipping_type');
+    Route::post('/add_address',[PosController::class,'add_address'])->name('add_address');
 
-
+    /*Ordenes de trabajo*/
+    Route::post('/send_to_production/',[PosController::class,'send'])->name('send_to_production');
+    Route::post('/add_job/',[ProductionController::class,'add'])->name('add_job');
+    Route::get('/order_list/{id}',[ProductionController::class,'order'])->name('order_list');
+    Route::get('mail',function(){
+        return view('email.production');
+    });
 
 
 });

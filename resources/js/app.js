@@ -51,6 +51,7 @@ Vue.component('stock-component', require('./components/StockComponent.vue').defa
 Vue.component('expenses-component', require('./components/ExpensesComponent.vue').default);
 Vue.component('pos-component', require('./components/PosComponent.vue').default);
 Vue.component('sale-component', require('./components/SaleComponent.vue').default);
+Vue.component('production-component', require('./components/ProductionComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

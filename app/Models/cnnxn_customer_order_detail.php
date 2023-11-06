@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class cnnxn_customer_order_detail extends Model
 {
-    use HasFactory;
+    protected $table = 'cnnxn_customer_order_details';
+    protected $fillable=[];
 }

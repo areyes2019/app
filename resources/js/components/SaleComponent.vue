@@ -2,23 +2,13 @@
 	<div class="container-fluid">
 		<div class="card rounded-0">
 			<div class="card-body">
-				<a href="" class="btn btn-danger rounded-0" @click.prevent="add_order()">Agregar pedido</a>
+				<button class="btn step-button rounded-0 shadow-none" @click="add_order()">Nueva Venta</button>
 			</div>
 		</div>
+
 		<div class="row">
 			<div class="col-3">
 				<div class="list-pos">
-					<div class="list-pos-header d-flex justify-content-between align-items-center">
-						<a href="">Hoy</a>
-						<a href="">Ayer</a>
-						<label for="">Fecha</label>
-						<input type="date">
-					</div>
-					<div class="list-pos-header d-flex justify-content-between align-items-center">
-						<label for="" class="mr-1">No.</label>
-						<input type="text" class="form-control form-control-sm rounded-0 shadow-none">
-						</div>
-					</div>
 					<div class="list-pos-child">
 						<div class="list-pos-link">
 							<p><span>Pedido:</span>456</p>
@@ -42,6 +32,7 @@
 						<div class="d-flex justify-content-between align-items-center">
 							<div class="d-block">
 								<p>Envio a domicilio</p>
+								{{slug}}
 								<p>Saldo: <span class="text-danger">$250.00</span></p>
 							</div>
 							<a href="" class="btn btn-danger rounded-0 btn-sm"><span class="bi bi-arrow-right-short"></span></a>
@@ -76,22 +67,44 @@
 	export default{
 		data(){
 			return{
-
+				data:[],
+				name:"sin definir",
+				mobile:"sin definir",
+				delivery:"",
 			}
 		},
 		methods:{
+			open_modal(){
+				$("#nueva_venta").modal('show');
+			},
 			add_order(){
 				var me = this;
-				var url = '/add_sale_slug';
+				var url = '/add_sale';
 				let slug = Math.random().toString(36).substring(3);
 				axios.post(url,{
 					'slug':slug,
+					'name':me.name,
+					'mobile':me.mobile,
 				}).then(function(response){
-					window.location.href = 'add_sale'+'/'+slug;
+					window.location.href = "pos/"+slug;
 				})
+			},
+			get_order_data(data){
+				var me = this;
+				var url = '/get_order_data/'+ data;
+				axios.get(url).then(function(response){
+					me.data=response.data;
+					$('#nueva_venta02').modal('show');
+				})
+			},
+			multi_step(){
+
+				
 			}
+	
 		},
 		mounted(){
+			this.multi_step();
 
 		}
 	}
