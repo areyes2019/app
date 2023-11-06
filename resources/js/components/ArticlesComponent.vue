@@ -300,6 +300,7 @@
 				//aqui van los datos del artículo
 				data:{
 					_token:document.querySelector('#csrf').getAttribute('content'),
+					design:0,	
 				},
 				table:{},
 				//aqui recibimos los errores
