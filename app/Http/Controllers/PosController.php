@@ -295,7 +295,7 @@ class PosController extends Controller
         $data["notes"] = $query_lines[0]->notes; 
         $data["delivery"] = $delivery; 
         
-        Mail::to('reyesabdias@gmail.com')->send(new general($data));
+        Mail::to('emilianosej@gmail.com')->send(new general($data));
         
 
 
