@@ -282,7 +282,7 @@ class PosController extends Controller
 
         $order_find = cnnxn_production::where('idOrder',$request->id)->get();
 
-        $file = asset('storage/prepress/'.$query_lines[0]->color);
+        $file = storage_path('/prepress/'.$query_lines[0]->color);
 
         //aqui envaimos
         $data["email"] = "test@gmail.com";
