@@ -356,6 +356,7 @@
                     }
                 }
             },
+
             status_fun(data){
                 var me = this;
                 var url = "/change_status/"+this.slug;
@@ -430,6 +431,17 @@
                     me.showDetails();
                     me.showTotals();
                 })
+            },
+            sendMail(){
+                /*var me = this;
+                var url = '/get_quotation_pdf/'+ this.customer + '/' + '/'+this.id+'/send';
+                axios.get(url).then(function(response){
+                    if (response.data == 0) {
+                        var title = "Felicidades";
+                        var message = "El Correo se envió correctamente";
+                        toaster(title,message);
+                    }    
+                })*/
             },
             addDiscount(){
                 
