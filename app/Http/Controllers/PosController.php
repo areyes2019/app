@@ -298,7 +298,11 @@ class PosController extends Controller
 
         $order_find = cnnxn_production::where('idOrder',$request->id)->get();
 
+<<<<<<< HEAD
         $file = storage_path('app/public/prepress/'.$query_lines[0]->color);
+=======
+        $file = asset('storage/prepress/'.$query_lines[0]->color);
+>>>>>>> parent of 1ca0c60 (cambiamos storage path)
 
         //aqui envaimos
         $data["email"] = "test@gmail.com";
