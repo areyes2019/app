@@ -28,8 +28,9 @@ class general extends Mailable
      */
     public function build()
     {
-        return $this->subject('Orden de trabajo No '.$this->data['order'])
+        $filename = "OT-".$this->data['id_order'].".pdf";
+        return $this->subject('Orden de trabajo No '.$this->data['id_order'])
                     ->view('email.production')
-                    ->attach($this->data['file']);
+                    ->attachData($this->data['file'],$filename,['mime' => 'application/pdf']);
     }
 }

@@ -9,4 +9,5 @@ class cnnxn_customer_order_detail extends Model
 {
     protected $table = 'cnnxn_customer_order_details';
     protected $fillable=[];
+
 }

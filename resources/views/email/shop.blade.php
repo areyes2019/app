@@ -363,21 +363,8 @@
                   <tr>
                     <td>
                       <p>Mi buen Albert</p>
-                      <p>Me echas la mano con este Diseño</p>
-                      <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
-                        <tbody>
-                          <tr>
-                            <td align="left">
-                              <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                                <tbody>
-                                  <tr>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <p>Se aprobó el último dieseño de la Orden # {{$data['id']}}, adelante con la producción</p>
+                      <p><strong>Obsrvaciones:</strong>{{$data['instructions']}}</p>
                       <p>Cualquier duda estoy a tus órdenes</p>
                       <p>Graaacias</p>
                     </td>

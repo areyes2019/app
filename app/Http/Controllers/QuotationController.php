@@ -6,6 +6,8 @@ use App\Models\cnnxn_quotation;
 use App\Models\cnnxn_Article;
 use App\Models\Contact;
 use App\Models\cnnxn_quotation_detail;
+use App\Models\cnnxn_customer_order;
+use App\Models\cnnxn_customer_order_detail;
 use App\Models\cnnxn_Accounting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -21,48 +23,31 @@ class QuotationController extends Controller
     $posts = cnnxn_quotation::join('cnnxn_contacts', 'cnnxn_contacts.idContact', '=', 'cnnxn_quotations.idCustomer')->get();
     return $posts;
   } 
-  public function store(Request $request)
+  public function store($id)
    {
 
-      if ($request->invoice==true) {
-        //con iva
-        $tax = 1;
-        $query = new cnnxn_quotation;
-        $query->slug = $request->slug;
-        $query->idCustomer = $request->idCustomer;
-        $query->with_tax = $tax;
-        $query->save();
-        if ($query) {
-           return true;
-        }
-      }else{
-        //sin iva
-        $tax = 0;
-        $query = new cnnxn_quotation;
-        $query->slug = $request->slug;
-        $query->idCustomer = $request->idCustomer;
-        $query->with_tax = $tax;
-        $query->save(); 
-        if ($query) {
-           return true;
-        }
-      }
+      $string = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      $slug = substr(str_shuffle($string), 0, 10);
+      $query = new cnnxn_customer_order;
+      $query->slug = $slug;
+      $query->type = $id;
+      $query->name = "General";
+      $query->tax_type = 1;
+      $query->save();
+
+      return redirect()->route('quotation_page',['id'=>$slug]);
      
    }
    
     public function page($id){
-       
+
+
         //aqui enviamos los datos de la cotizacion
-        $query = cnnxn_quotation::where('slug',$id)->get();
-        foreach ($query as $data) {
-            $id = $data->idQt;
-            $slug = $data->slug;
-            $customer = $data->idCustomer;
-        }
-            return view('quotations.page')
-                    ->with('id', $id)
-                    ->with('slug',$slug)
-                    ->with('customer',$customer);
+        $query = cnnxn_customer_order::where('slug',$id)->get();
+        
+        return view('quotations.page')
+                ->with('id', $query[0]->idOrder)
+                ->with('slug',$query[0]->slug);
 
     }
 
@@ -111,6 +96,7 @@ class QuotationController extends Controller
             //con iva
 
             $query = cnnxn_Article::where('idArticle',$request->article)->get(); //sacamos el artículo
+
             $price = $query[0]->price;
             $with_tax = $price / 1.16;
             $add = new cnnxn_quotation_detail;
@@ -317,69 +303,130 @@ class QuotationController extends Controller
 
       
     }
-    public function get_pdf($id, $id_qt,$try)
+    public function get_pdf($id_qt,$try)
     {
+        // $id_qt  asdfaFAD##
+        // $try = 1
+
         //este es el cliente
-        $customer =  $id;
+        $query_slug = cnnxn_customer_order::where('slug', $id_qt)->get(); 
+        $query_person = Contact::where('idContact', $query_slug[0]->idCustomer)->get();
+        
         //estos son los datos de la cotización
-        $quotation = $id_qt;
+        $query_id = cnnxn_customer_order::where('slug', $id_qt)->get('idOrder'); 
+        $quotation = $query_id[0]->idOrder;
 
         //aqui obtenemos todos los datos del cliente
-        $customer_query     = Contact::where('idContact',$customer)->get();
+        $customer_query = Contact::where('idContact',$query_slug)->get();
         
         //aqui todos los datos de la cotización
-        $quotation_query    = cnnxn_quotation::where('idQt', $quotation)->get();          
+        $quotation_query    = cnnxn_customer_order::where('slug', $id_qt)->get();          
+        
         //aqui los detalles de la cotización
-        $detail_query = cnnxn_quotation_detail::where('idQuotation',$quotation)
-                        ->join('cnnxn_articles','cnnxn_articles.idArticle','=','cnnxn_quotation_details.article')
-                        ->get();
+        $detail_query = cnnxn_customer_order_detail::where('idOrder_customer',$query_slug[0]->idOrder)->get();
         
         
         //este es el gran total
-        $quotation_total = cnnxn_quotation_detail::where('idQuotation', $quotation)->sum('total');
+        $quotation_total = cnnxn_customer_order::where('slug', $id_qt)->get('grand_total');
         
         //aplicamos el descuento
 
-        $discount = $quotation_total /100 * $quotation_query[0]->discount;
+        $discount = 0;
         
-        $with_discount = $quotation_total - $discount;
-
-        //aplicamos el iva
-        if ($quotation_query[0]->with_tax==1) {
-          $tax = $with_discount /100 * 16;
-        }else{
-          $tax = 0;
-        }
-        //mostramos el total
-        $total = $with_discount + $tax;
+        
 
         
         
         $data = [
 
-            'sub_total'     =>number_format($quotation_total,2), //aparece en el resumen
-            'discount'      =>number_format($discount,2), //descuento en dinero
-            'percent'       =>number_format($quotation_query[0]->discount,0), //cantidad en porcentaje
-            'tax'           =>number_format($tax,2),  //impustesto
-            'total'         =>number_format($total,2), // gran total
+            //'sub_total'     =>number_format($quotation_total,2), //aparece en el resumen
+            //'discount'      =>number_format($discount,2), //descuento en dinero
+            //'percent'       =>number_format($quotation_query[0]->discount,0), //cantidad en porcentaje
+            //'tax'           =>number_format($tax,2),  //impustesto
+            'total'=>$quotation_total,
         ];
         
         $mega_pack=[
             'quotation' => $quotation_query,
-            'customer'  => $customer_query,
+            'customer'  => $query_person,
             'detail'    => $detail_query,
-            'totals'    => $data
+            'total'    => $data
         ];
         
         //return view('quotations.pdf')->with($mega_pack);
 
-        $file_name = str_replace(' ','_',$customer_query[0]->company_name);
-        $pdf = PDF::loadView('quotations.pdf',$mega_pack);
-        if ($try == "down") {
-            return $pdf->download('QT-'.$id_qt.'-'.$file_name.'.pdf');
+        //$file_name = str_replace(' ','_','file');
+        $pdf = PDF::loadView('quotations.pdf',$mega_pack)->setPaper('a4','portrait');
+        if ($try == 1) {
+            return $pdf->download('QT-'.$quotation.'.pdf');
         }elseif ($try = "send") {
             $file=$pdf->output();
             $file_id = 'QT-'.$id_qt.'-'.$file_name.'.pdf';
+            $mailable = new SendQuotation($file, $file_id);
+            Mail::to($customer_query[0]->email)->send($mailable);
+        }
+        
+    }
+
+    public function get_tk($id_qt,$try)
+    {
+        // $id_qt  asdfaFAD##
+        // $try = 1
+
+        //este es el cliente
+        $query_slug = cnnxn_customer_order::where('slug', $id_qt)->get(); 
+        $query_person = Contact::where('idContact', $query_slug[0]->idCustomer)->get();
+        
+        //estos son los datos de la cotización
+        $query_id = cnnxn_customer_order::where('slug', $id_qt)->get('idOrder'); 
+        $quotation = $query_id[0]->idOrder;
+
+        //aqui obtenemos todos los datos del cliente
+        $customer_query = Contact::where('idContact',$query_slug)->get();
+        
+        //aqui todos los datos de la cotización
+        $quotation_query    = cnnxn_customer_order::where('slug', $id_qt)->get();          
+        
+        //aqui los detalles de la cotización
+        $detail_query = cnnxn_customer_order_detail::where('idOrder_customer',$query_slug[0]->idOrder)->get();
+        
+        
+        //este es el gran total
+        $quotation_total = cnnxn_customer_order::where('slug', $id_qt)->get('grand_total');
+        
+        //aplicamos el descuento
+
+        $discount = 0;
+        
+        
+
+        
+        
+        $data = [
+
+            //'sub_total'     =>number_format($quotation_total,2), //aparece en el resumen
+            //'discount'      =>number_format($discount,2), //descuento en dinero
+            //'percent'       =>number_format($quotation_query[0]->discount,0), //cantidad en porcentaje
+            //'tax'           =>number_format($tax,2),  //impustesto
+            'total'=>$quotation_total,
+        ];
+        
+        $mega_pack=[
+            'quotation' => $quotation_query,
+            'customer'  => $query_person,
+            'detail'    => $detail_query,
+            'total'    => $data
+        ];
+        
+        //return view('quotations.ticket')->with($mega_pack);
+
+        //$file_name = str_replace(' ','_','file');
+        $pdf = PDF::loadView('quotations.ticket',$mega_pack);
+        if ($try == 1) {
+            return $pdf->download('TK-'.$quotation.'.pdf');
+        }elseif ($try = "send") {
+            $file=$pdf->output();
+            $file_id = 'QT-'.$quotation.'.pdf';
             $mailable = new SendQuotation($file, $file_id);
             Mail::to($customer_query[0]->email)->send($mailable);
         }

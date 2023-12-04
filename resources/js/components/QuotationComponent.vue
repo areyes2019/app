@@ -458,9 +458,7 @@
                 })
             },
             table(){
-                this.$nextTick(() => {
-                    $('#articles_table').DataTable();
-                });
+                
             },
             delete_discount(data){
                 var me = this;

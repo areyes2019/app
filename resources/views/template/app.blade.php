@@ -3,85 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}" id="csrf">
-    <link rel="stylesheet" href="{{asset('css/app.css?554')}}">
-    <link rel="stylesheet" href="{{asset('css/toaster.css')}}">
-    <link rel="stylesheet" href="{{asset('css/icons/themify-icons.css')}}">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="{{asset('css/dashboard.css')}}">
-    <link rel="stylesheet" href="https://unpkg.com/vue-select@latest/dist/vue-select.css">
     <title>Sello Pronto</title>
+    <!-- css del menu lateral -->
+    <link rel="stylesheet" href="{{asset('css/verticalmenu.css')}}">
+    <!-- vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <!-- Jquery-->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!-- Bootstrap js-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <!-- Boostrap css -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Datatables css-->
+    <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <!-- Datatables js-->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <!-- Datatables Bootstrap js-->
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    <!-- Bootstrap icons-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Axios ajax -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="{{asset('css/dashboard.css')}}">
+    <!-- select -->
+    <script src="https://unpkg.com/vue-select@latest"></script>
+    <link rel="stylesheet" href="https://unpkg.com/vue-select@latest/dist/vue-select.css">
 </head>
-<body>
-    <div class="side-nav">
-        <!-- Logo de Iniccio-->
-        
-        <div class="side-logo">
-            <a href="{{url('admin')}}">
-                <img src="{{asset('img/logoweb.png')}}">
+<body class="body">
+    <div class="menu">
+        <ion-icon name="menu-outline"></ion-icon>
+        <ion-icon name="close-outline"></ion-icon>
+    </div>
+
+    <div class="barra-lateral">
+        <div id="main">
+            <div class="nombre-pagina">
+                <a href="{{url('/admin')}}">
+                    <img src="{{asset('img/logoweb.png')}}" alt="" width="220">
+                </a>
+            </div>
+            <a href="{{route('quotations_new',1)}}" class="boton">
+                <i class="bi bi-plus-circle"></i>
+                <span>Venta</span>
             </a>
         </div>
-        <div class="side-nav-nav">
-            <nav>
-                <ul class="side-nav-list">
-                    <li class="side-nav-item"><a href="{{url('/quotations')}}"><span class="bi bi-circle"></span>Cotizaciones</a></li>
-                    <li class="side-nav-item"><a href="{{url('/articles')}}"><span class="bi bi-circle"></span>Artículos</a></li>
-                    <li class="side-nav-item"><a href="{{url('/cataloges')}}"><span class="bi bi-circle"></span>Catálogos</a></li>
-                    <li class="side-nav-item"><a href="{{url('/categories')}}"><span class="bi bi-circle"></span>Categorías</a></li>
-                    <li class="side-nav-item"><a href="{{url('/contacts_page/1')}}"><span class="bi bi-circle"></span>Clientes</a></li>
-                    <li class="side-nav-item"><a href="{{url('/contacts_page/2')}}"><span class="bi bi-circle"></span>Proveedores</a></li>
-                    <li class="side-nav-item"><a href="{{url('/orders/')}}"><span class="bi bi-circle"></span>Pedidos a Proveedor</a></li>
-                    <li class="side-nav-item"><a href="{{url('/config/')}}"><span class="bi bi-circle"></span>Configuración</a></li>
-                    <li class="side-nav-item"><a href="{{url('/accounting/')}}"><span class="bi bi-circle"></span>Contabilidad</a></li>
-                    <li class="side-nav-item"><a href="{{url('/stock/')}}"><span class="bi bi-circle"></span>Inventario</a></li>
-                    <li class="side-nav-item"><a href="{{url('/orders/')}}"><span class="bi bi-circle"></span>Ordenes de Compra</a></li>
-                    <li class="side-nav-item"><a href="{{url('/sale/')}}"><span class="bi bi-circle"></span>Ventas</a></li>
-                </ul>
-            </nav>
-            
-            
 
+        <nav class="navegacion">
+            <ul class="m-0 p-0">
+                <li>
+                    <a href="{{url('/quotations')}}">
+                        <i class="bi bi-file-earmark-bar-graph"></i>
+                        <span>Cotizaciones</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{url('/articles')}}">
+                        <i class="bi bi-box"></i>
+                        <span>Artículos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{url('/contacts_page')}}">
+                        <i class="bi bi-people"></i>
+                        <span>Contactos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{url('/stock')}}">
+                        <i class="bi bi-graph-up-arrow"></i>
+                        <span>Inventario</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{url('/sale')}}">
+                        <i class="bi bi-credit-card"></i>
+                        <span>Ventas</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
 
-            <a href="{{url('/order_page/2')}}" class="btn step-button mt-2 rounded-0 ">Nueva Cotización</a>
-            <a href="{{url('/pos/')}}" class="btn step-button mt-2 rounded-0 ">Nueva Venta</a>
-            <a class="btn step-button mt-2 rounded-0" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><span class="bi bi-box-arrow-right"></span>Salir</a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                @csrf
-            </form>
-        </div>
-    </div>
-	 <div class="main">
-        <div class="main-top-bar">
-            <div class="side-nav-user">
-                <p>{{Auth::user()->name;}}</p>
+        <div>
+            <div class="linea"></div>
+
+            <div class="modo-oscuro">
+                <div class="info">
+                    <ion-icon name="moon-outline"></ion-icon>
+                    <span>Drak Mode</span>
+                </div>
+                <div class="switch">
+                    <div class="base">
+                        <div class="circulo">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="usuario">
+                <div class="info-usuario">
+                    <div class="nombre-email">
+                        <span class="nombre">{{Auth::user()->name;}}</span>
+                        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="link-dark">Salir</a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-        <div id="app">
-            @yield('content')
-        </div>
-    </div>   
-    <div id="toaster">
-        <div class="toaster-icon">
-            <span class="bi bi-bell"></span>
-        </div>
-        <div class="toaster-body">
-            <p class="toaster-title m-0 p-0"></p>
-            <p class="toaster-message m-0 p-0"></p>
-        </div>
+
     </div>
-    <style>
-        .my-select-group > input{
-            display: none;
-        }
-        .my-select-group > input:checked + label{
-            border: 3px solid grey;
-        }
-    </style>
-    <script src="{{asset('js/app.js')}}"></script>
+
+
+    <main>
+       @yield('content')
+    </main>
+    <script src="{{asset('js/html2canvas.js')}}"></script>
+    <script src="{{asset('js/canvas2image.js')}}"></script>
+    <script src="{{asset('js/script.js')}}"></script>
     <script src="{{asset('js/toaster.js')}}"></script>
-    <script src="https://unpkg.com/vue-select@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 </body>
 </html>

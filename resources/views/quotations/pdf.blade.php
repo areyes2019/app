@@ -66,7 +66,7 @@
             margin: 15px;
         }
         .cuenta{
-            width: 50%;
+            width: 22%;
             margin-left: 365px;
         }
         .footer{
@@ -103,95 +103,83 @@
                     Clave: 014822605572484338
                     </p>
                 </td>
-                <td align="top" style="vertical-align: top;">
-                    <p><strong>Sello Pronto Celaya</strong> <br>
-                    Real del Seminario #122 <br>
-                    Valle del Real<br>
-                    Celaya, Gto <br>
-                    Tel 461 358 10 90 <br>
-                    Offna: (461)250 74 82 <br>
-                    </p>
-                    <p style="margin-top: 5px">
-                    <strong >Sello Pronto Querétaro</strong> <br>
-                    Nogal #15 <br>
-                    Frac. Arboledas<br>
-                    Querétaro, Qro <br>
-                    Tel 442 359 4212 <br>
-                    Offna: (442)833 84 73
-                    </p>
-                </td>
+                
             </tr>
         </table>
     </div>
     <div class="info">
         <table width="100%" style="padding: 15px;">
             <tr>
-                @foreach($customer as $customer)
+                @foreach ($customer as $person)
                 <td style="vertical-align: top;">
-                    <strong>Para:</strong> <br>
-                    {{$customer->company}}<br>
-                    Att: {{$customer->name}}<br>
-                    {{$customer->mobile}} <br>
-                    Correo: {{$customer->email}} <br>
+                    <strong style="font-size: 15px;">Para: {{$person->company}}</strong>
+                    <br>
+                    <strong style="font-size: 15px;">Att: {{$person->name}}</strong>
+                    <br>
+                    <br>
+                    Correo:  {{$person->email}}<br>
                 </td>
                 @endforeach
-                @foreach($quotation as $quotation)
-                <td style="vertical-align: top;">
-                    <strong>Presupuesto No.</strong><br>
-                    QT-{{$quotation->idQt}}<br><br>
-                    <strong>Fecha:</strong><br>
-                    {{$quotation->created_at}}
+                @foreach ($quotation as $data )
+                <td style="vertical-align: top; font-size: 15px;">
+                    <strong>Presupuesto No. QT- {{$data->idOrder}}</strong><br>
+                    <strong>Fecha: {{$data->created_at}}</strong><br>
+                    
                 </td>
                 @endforeach
+                
                 <td style="vertical-align: top;">
-                   <strong>Monto total:</strong><br>
-                    <span style="font-weight: bolder; font-size: 35px;">${{$totals['total']}}</span>
+                    <strong>Monto total:</strong><br>
+                    <span style="font-weight: bolder; font-size: 35px;">${{$suma = $total['total'][0]['grand_total']}}</span>
+                    <br>
+                    <strong>Anticipo sugerido:</strong><br>
+                    <span style="font-weight: bolder; font-size: 35px;">${{$advance = $suma / 2}}.00</span>
+
                 </td>
             </tr>
         </table>
     </div>
     <div class="resumen" style="margin-top: 10px; padding: 15px;">
         <table id="customers">
-          <tr>
-            <th>Cant.</th>
-            <th>Artículo</th>
-            <th>Modelo</th>
-            <th>P/U</th>
-            <th>Total</th>
-          </tr>
-            @foreach($detail as $detail)
-          <tr>
-            <td>{{$detail->quantity}}</td>
-            <td>{{$detail->name}} Medidas {{$detail->size}}</td>
-            <td>{{$detail->model}}</td>
-            <td>${{$detail->unit_price}}</td>
-            <td>${{$detail->total}}</td>
-          </tr>
+            <tr>
+                <th>Cant.</th>
+                <th>Artículo</th>
+                <th>Modelo</th>
+                <th>P/U</th>
+                <th>Total</th>
+            </tr>
+            @foreach ($detail as $det)
+            <tr>
+                <td>{{$det->quantity}}</td>
+                <td>{{$det->name}}</td>
+                <td>{{$det->model}}</td>
+                <td>{{$det->unit}}</td>
+                <td>{{$det->total}}</td>
+            </tr>
             @endforeach
-        </table>
-    </div>
-    <div class="deco">
-        
-    </div>
-    <div class="cuenta" style="margin-top: 10px; padding: 15px;">
-        <table id="customers">
+            @foreach ($quotation as $totals)
             <tr>
-                <th>SUB_TOTAL</th>
-                <td>${{$totals['sub_total']}}</td>
+                <td colspan="3" style="border: 0px; background-color: white;
+                "></td>
+                <th width="10%">SUB_TOTAL</th>
+                <td>${{$totals->amount}}</td>
             </tr>
             <tr>
-                <th>DESCUENTO <span>{{$totals['percent']}}%</span></th>
-                <td>${{$totals['discount']}}</td>
+                <td colspan="3" style="border: 0px; background-color: white;"></td>
+                <th>DESCUENTO <span>{{$totals->off_percent}} %</span></th>
+                <td>${{$totals->off_money}}</td>
             </tr>
             <tr>
+                <td colspan="3" style="border: 0px; background-color: white;"></td>
                 <th>IVA</th>
-                <td>${{$totals['tax']}}</td>
+                <td>${{$totals->tax}}</td>
             </tr>
             <tr>
+                <td colspan="3" style="border: 0px; background-color: white;"></td>
                 <th>SALDO</th>
-                <td>${{$totals['total']}}</td>
+                <td>${{$totals->grand_total}}</td>
             </tr>
-           
+            @endforeach
         </table>
     </div>
     <div class="footer">

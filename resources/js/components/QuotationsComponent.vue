@@ -217,14 +217,10 @@
             },
             
             mySelect(){
-              this.$nextTick(() => {
-                $('#cliente').DataTable();
-              });
+             
             },
             table(){
-              $(function(){
-                $('#mytable').DataTable();
-              });
+             
             },
             toQuotation(data){
               window.location.href = 'quotation_page'+'/'+data;

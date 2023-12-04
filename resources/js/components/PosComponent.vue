@@ -6,73 +6,58 @@
         		<h3>crear pedido</h3>
         		<small>Durante el proceso, no recarges la página</small>
         	</div>
-        	<div class="accordion mb-5" id="accordionExample">
-        		<!-- Datos del cliente-->
-  				<div class="card rounded-0">
-				    <div class="card-header rounded-0" id="headingOne">
-				      	<h2 class="mb-0">
-					        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-					          Datos del Clietne #1
-					        </button>
-				      	</h2>
-				    </div>
-				    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-				    	<div class="card-body rounded-0">
-				        	<div class="form-group">
-					    		<label for="exampleInputEmail1">Nombre del Cliente</label>
-					    		<input type="email" v-model="name" class="form-control rounded-0 shadow-none" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Escribe el nombre">
-							</div>
-			        		<div class="form-group">
-							    <label for="exampleInputEmail1">Numero WhatsApp</label>
-							    <input type="email" v-model="mobile" class="form-control rounded-0 shadow-none" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Pídele su WhatsApp">
-							    <small id="emailHelp" class="form-text text-muted">Este es muy importantes, ya que sera el numero de recibo</small>
-							</div>
-			        		<div class="d-flex justify-content-end" id="group1">
-			        			<button class="btn btn-dark rounded-0" @click="steps(1)">Guardar</button>
-			        		</div>
-				      	</div>
-				    </div>
-  				</div>
-        		<!-- Datos del cliente-->
-
-        		<!-- Artículos -->
-			  	<div class="card rounded-0">
-				    <div class="card-header" id="headingTwo">
-				      	<h2 class="mb-0">
-					        <a href="#" class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-					          Agregar Artículos #2
-					        </a>
-				      	</h2>
-				    </div>
-				    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-				      <div class="card-body">
-				        <!-- Agregar Artículos-->
+        	<div class="accordion" id="accordionExample">
+			  <div class="accordion-item">
+			    <h2 class="accordion-header" id="headingOne">
+			      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+			        Datos del Cliente #1
+			      </button>
+			    </h2>
+			    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+			      <div class="accordion-body">
+			    	<div class="form-group">
+			    		<label for="exampleInputEmail1">Nombre del Cliente</label>
+			    		<input type="email" v-model="name" class="form-control rounded-0 shadow-none" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Escribe el nombre">
+					</div>
+	        		<div class="form-group">
+					    <label for="exampleInputEmail1">Numero WhatsApp</label>
+					    <input type="email" v-model="mobile" class="form-control rounded-0 shadow-none" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Pídele su WhatsApp">
+					    <small id="emailHelp" class="form-text text-muted">Este es muy importantes, ya que sera el numero de recibo</small>
+					</div>
+	        		<div class="d-flex justify-content-end" id="group1">
+	        			<button class="btn btn-dark rounded-0" @click="steps(1)">Guardar</button>
+	        		</div>
+			      </div>
+			    </div>
+			  </div>
+			  <div class="accordion-item">
+			    <h2 class="accordion-header" id="headingTwo">
+			      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+			        Agregar Artículo #2
+			      </button>
+			    </h2>
+			    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+			      <div class="accordion-body">
+			    	    <!-- Agregar Artículos-->
 				        <div class="step-form">
 	        				<label for="">Cant.</label>
-	    						<input type="number" class="form-control rounded-0 shadow-none" v-model="quantity">
-	        				<label for="">Artículo</label>
-	        				<vue-select :options="articles" :reduce="model => model.idArticle" class="vue-select" v-model="article" label="model" placeholder="Selecciona un Artículo"></vue-select>
+	    					<input type="number" class="form-control rounded-0 shadow-none" v-model="quantity">
+	        				<label for="" class="form-label">Artículo</label>
 	    					<button class="btn rounded-0 my-btn" @click="step_two()"><span class="bi bi-check"></span></button>
 	        			</div>
 				        <!-- Agregar Artículos-->
-				      </div>
-				    </div>
-			  	</div>
-        		<!-- Artículos -->
-
-
-        		<!-- Pago y envio -->
-			  	<div class="card rounded-0">
-				    <div class="card-header rounded-0" id="headingThree">
-				      	<h2 class="mb-0">
-					        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree">
-					          Pago y envío #3
-					        </button>
-				      	</h2>
-				    </div>
-				    <div id="collapseFour" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-				      	<div class="card-body">
-				        <!-- Pago y envio -->
+			      </div>
+			    </div>
+			  </div>
+			  <div class="accordion-item">
+			    <h2 class="accordion-header" id="headingThree">
+			      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+			        Pago y envío #3
+			      </button>
+			    </h2>
+			    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+			      <div class="accordion-body">
+			         <!-- Pago y envio -->
 				        <div class="row">
 				        	<div class="col-md-6">
 					        	<label for="">Pago:</label>
@@ -164,11 +149,11 @@
 		        			</div>
 					        <!-- Pago y envio -->
 				      	</div>
-				      	</div>
-				    </div>
-			  	</div>	
+			      </div>
+			    </div>
+			  </div>
 			</div>
-			<a href="" class="mr-2 mt-4">Enviar por WhatsApp/</a>
+			<a href="" class="mr-4 mt-4">Enviar por WhatsApp/</a>
 			<a href="" class="mr-2 mt-4">Enviar por Correo/</a>
 			<a href="" class="mr-2 mt-4">Descargar/</a>
 			<a href="#" data-toggle="modal" data-target="#production">Enviar a producción</a>
@@ -289,13 +274,11 @@
 	</div>
 </template>
 <script>
-	import VueSelect from 'vue-select'
+	import vSelect from 'vue-select'
 	import 'vue-select/dist/vue-select.css';
 	export default{
 		props:['slug','id'],
-		components:{
-    		VueSelect
-  		},
+		
 		data(){
 			return{
 				art_detail:app.$refs,

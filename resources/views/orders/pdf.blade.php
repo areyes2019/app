@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
@@ -10,6 +10,9 @@
             padding: 0;
             font-family: sans-serif;
         }
+        @page {
+                margin: 0cm 0cm;
+            }
         .header{
             font-size: 10px;
         }
@@ -23,21 +26,7 @@
             color: white;
             font-size: 12px;
         }
-        .footer{
-            margin-top: 15px;
-            font-size: 12px;
-        }
-        .footer p{
-            padding:15px;
-            color: #57606f;
-            margin-top: 120px;
-        }
-        .footer ul{
-            padding: 20px;
-            color: #57606f;
-            margin-top: 100px;
-            margin-left: 90;
-        }
+        
         #customers {
           font-family: Arial, Helvetica, sans-serif;
           border-collapse: collapse;
@@ -54,6 +43,13 @@
         #customers td, #customers th {
           border: 1px solid #ddd;
           padding: 8px;
+          font-size: 15px;
+        }
+
+        #customers th span{
+            font-weight: bolder;
+            font-size: 16px;
+            color: yellow;
         }
         #customers tr:nth-child(even){background-color: #f2f2f2;}
         #customers th {
@@ -73,6 +69,16 @@
             width: 50%;
             margin-left: 365px;
         }
+        .footer{
+            position: fixed; 
+            bottom: 0cm; 
+            left: 0cm; 
+            right: 0cm;
+            height: 2cm;
+            background-color: grey;
+            padding: 20px;
+            color: white; 
+        }
     </style>
 </head>
 <body>
@@ -81,58 +87,34 @@
             <tr>
                 <td style="vertical-align: top; padding: 15px;">
                     <img src="{{asset('img/logo2.png')}}" width="150">
-                    <h4>Orden De Compra</h4>
                 </td>
-                <td style="vertical-align: top;">
-                    <p>
-                        <strong>Tel 461 358 10 90</strong><br>
-                        ventas@sellopronto.com.mx <br>
-                        www.sellopronto.com.mx<br>
-                    </p>
-                    <p style="margin-top: 12px">
-                    <strong>Bancomer</strong><br>
-                    Cta: 1423666980<br>
-                    Clave: 012180014236669805 <br><br>
-                    <strong>Santander</strong> <br>
-                    Cta: 60-55724843-3 <br>
-                    Clave: 014822605572484338
-                    </p>
+                <td style="vertical-align: center;" align="right">
+                   <h1>
+                       SOLICITUD DE DISEÑO
+                   </h1>
                 </td>
-                <td align="top" style="vertical-align: top;">
-                    <p><strong>Sello Pronto Celaya</strong> <br>
-                    Real del Seminario #122 <br>
-                    Valle del Real<br>
-                    Celaya, Gto <br>
-                    Tel 461 358 10 90 <br>
-                    Offna: (461)250 74 82 <br>
-                    </p>
-                    <p style="margin-top: 5px">
-                    <strong >Sello Pronto Querétaro</strong> <br>
-                    Nogal #15 <br>
-                    Frac. Arboledas<br>
-                    Querétaro, Qro <br>
-                    Tel 442 359 4212 <br>
-                    Offna: (442)833 84 73
-                    </p>
-                </td>
+                
             </tr>
         </table>
     </div>
     <div class="info">
         <table width="100%" style="padding: 15px;">
             <tr>
+                @foreach ($user as $users)
                 <td style="vertical-align: top;">
-                    <strong>Para: {{$supplier['company']}}</strong> <br>
-                    Comecialiadora Universal<br>
-                    Att: sellos<br>
+                    <strong style="font-size: 15px;">Para: {{$users->name}} </strong>
+                    <br>Correo:  {{$users->email}}
                 </td>
+                @endforeach
+                <td style="vertical-align: top; font-size: 15px;">
+                    <strong>Orden No. OT- {{$id}}</strong><br>
+                    <strong>Fecha: {{$date}}</strong><br>
+                    
+                </td>                
                 <td style="vertical-align: top;">
-                    <strong>Presupuesto No.</strong><br>
-                    QT-{{$totals['idOrder']}}<br><br>
-                </td>
-                <td style="vertical-align: top;">
-                   <strong>Monto total:</strong><br>
-                    <span style="font-weight: bolder; font-size: 35px;">${{$totals['total']}}</span>
+                    <strong>Valor total del proyecto:</strong><br>
+                    <span style="font-weight: bolder; font-size: 35px;">${{$cost}}</span>
+                    <br>
                 </td>
             </tr>
         </table>
@@ -140,48 +122,27 @@
     <div class="resumen" style="margin-top: 10px; padding: 15px;">
         <table id="customers">
             <tr>
-                <th>Cant.</th>
-                <th>Artículo</th>
+                <th>Nombre</th>
                 <th>Modelo</th>
-                <th>P/U</th>
-                <th>Total</th>
+                <th>Tamaño</th>
+                <th>Boceto</th>
             </tr>
-            @foreach($details as $detail)
+            @foreach ($datos as $data )
             <tr>
-                <td>{{$detail->quantity}}</td>
-                <td>{{$detail->article}}</td>
-                <td>${{$detail->unit_price}}</td>
-                <td>${{$detail->total}}</td>
+                <td>{{$data->name}}</td>
+                <td>{{$data->model}}</td>
+                <td>{{$data->size}}</td>
+                <td>
+                    <img src="{{asset('/storage/prepress/'.$data->color)}}" width="200">
+                </td>
             </tr>
             @endforeach
         </table>
-    </div>
-    <div class="deco">
-        
-    </div>
-    <div class="cuenta" style="margin-top: 10px; padding: 15px;">
-        <table id="customers">
-            <tr>
-                <th>SUB_TOTAL</th>
-                <td>${{$totals['sub_total']}}</td>
-            </tr>
-            <tr>
-                <th>IVA</th>
-                <td>${{$totals['tax']}}</td>
-            </tr>
-            <tr>
-                <th>TOTAL</th>
-                <td>${{$totals['total']}}</td>
-            </tr>
-           
-        </table>
-    </div>
+    </div>   
     <div class="footer">
-        <ul>
-            <li>Cotización expresada en pesos Mexicanos</li>
-            <li>Esta cotización estará vigente durante 30 días naturales</li>
-            <li>Los precios pueden sufrir modificaciones sin previo aviso</li>
-        </ul>
+        <center><p>Copyright México 2022</p></center>
+        <center><p>Cotización expresada en pesos Mexicanos. Esta cotización estará vigente durante 30 días naturales. Los precios pueden sufrir modificaciones sin previo aviso</p></center>
+        <center>ventas@sellospronto.com.mx</center>
     </div>
 </body>
 </html>

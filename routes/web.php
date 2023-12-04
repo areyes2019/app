@@ -15,6 +15,7 @@ use App\Http\Controllers\AccountingController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\ProductionController;
+use App\Http\Controllers\UsersController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,9 +32,7 @@ Route::get('/shop_item/{id}/{data}', [StoreController::class, 'shop_item'])->nam
 Route::get('/description', [StoreController::class, 'shop_item'])->name('shop_item');
 Route::get('/expert', [StoreController::class, 'expert'])->name('expert');
 Route::get('/store_categorie/{slug}', [StoreController::class, 'categories'])->name('store_categorie');
-Route::get('/dashboard', function(){
-    return view('template.dashboard');
-});
+
 
 Route::get('/shipping', [StoreController::class, 'shipping']);
 Route::get('/purchase', [StoreController::class, 'purchase']);
@@ -52,6 +51,9 @@ Route::get('admin', function () {
 
 
 Route::group(['middleware'=>'auth'],function(){
+    /*Usuarios*/
+
+    /*Pagina principal*/
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/contacts_page/{id}', [ContactsController::class, 'page'])->name('contacts_page');
     Route::get('/contacts_list/{id}', [ContactsController::class, 'list'])->name('contacts_list');
@@ -63,15 +65,7 @@ Route::group(['middleware'=>'auth'],function(){
         '/contact/'=> ContactsController::class,
     ]);
 
-    Route::get('woocommerce',[WoocommerceController::class,'index'])->name('woocommerce');
-    Route::get('woocommerce_list',[WoocommerceController::class,'get_list'])->name('woocommerce_list');
-    Route::post('add_woocommerce',[WoocommerceController::class,'add'])->name('add_woocommerce');
-    Route::get('store/{id}/{slug}',[WoocommerceController::class,'store'])->name('store');
-    Route::get('woo_articles/{id}',[WoocommerceController::class,'woo_articles'])->name('woo_articles');
-    Route::get('store_id/{id}',[WoocommerceController::class,'store_id'])->name('store_id');
-    Route::get('woo_articles_list/{id}',[WoocommerceController::class,'woo_articles_list'])->name('woo_articles_list');
-    Route::get('woo_article/{id}/',[WoocommerceController::class,'woo_article'])->name('woo_article');
-    Route::get('woo_get_article/{id}/{store}',[WoocommerceController::class,'woo_get_article'])->name('woo_get_article');
+
     
     //modulo de articulos
     Route::get('list',[ArticlesController::class,'list'])->name('list');
@@ -109,7 +103,7 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('/quotation_line/',[QuotationController::class,'line'])->name('quotation_line');
     
     Route::get('quotations_show',[QuotationController::class,'show'])->name('quotations_show');
-    Route::post('/quotations_new/',[QuotationController::class,'store'])->name('quotations_new');
+    Route::get('/quotations_new/{id}',[QuotationController::class,'store'])->name('quotations_new');
     Route::get('/quotation_page/{id}',[QuotationController::class,'page'])->name('quotation_page');
     Route::get('/articles_show/',[QuotationController::class,'show_articles'])->name('articles_show');
     Route::get('/quotation/{id}',[QuotationController::class,'show_quotation'])->name('show_quotation');
@@ -123,7 +117,8 @@ Route::group(['middleware'=>'auth'],function(){
     Route::post('/delete_line/',[QuotationController::class,'delete_line'])->name('delete_line');
     Route::post('/tax_add',[QuotationController::class,'tax_free'])->name('tax_free');
     Route::post('/add_discount',[QuotationController::class,'add_discount'])->name('add_discount');
-    Route::get('/get_quotation_pdf/{id}/{id_qt}/{try}', [QuotationController::class,'get_pdf'])->name('get_quotation_pdf');
+    Route::get('/get_quotation_pdf/{id_qt}/{try}', [QuotationController::class,'get_pdf'])->name('get_quotation_pdf');
+    Route::get('/get_tk_pdf/{id_qt}/{try}', [QuotationController::class,'get_tk'])->name('get_tk_pdf');
     Route::post('/add_payment/',[QuotationController::class,'add_payment'])->name('add_payment');
     Route::post('/total_payment/',[QuotationController::class,'total_payment'])->name('total_payment');
 
@@ -139,9 +134,11 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('/order_show_line/{id}',[OrdersController::class,'show_line'])->name('show_line');
     Route::get('/order_totals/{id}',[OrdersController::class,'order_totals'])->name('order_totals');
     Route::get('/order_pdf/{supplier}/{order}',[OrdersController::class,'pdf'])->name('order_pdf');
-    Route::get('/orders_show/',[OrdersController::class,'orders_show'])->name('orders_show');
+   
     Route::post('/delete_order_line/',[OrdersController::class,'delete_order_line']);
     Route::post('/add_quantity_order/',[OrdersController::class,'add_quantity_order']);
+    Route::get('/orders_show/',[OrdersController::class,'orders_show'])->name('orders_show');
+    Route::post('/send_to_design/',[PosController::class,'send_to_design'])->name('send_to_design');
 
     //configuracion
     Route::get('/config/',[ConfigController::class,'index'])->name('config');
@@ -166,30 +163,52 @@ Route::group(['middleware'=>'auth'],function(){
     Route::post('/take_out_stock/',[StockController::class,'take'])->name('take_out_stock');
     Route::post('/take_up_stock/',[StockController::class,'take_up'])->name('take_up_stock');
     
+    /*MODULO POS*/
+    
 
     Route::get('/sale/',[PosController::class,'index'])->name('sale');
+    Route::get('/sale_list/',[PosController::class,'sale_list'])->name('sale_list');
     Route::get('/pos/{slug}',[PosController::class,'sale'])->name('pos');
     Route::post('/add_sale_slug/',[PosController::class,'add_slug'])->name('add_sale_slug');
+
+    /*Aqui agregamos la venta o la cotizacion*/
     Route::post('/add_sale/',[PosController::class,'add_sale'])->name('add_sale');
     Route::get('/articles_list/',[PosController::class,'show'])->name('articles_list');
     Route::get('/get_order_data/{id}',[PosController::class,'order_data'])->name('get_order_data');
-    Route::post('/update_sale/{id}/{slug}',[PosController::class,'update'])->name('update_sale');
+    Route::post('/update_sale_name/{id}',[PosController::class,'update_name'])->name('update_sale_name');
+
+    /*Agregar un producto independiente a la cotización */
+    Route::post('/add_single/',[PosController::class,'add_single'])->name('add_single');
+    
     Route::get('/show_details/{id}',[PosController::class,'show_details'])->name('show_details');
-    Route::get('/delete_line_order/{id}/{slug}',[PosController::class,'delete_line'])->name('delete_line_order');
+    Route::post('/delete_line_order/',[PosController::class,'delete_line'])->name('delete_line_order');
     Route::get('/get_totals/{id}',[PosController::class,'totals'])->name('get_totals');
     Route::post('/detail_img',[PosController::class,'img'])->name('detail_img');
     Route::post('/add_payment_order',[PosController::class,'add_advance'])->name('add_advance');
     Route::post('/shipping_pos',[PosController::class,'shipping'])->name('shipping_pos');
     Route::post('/shipping_type',[PosController::class,'shipping_type'])->name('shipping_type');
     Route::post('/add_address',[PosController::class,'add_address'])->name('add_address');
-
-    /*Ordenes de trabajo*/
+    Route::post('/add_qty',[PosController::class,'add_qty'])->name('add_qty');
+    Route::get('ticket_purchase',[PosController::class,'ticket'])->name('ticket_purchase');
+    Route::post('/change_tax',[PosController::class,'change_tax'])->name('change_tax');
+    Route::post('/save_customer_pos',[PosController::class,'save_customer_pos'])->name('save_customer_pos');
+    Route::post('/add_pay_pos',[PosController::class,'add_pay_pos'])->name('add_pay_pos');
+    Route::post('/total_pos',[PosController::class,'total_pos'])->name('total_pos');
+    Route::post('/shipping_data',[PosController::class,'shipping_data'])->name('shipping_data');
+    Route::get('/get_sales/{id}',[PosController::class,'get_sales'])->name('get_sales');
+    Route::get('/show_order/{id}',[PosController::class,'show_order'])->name('show_order');
+    //Mostrar usuario en el form pos
+    Route::get('/users_pos', [PosController::class, 'show_user'])->name('users_pos');
     Route::post('/send_to_production/',[PosController::class,'send'])->name('send_to_production');
+    Route::post('/img_shop/',[PosController::class,'add_img_shop'])->name('img_shop');
+    
+    /*Ordenes de trabajo*/
     Route::post('/add_job/',[ProductionController::class,'add'])->name('add_job');
     Route::get('/order_list/{id}',[ProductionController::class,'order'])->name('order_list');
-    Route::get('mail',function(){
-        return view('email.production');
-    });
+    
+
+
+
 
 
 });

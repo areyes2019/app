@@ -7,56 +7,98 @@
 		</div>
 
 		<div class="row">
-			<div class="col-3">
+			<div class="col-5">
 				<div class="list-pos">
 					<div class="list-pos-child">
-						<div class="list-pos-link">
-							<p><span>Pedido:</span>456</p>
-							<p><span>Fecha:</span>12/03/23</p>
+						<a href="" v-for="post in posts.data">
+							<h4>Pedido: {{post.data.idOrder}} </h4>
+							<p>Fecha:{{post.data.created_at}} </p>
+							<p>Nombre: {{post.data.name}}</p>
+							<p>Nombre: {{post.first_page}}</p>
+						</a>
+						<ul class="pagination">
+	                		<li v-if="posts.prev_page_url">
+			                    <a href="#" @click.prevent="getPosts(posts.prev_page_url)">Anterior</a>
+			                </li>
+			                <li v-if="posts.next_page_url">
+			                    <a href="#" @click.prevent="getPosts(posts.next_page_url)">Siguiente</a>
+			                </li>
+	            		</ul>
+					</div>
+				</div>
+				<nav>
+	           
+        </nav>
+			</div>
+			<div class="col-7">
+				<div class="ticket-sheet">
+				<div class="ticket-sheet-header">
+					<div class="row">
+						<div class="col-md-6">
+							<img src="/img/logo2.png" alt="" height="50px">
 						</div>
-						<p>Abdias Reyes Reyna</p>
-						<div class="d-flex justify-content-between align-items-center">
-							<div class="d-block">
-								<p>Envio a domicilio</p>
-								<p>Saldo: <span class="text-danger">$250.00</span></p>
-							</div>
-							<a href="" class="btn btn-danger rounded-0 btn-sm"><span class="bi bi-arrow-right-short"></span></a>
+						<div class="col-md-6">
+							<p>Pedido <span></span></p>
+							<p>Fecha <span></span></p>
 						</div>
 					</div>
-					<div class="list-pos-child">
-						<div class="list-pos-link">
-							<p><span>Pedido:</span>456</p>
-							<p><span>Fecha:</span>12/03/23</p>
-						</div>
-						<p>Patricia Ortega Durán</p>
-						<div class="d-flex justify-content-between align-items-center">
-							<div class="d-block">
-								<p>Envio a domicilio</p>
-								{{slug}}
-								<p>Saldo: <span class="text-danger">$250.00</span></p>
-							</div>
-							<a href="" class="btn btn-danger rounded-0 btn-sm"><span class="bi bi-arrow-right-short"></span></a>
-						</div>
+				</div>
+				<div class="ticket-sheet-data">
+					<p><span>Nombre:</span></p>
+					<p><span>WhatsApp:</span></p>
+				</div>
+				<table class="table table-bordered" id="table">
+					<tr>
+						<th>Artículo</th>
+						<th class="text-center">Cant.</th>
+						<th>P/U</th>
+						<th>Total</th>
+						<th></th>
+					</tr>
+					<tr>
+						<td></td>
+						<td class="text-center"></td>
+						<td>$</td>
+						<td>$</td>
+						<td>
+							<a href="#" @click.prevent="delete_line(data.idDetail_order)"><span class="bi bi-x"></span></a>
+						</td>
+					</tr>
+				</table>
+				<div class="row">
+					<div class="col-md-6">
+						<p class="m-0"><strong>Direccion de entrega</strong></p>
+						<p></p>
+						<p class="mt-2 mb-0"><strong>Teléfono</strong></p>
+						<p></p>
+						<p><span><strong>Fecha de entrega</strong></span> {{data.delivery_day}} <span><strong>Hora de entrega</strong></span> </p>
 					</div>
-					<div class="list-pos-child">
-						<div class="list-pos-link">
-							<p><span>Pedido:</span>456</p>
-							<p><span>Fecha:</span>12/03/23</p>
-						</div>
-						<p>Esteban Labrego Martínez</p>
-						<div class="d-flex justify-content-between align-items-center">
-							<div class="d-block">
-								<p>Envio a domicilio</p>
-								<p>Saldo: <span class="text-danger">$250.00</span></p>
-							</div>
-							<a href="" class="btn btn-danger rounded-0 btn-sm"><span class="bi bi-arrow-right-short"></span></a>
-						</div>
+					<div class="col-md-6">
+						<table class="table table-bordered">
+							<tr>
+								<th>Importe</th>
+								<td>$</td>
+							</tr>
+							<tr>
+								<th>Anticipo</th>
+								<th>$</th>
+							</tr>
+							<tr>
+								<th>Saldo</th>
+								<td>$</td>
+							</tr>
+							<tr>
+								<th>Envio</th>
+								<td>$</td>
+							</tr>
+							
+						</table>
 					</div>
-					
+				</div>
+				<div class="d-flex justify-content-end">
+					<h4>Total a pagar: <span class="text-danger">$</span></h4>
 				</div>
 			</div>
-			<div class="col-9">
-
 			</div>
 		</div>																
 	</div>
@@ -67,13 +109,24 @@
 	export default{
 		data(){
 			return{
+				posts:[],
 				data:[],
 				name:"sin definir",
 				mobile:"sin definir",
 				delivery:"",
+				url:"/sale_list"
 			}
 		},
 		methods:{
+			getPosts(url) {
+	            axios.get(url)
+	                .then(response => {
+	                    this.posts = response.data;
+	                })
+	                .catch(error => {
+	                    console.error('Error al obtener los posts', error);
+	                });
+	        },
 			open_modal(){
 				$("#nueva_venta").modal('show');
 			},
@@ -104,8 +157,8 @@
 	
 		},
 		mounted(){
+			this.get_data();
 			this.multi_step();
-
 		}
 	}
 </script>

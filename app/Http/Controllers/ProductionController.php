@@ -7,6 +7,7 @@ use App\Models\cnnxn_Article;
 use App\Models\cnnxn_customer_order;
 use App\Models\cnnxn_customer_order_detail;
 use App\Models\cnnxn_production;
+use App\Models\User;
 
 class ProductionController extends Controller
 {

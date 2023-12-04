@@ -4,18 +4,18 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-import $ from 'jquery';
-window.$ = window.jQuery = $
-require('./bootstrap');
-window.Vue = require('vue').default;
+//import $ from 'jquery';
+//window.$ = window.jQuery = $
+//require('./bootstrap');
+//window.Vue = require('vue').default;
+import './bootstrap';
+import { createApp } from 'vue';
 
-import Toaster from 'v-toaster'
- 
-// You need a specific loader for CSS files like https://github.com/webpack/css-loader
-import 'v-toaster/dist/v-toaster.css'
- 
-// optional set default imeout, the default is 10000 (10 seconds).
-Vue.use(Toaster, {timeout: 5000})
+const app = createApp({});
+
+import ExampleComponent from './components/ExampleComponent.vue';
+
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -27,38 +27,40 @@ Vue.use(Toaster, {timeout: 5000})
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('crud-component', require('./components/CrudComponent.vue').default);
+//app.component('user-info', require('./components/UserInfo.vue').default);
+app.component('crud-component', require('./components/CrudComponent.vue').default);
+app.component('store-component', require('./components/StoreComponent.vue').default);
+app.component('shop-component', require('./components/ShopComponent.vue').default);
+app.component('item-component', require('./components/ItemComponent.vue').default);
+app.component('example-component', require('./components/ExampleComponent.vue').default);
+app.component('table-component', require('./components/TableComponent.vue').default);
+app.component('menu-component', require('./components/MenuComponent.vue').default);
+app.component('contact-component', require('./components/ContactComponent.vue').default);
+app.component('contacts-component', require('./components/ContactsComponent.vue').default);
+app.component('woocommerce-component', require('./components/WoocommerceComponent.vue').default);
+app.component('woolist-component', require('./components/WooArticlesListComponent.vue').default);
+app.component('wooarticle-component', require('./components/WooArticleComponent.vue').default);
+app.component('articles-component', require('./components/ArticlesComponent.vue').default);
+app.component('cataloges-component', require('./components/CatalogesComponent.vue').default);
+app.component('categories-component', require('./components/CategoriesComponent.vue').default);
+app.component('quotations-component', require('./components/QuotationsComponent.vue').default);
+app.component('quotation-component', require('./components/QuotationComponent.vue').default);
+app.component('orders-component', require('./components/OrdersComponent.vue').default);
+app.component('order-component', require('./components/OrderComponent.vue').default);
+app.component('stock-component', require('./components/StockComponent.vue').default);
+app.component('expenses-component', require('./components/ExpensesComponent.vue').default);
+app.component('pos-component', require('./components/PosComponent.vue').default);
+app.component('sale-component', require('./components/SaleComponent.vue').default);
+app.component('production-component', require('./components/ProductionComponent.vue').default);
 
-Vue.component('store-component', require('./components/StoreComponent.vue').default);
-Vue.component('shop-component', require('./components/ShopComponent.vue').default);
-Vue.component('item-component', require('./components/ItemComponent.vue').default);
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('table-component', require('./components/TableComponent.vue').default);
-Vue.component('menu-component', require('./components/MenuComponent.vue').default);
-Vue.component('contact-component', require('./components/ContactComponent.vue').default);
-Vue.component('contacts-component', require('./components/ContactsComponent.vue').default);
-Vue.component('woocommerce-component', require('./components/WoocommerceComponent.vue').default);
-Vue.component('woolist-component', require('./components/WooArticlesListComponent.vue').default);
-Vue.component('wooarticle-component', require('./components/WooArticleComponent.vue').default);
-Vue.component('articles-component', require('./components/ArticlesComponent.vue').default);
-Vue.component('cataloges-component', require('./components/CatalogesComponent.vue').default);
-Vue.component('categories-component', require('./components/CategoriesComponent.vue').default);
-Vue.component('quotations-component', require('./components/QuotationsComponent.vue').default);
-Vue.component('quotation-component', require('./components/QuotationComponent.vue').default);
-Vue.component('orders-component', require('./components/OrdersComponent.vue').default);
-Vue.component('order-component', require('./components/OrderComponent.vue').default);
-Vue.component('stock-component', require('./components/StockComponent.vue').default);
-Vue.component('expenses-component', require('./components/ExpensesComponent.vue').default);
-Vue.component('pos-component', require('./components/PosComponent.vue').default);
-Vue.component('sale-component', require('./components/SaleComponent.vue').default);
-Vue.component('production-component', require('./components/ProductionComponent.vue').default);
 
+app.mount('#app');
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const app = new Vue({
+/*const app = new Vue({
     el: '#app',
-});
+});*/
