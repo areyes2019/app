@@ -71,7 +71,7 @@
 					  	<input type="radio" class="btn-check"  id="btnradio3" name="tax" :checked="no_tax" @click="changeTax(0)">
 					  	<label class="btn btn-outline-light rounded-0" for="btnradio3">Sin Iva</label>
 					</div>
-			        <button class="btn btn-outline-light rounded-0" v-if="buttons.status==1" @click="deleteOrder"><span class="bi bi-trash" ></span>Eliminar</button>
+			        <button class="btn btn-outline-light rounded-0" v-if="buttons.status==1" @click="delete_order"><span class="bi bi-trash" ></span>Eliminar</button>
 		      	</div>
 		    </div>
 		</div>
