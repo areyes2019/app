@@ -176,6 +176,7 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('/articles_list/',[PosController::class,'show'])->name('articles_list');
     Route::get('/get_order_data/{id}',[PosController::class,'order_data'])->name('get_order_data');
     Route::post('/update_sale_name/{id}',[PosController::class,'update_name'])->name('update_sale_name');
+    Route::get('/orders_delete/{slug}',[PosController::class,'orders_delete'])->name('orders_delete');
 
     /*Agregar un producto independiente a la cotización */
     Route::post('/add_single/',[PosController::class,'add_single'])->name('add_single');

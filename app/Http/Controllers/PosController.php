@@ -547,6 +547,14 @@ class PosController extends Controller
 
 
     }
+    public function orders_delete($slug)
+    {
+        //primero encontramos todas la lineas que son de esta cotización
+        $order = cnnxn_customer_order::where('slug',$slug)->get();
+        $lines = cnnxn_customer_order_detail::where('idOrder_customer',$order[0]->idOrder)->delete();
+        $delte = cnnxn_customer_order::where('slug',$slug)->delete();
+
+    }
    
     
 

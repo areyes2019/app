@@ -63,14 +63,16 @@
 			        	
 			        </li>
 		      	</ul>
-		      	<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-				  <input type="radio" class="btn-check" id="btnradio1" name="tax" :checked="with_tax" @click="changeTax(1)">
-				  <label class="btn btn-outline-light rounded-0" for="btnradio1">Con Iva</label>
+		      	<div v-for = "buttons in order">
+			      	<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+					  	<input type="radio" class="btn-check" id="btnradio1" name="tax" :checked="with_tax" @click="changeTax(1)">
+					  	<label class="btn btn-outline-light rounded-0" for="btnradio1">Con Iva</label>
 
-				  <input type="radio" class="btn-check"  id="btnradio3" name="tax" :checked="no_tax" @click="changeTax(0)">
-				  <label class="btn btn-outline-light rounded-0" for="btnradio3">Sin Iva</label>
-				</div>
-		        <a href="" class="nav-link d-flex text-white"><span class="bi bi-trash"></span>Eliminar</a>
+					  	<input type="radio" class="btn-check"  id="btnradio3" name="tax" :checked="no_tax" @click="changeTax(0)">
+					  	<label class="btn btn-outline-light rounded-0" for="btnradio3">Sin Iva</label>
+					</div>
+			        <button class="btn btn-outline-light rounded-0" v-if="buttons.status==1" @click="delete_order"><span class="bi bi-trash" ></span>Eliminar</button>
+		      	</div>
 		    </div>
 		</div>
 	</nav>
