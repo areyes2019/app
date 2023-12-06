@@ -133,7 +133,9 @@
                 <td>{{$data->model}}</td>
                 <td>{{$data->size}}</td>
                 <td>
-                    <img src="{{asset('img/logo2.png')}}" width="200">
+                    Lorem ipsum, dolor sit amet, consectetur adipisicing elit. Nulla consequuntur, corrupti rem quasi voluptatibus esse numquam pariatur voluptatum beatae nemo sequi harum unde. Aperiam minus velit laboriosam, asperiores possimus esse.
+                    <!-- <img src="{{asset('img/logo2.png')}}" width="200">-->
+                    
                     <!--<img src="{{public_path('/img/bancos.png')}}" width="200"> -->
                     
                 </td>
