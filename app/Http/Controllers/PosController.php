@@ -199,7 +199,7 @@ class PosController extends Controller
         if ($files = $request->file('image')) {
             
             $name = $files->getClientOriginalName();
-            $files->storeAs('public/prepress',$name);
+            $files->storeAs('prepress',$name);
 
             //$path = public_path('\img\designs');
             //$files->move($path, $name);
