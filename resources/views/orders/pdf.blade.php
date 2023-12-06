@@ -133,8 +133,8 @@
                 <td>{{$data->model}}</td>
                 <td>{{$data->size}}</td>
                 <td>
-                    <img src="{{asset('img/logo2.png')}}" width="150">
-                   
+                    <img src="{{asset('designs/path29589.png')}}" width="150">
+
                     <!-- <img src="{{asset('img/logo2.png')}}" width="200">-->
                     
                     <!--<img src="{{public_path('/img/bancos.png')}}" width="200"> -->

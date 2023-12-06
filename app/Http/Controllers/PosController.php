@@ -199,10 +199,10 @@ class PosController extends Controller
         if ($files = $request->file('image')) {
             
             $name = $files->getClientOriginalName();
-            $files->storeAs('prepress',$name);
+            //$files->storeAs('prepress',$name,'public');
 
-            //$path = public_path('\img\designs');
-            //$files->move($path, $name);
+            $path = public_path('designs');
+            $files->move($path, $name);
             
             $insert = cnnxn_customer_order_detail::where('idDetail_order',$request->id_line)->update([
                 'color'=> $name,
