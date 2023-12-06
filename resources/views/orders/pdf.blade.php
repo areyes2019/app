@@ -133,7 +133,9 @@
                 <td>{{$data->model}}</td>
                 <td>{{$data->size}}</td>
                 <td>
-                    <img src="{{public_path('/img/bancos.png')}}" width="200">
+                    <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/img/bancos.png'))) }}" width="200">
+                    <!--<img src="{{public_path('/img/bancos.png')}}" width="200"> -->
+                    
                 </td>
             </tr>
             @endforeach
