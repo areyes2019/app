@@ -44,6 +44,7 @@ Route::get('admin', function () {
     }
 });
 
+
 //ruta temporal para agregar el public
 /*Route::get('/linkstorage', function () {
     Artisan::call('storage:link');
@@ -52,6 +53,9 @@ Route::get('admin', function () {
 
 Route::group(['middleware'=>'auth'],function(){
     /*Usuarios*/
+    Route::get("/page", function(){
+       return view('orders.pdf');
+    });
 
     /*Pagina principal*/
     Route::get('/home', [HomeController::class, 'index'])->name('home');

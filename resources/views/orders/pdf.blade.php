@@ -100,6 +100,7 @@
     <div class="info">
         <table width="100%" style="padding: 15px;">
             <tr>
+
                 @foreach ($user as $users)
                 <td style="vertical-align: top;">
                     <strong style="font-size: 15px;">Para: {{$users->name}} </strong>
@@ -133,12 +134,7 @@
                 <td>{{$data->model}}</td>
                 <td>{{$data->size}}</td>
                 <td>
-                    <img src="{{asset('designs/path29589.png')}}" width="150">
-
-                    <!-- <img src="{{asset('img/logo2.png')}}" width="200">-->
-                    
-                    <!--<img src="{{public_path('/img/bancos.png')}}" width="200"> -->
-                    
+                    <img src="{{asset('/designs/'.$data->color)}}" width="150">                    
                 </td>
             </tr>
             @endforeach
