@@ -171,7 +171,8 @@
 								<td>@{{line.unit}}</td>
 								<td>@{{line.total}}</td>
 								<td>
-									<img :src="'/img/designs/'+line.color" alt="" width="80">
+									<img src="" alt="">
+									@{{line.color}}
 								</td>
 								<td v-for="buttons in order">
 									
