@@ -126,15 +126,16 @@
                 <th>Nombre</th>
                 <th>Modelo</th>
                 <th>Tamaño</th>
-                <th>Boceto</th>
             </tr>
             @foreach ($datos as $data )
             <tr>
                 <td>{{$data->name}}</td>
                 <td>{{$data->model}}</td>
                 <td>{{$data->size}}</td>
-                <td>
-                    <img src="{{asset('/designs/'.$data->color)}}" width="150">                    
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <img src="{{asset('/designs/'.$data->color)}}" width="400">                    
                 </td>
             </tr>
             @endforeach
