@@ -156,6 +156,7 @@
 								<th>Modelo</th>
 								<th>P/U</th>
 								<th>Importe</th>
+								<th>Img</th>
 								<th>Acciones</th>
 							</tr>
 						</thead>
@@ -169,6 +170,9 @@
 								<td>@{{line.model}}</td>
 								<td>@{{line.unit}}</td>
 								<td>@{{line.total}}</td>
+								<td>
+									<img :src="'/img/designs/'+line.color" alt="" width="80">
+								</td>
 								<td v-for="buttons in order">
 									
 									<!-- agregar imagen -->

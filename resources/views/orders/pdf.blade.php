@@ -133,7 +133,7 @@
                 <td>{{$data->model}}</td>
                 <td>{{$data->size}}</td>
                 <td>
-                    <img src="{{asset('/storage/prepress/'.$data->color)}}" width="200">
+                    <img src="{{asset('/img/designs/'.$data->color)}}" width="200">
                 </td>
             </tr>
             @endforeach

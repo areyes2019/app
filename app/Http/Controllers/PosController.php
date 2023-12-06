@@ -199,8 +199,11 @@ class PosController extends Controller
         if ($files = $request->file('image')) {
             
             $name = $files->getClientOriginalName();
-            $files->storeAs('public/prepress',$name);
+            //$files->storeAs('public/prepress',$name);
 
+            $path = public_path('\img\designs');
+            $files->move($path, $name);
+            
             $insert = cnnxn_customer_order_detail::where('idDetail_order',$request->id_line)->update([
                 'color'=> $name,
                 'notes'=> $request->art_notes,
@@ -460,6 +463,7 @@ class PosController extends Controller
         $query = User::all();
         return $query;
     }
+    //este envia a diseño
     public function send_to_design(Request $request)
     {
         //actualizamos los datos
@@ -512,13 +516,18 @@ class PosController extends Controller
 
 
     }
+
+    //este envia a produccion
     public function add_img_shop(Request $request)
     {
         
         $files = $request->file('image');        
         $name = $files->getClientOriginalName();
-        $files->storeAs('public/prepress',$name);
+        //$files->storeAs('public/prepress',$name);
 
+        $path = public_path('public\img\designs');
+        $files->move($path, $name);
+        
         $insert = cnnxn_customer_order::where('slug',$request->slug)->update([
             'art_img'=> $name,
             'instructions'=> $request->order_notes,

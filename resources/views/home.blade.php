@@ -109,7 +109,7 @@
                             <td>@{{sales.mobile}}</td>
                             <td>@{{sales.name}}</td>
                             <td>
-                                <img src="{{asset('img/big.png')}}" alt="" width="40">
+                                <img :src="'img/designs'+sales.color" alt="" width="40">
                             </td>
                             <td align="right" width="25%">
                                 <button class="btn btn-outline-dark rounded-0 shadow-none" @click="goToOrder(sales.slug)"> Ver</button>
