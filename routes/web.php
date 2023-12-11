@@ -16,6 +16,7 @@ use App\Http\Controllers\StockController;
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\ProductionController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\DesignController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -75,7 +76,15 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('list',[ArticlesController::class,'list'])->name('list');
     Route::post('excel',[ArticlesController::class,'excel'])->name('excel');
     Route::get('articles',[ArticlesController::class,'index'])->name('articles');
-    Route::resources(['articles'=>ArticlesController::class]);
+    
+    //agregar nuevo articulo
+    Route::post('/article_save/',[ArticlesController::class,'store'])->name('article_save');
+    //mostrar el articulo en el modal
+    Route::get('/article_show/{id}',[ArticlesController::class,'show'])->name('articles_show');
+    
+    //Actalizamos el articulo
+    Route::post('/article_update/',[ArticlesController::class,'update'])->name('article_update');
+
     Route::post('/article_img',[ArticlesController::class,'img'])->name('article_img');
 
     Route::get('/cataloges',[ArticlesController::class,'cataloges'])->name('cataloges');
@@ -188,7 +197,6 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('/show_details/{id}',[PosController::class,'show_details'])->name('show_details');
     Route::post('/delete_line_order/',[PosController::class,'delete_line'])->name('delete_line_order');
     Route::get('/get_totals/{id}',[PosController::class,'totals'])->name('get_totals');
-    Route::post('/detail_img',[PosController::class,'img'])->name('detail_img');
     Route::post('/add_payment_order',[PosController::class,'add_advance'])->name('add_advance');
     Route::post('/shipping_pos',[PosController::class,'shipping'])->name('shipping_pos');
     Route::post('/shipping_type',[PosController::class,'shipping_type'])->name('shipping_type');
@@ -211,10 +219,11 @@ Route::group(['middleware'=>'auth'],function(){
     Route::post('/add_job/',[ProductionController::class,'add'])->name('add_job');
     Route::get('/order_list/{id}',[ProductionController::class,'order'])->name('order_list');
     
-
-
-
-
+    //modulos de diseño
+    Route::post('/detail_img',[DesignController::class,'img'])->name('detail_img');
+    Route::get('/show_design/{id}',[DesignController::class,'show'])->name('show_design');
+    //ordenes de trabajo dentro de controlador DesignController
+    Route::get('/design/{slug}',[DesignController::class,'index'])->name('design');
 
 });
 

@@ -44,70 +44,13 @@ class ArticlesController extends Controller
      */
     public function store(Request $request)
     {
-        
-        /*if ($request->visible==true) {
-            $visible = 1;
-        }else{
-            $visible = 0;
-        }
-
-        if ($request->stock==true) {
-            $stock = 1;
-        }else{
-            $stock = 0;
-        }
-        
-        $data = [
-            'name'=> $request->name,
-            'model'=> $request->model,
-            'lines'=> $request->lines,
-            'size'=> $request->size,
-            'stock'=> $stock,
-            'visible'=> $visible,
-            'cost'=> $request->cost,
-            'dealer'=> $request->dealer,
-            'price'=> $request->price,
-            'discount'=> $request->discount,
-            'provider'=> $request->provider,
-            're_order'=> $request->re_order,
-            'family'=> $request->family,
-            'short_desc'=> $request->short,
-            'long_desc'=> $request->long,
-            'categorie'=> $request->categorie,
-            'cataloge'=> $request->cataloge,
-        ];
-
-
-        $validated = Validator::make($data,[
-            'name'=>'required', 
-            'model'=> '',
-            'lines'=> '',
-            'size'=> 'max:12',
-            'stock'=>'',
-            'visible'=> '',
-            'cost'=> 'required|numeric|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
-            'dealer'=> '',
-            'price'=>'numeric|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
-            'provider'=> 'required',
-            'family'=>'required',
-            'short_desc'=>'' ,
-            'long_desc'=> '',
-            'categorie'=>'',
-            'cataloge'=>'required',
-        ],[
-            'name.required'     =>'Se requiere un nombre de artículo',
-            'size.max'          =>'Máximo 2 caractéres',
-            'shtock.numeric'    =>'Solo se aceptan numeros',
-            'cost.required'     =>'Se requiere agregar un costo',
-            'cost.numeric'      =>'Solo números',
-            'dealer.numeric'    =>'Solo numeros',
-            'provider.required' =>'Es necesario agregar un proveedor',
-            'family.required'   =>'Es necesario agregar una familia',
-            'cataloge.required' =>'Se requiere un catálogo'
-        ])->validate();
-
-        $query = cnnxn_Article::create($validated);*/
-        $query = cnnxn_Article::create($request->all());
+        $query = new cnnxn_Article;
+        $query->name = $request->name;
+        $query->model = $request->model;
+        $query->cost = $request->cost;
+        $query->price = $request->price;
+        $query->design = 0;
+        $query->save();
         
     }
 
@@ -149,76 +92,24 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
 
         //el valor original de la goma
-
-        $rubber_query = cnnxn_Article::where('idArticle',$id)->get();
-        $ruber_cost = $rubber_query[0]->rubber;
-
-        if ($ruber_cost == $request->rubber) {
-           $query = cnnxn_Article::where('idArticle',$id)->update([
+        $query = cnnxn_Article::where('idArticle',$request->id)->update([
             'name'      => $request->name,
             'model'     => $request->model,
-            'lines'     => $request->lines,
-            'size'      => $request->size,
-            'stock'     => $request->stock,
             'cost'      => $request->cost,
             'rubber'    => $request->rubber,
-            'dealer'    => $request->dealer,
+            'design'    => $request->design,
             'price'     => $request->price,
-            'discount'  => $request->discount,
-            'provider'  => $request->provider,
-            're_order'  => $request->re_order,
-            'visible'   => $request->visible,
-            'family'    => $request->family,
-            'short_desc'=> $request->short_desc,
-            'long_desc' => $request->short_desc,
-            'img_url'   => $request->img_url,
-            'categorie' => $request->categorie,
-            'cataloge'  => $request->cataloge,
 
-            ]); 
-        }else{
+        ]); 
 
-            $query_benefit = cnnxn_config::all();
-            $percent = $query_benefit[0]->percent; //margen de utlidad en dinero
-
-            $mechanic = $request->cost; //costo del mecanismo
-            $rubber = $request->rubber; //cosoto de la goma
-            $total = $mechanic + $rubber; //sumamos mecanismo mas goma
-            $profit = $total + $percent; // sumamos el beneficio
-            $price = round($profit);
-            
-            $query = cnnxn_Article::where('idArticle',$id)->update([
-                'name'      => $request->name,
-                'model'     => $request->model,
-                'lines'     => $request->lines,
-                'size'      => $request->size,
-                'stock'     => $request->stock,
-                'cost'      => $request->cost,
-                'rubber'    => $request->rubber,
-                'dealer'    => $request->dealer,
-                'price'     => $price,
-                'discount'  => $request->discount,
-                'provider'  => $request->provider,
-                're_order'  => $request->re_order,
-                'visible'   => $request->visible,
-                'family'    => $request->family,
-                'short_desc'=> $request->short_desc,
-                'long_desc' => $request->short_desc,
-                'img_url'   => $request->img_url,
-                'categorie' => $request->categorie,
-                'cataloge'  => $request->cataloge,
-
-            ]);
-        }
-
-        
         if ($query) {
             return true;
         }
+
     }
 
     /**

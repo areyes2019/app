@@ -8,6 +8,7 @@ use App\Models\cnnxn_Article;
 use App\Models\cnnxn_customer_order;
 use App\Models\cnnxn_customer_order_detail;
 use App\Models\cnnxn_production;
+use App\Models\AddArt;
 use App\Models\Contact;
 use App\Models\User;
 //use Illuminate\Support\Facades\Mail;
@@ -170,57 +171,7 @@ class PosController extends Controller
 
 
     }
-    public function img(Request $request)
-    {
-
-
-        //obtenemos la imagen 
-        /*$request()->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-        ]);*/
-
-        //guardar los datos de elaboración
-        $query = cnnxn_customer_order_detail::where('idDetail_order',$request->id_line)->get();
-        $query_article = cnnxn_Article::where('idArticle',$query[0]->article)->get();
-
-
-        if ($request->rubber == true) {
-            $rubber = $query_article[0]->rubber;
-        }else{
-            $rubber = 0;
-        }
-
-        if ($request->draw == true) {
-            $draw = $query_article[0]->design;
-        }else{
-            $draw = 0;
-        }
-
-        if ($files = $request->file('image')) {
-            
-            $name = $files->getClientOriginalName();
-            //$files->storeAs('prepress',$name,'public');
-
-            $path = public_path('designs');
-            $files->move($path, $name);
-            
-            $insert = cnnxn_customer_order_detail::where('idDetail_order',$request->id_line)->update([
-                'color'=> $name,
-                'notes'=> $request->art_notes,
-
-            ]);
-
-            //actualizar el pedido para indicar que ya hay imagen
-            $update = cnnxn_customer_order::where('slug',$request->slug)->update([
-                'art_img'=> 1
-            ]);
-
-            if ($insert) {
-                return true;
-            }
-        }
-
-    }
+    
     public function add_advance(Request $request)
     {
         $query = cnnxn_customer_order::where('idOrder', $request->id)->update([

@@ -156,7 +156,6 @@
 								<th>Modelo</th>
 								<th>P/U</th>
 								<th>Importe</th>
-								<th>Img</th>
 								<th>Acciones</th>
 							</tr>
 						</thead>
@@ -170,16 +169,15 @@
 								<td>@{{line.model}}</td>
 								<td>@{{line.unit}}</td>
 								<td>@{{line.total}}</td>
-								<td>
-									<img :src="'/designs/'+line.color" width="30">
-								</td>
 								<td v-for="buttons in order">
 									
 									<!-- agregar imagen -->
-									<a v-if="buttons.status == 1 & buttons.advance_payment !== null" class="btn btn-outline-dark btn-sm rounded-0 shadow-none" data-bs-toggle="collapse" :href="'#T'+line.idDetail_order" ><i class="bi bi-card-image"></i></a>
+									<a v-if="buttons.status == 1 & buttons.advance_payment !== null" class="btn btn-outline-dark btn-sm rounded-0 shadow-none"  href="#" @click.prevent="modal_design(line.idDetail_order)"><i class="bi bi-card-image"></i></a>
 									<!-- agregar imagen -->
 
+									<!-- eliminar -->
 									<button v-if="buttons.status == 1" class="btn btn-outline-dark btn-sm rounded-0" @click="deleteLine(line.idDetail_order)"><i class="bi bi-x-lg"></i></button>
+									<!-- eliminar -->
 								</td>
 							</tr>
 							<tr class="collapse" :id="'T'+line.idDetail_order">
@@ -385,7 +383,7 @@
 	</div>
 	<!-- modal articulos -->
 
-	<!-- modal Disños-->
+	<!-- modal Diseños-->
 	<div class="modal fade" id="addArt" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-scrollable modal-sm">
 			<div class="modal-content rounded-0">
@@ -435,6 +433,46 @@
 		</div>
 	</div>
 	<!-- modal producción -->
+
+	<!-- modal agregar diseños a listas-->
+	<div class="modal fade" id="art_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-scrollable">
+			<div class="modal-content rounded-0">
+				<div class="modal-header bg-dark rounded-0 text-white">
+					<h5 class="modal-title" id="exampleModalLabel"><span class="bi bi-gear"></span> Agregar Diseños</h5>
+        			<button type="button" class="btn-close btn-light bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<form @submit.prevent="saveImg(id_line)" enctype="mulipart/form-data">
+							<input type="file" name="" ref="inputFile" @change="getImage" id="file" >
+							<div class="input-group mt-3">
+							  	<input type="text" class="form-control rounded-0 shadow-none" placeholder="Detalles del sello"  v-model="art">
+							  	<button class="btn btn-outline-secondary btn-sm rounded-0 shadow-none" type="submit" id="button-addon2">Agregar</button>
+							</div>
+					  	</form>
+					</div>
+					<table class="table table-bordered">
+						<tr>
+							<th>Indicaciones</th>
+							<th>Bocetos</th>
+							<th>Eliminar</th>
+						</tr>
+						<tr v-for="item in designs">
+							<td>@{{item.details}}</td>
+							<td>
+								<img :src="'/designs/'+item.url" alt="" width="120">
+							</td>
+							<td class="d-flex align-items-baseline">
+								<button class="btn btn-outline-dark rounded-0 btn-sm"><span class="bi bi-x"></span></button>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- modal agregar diseños a listas-->
 
 	<!-- modal envios-->
 	<div class="modal fade" id="shipping_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
