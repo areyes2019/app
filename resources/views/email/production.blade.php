@@ -318,7 +318,7 @@
                           <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                             <tbody>
                               <tr>
-                                <td> <a href="http://conexion.test/design/1ztTysweQi" target="_blank">Ver el Proyecto</a> </td>
+                                <td> <a href="https://sellopronto.com.mx/design/{{$data['slug']}}" target="_blank">Ver el Proyecto</a> </td>
                               </tr>
                             </tbody>
                           </table>

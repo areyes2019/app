@@ -1,70 +1,52 @@
 @extends('template.app')
+<?php use App\Models\AddArt;?>
 @section('content')
 <div class="main-board" id="app">
     <div class="card mb-3 rounded-0 border-0">
         <div class="card-body">
-            <h3 class="mt-3">Solicitud de Trabajo</h3>       
+            <h3 class="mt-3">Solicitud de Diseños</h3>       
         </div>
     </div>
     <div class="card shadow mb-4 rounded-0">
     <!-- Card Header - Dropdown -->
-        <div class="card-header rounded-0 d-flex justify-content-between align-items-center">
-          <p class="m-0">Diseño 56</p>
-          <button class="btn btn-outline-dark rounded btn-sm rounded-0">Enviar los diseños ya hechos</button>
+        <div class="card-header rounded-0 d-flex justify-content-between align-items-center">                
+            @foreach ($data['pedido'] as $number)
+            <p class="m-0">Order No {{$number->idOrder}}</p>
+            <button class="btn btn-outline-dark rounded btn-sm rounded-0">Enviar los diseños ya hechos</button>
+            @endforeach
         </div>
         <!-- Card Body -->
+        @foreach ($data['detalle'] as $row)
         <div class="card-body rounded-0">
             <table class="table table-bordered">
                 <tr>
                     <th style="width: 20px;">Descripción</th>
-                    <td>Sello de 59 x 23 mm</td>
+                    <td>{{$row->name}}</td>
                 </tr>
                  <tr>
                     <th>Modelo</th>
-                    <td>Printer C40</td>
+                    <td>{{$row->model}}</td>
                 </tr>
                 <tr>
                     <th>Cantidad</th>
-                    <td>3</td>
+                    <td>{{$row->quantity}}</td>
                 </tr>
                  <tr>
                     <th>Observaciones</th>
-                    <td>Entrega para el martes</td>
+                    <td>{{$row->notes}}</td>
                 </tr>
                 <tr>
                     <th>Diseño</th>
+                    <?php $query = AddArt::where('idLine', $row->idDetail_order)->get()?>
                     <td>
-                        <img src="/designs/Artboard 12.png" alt="" width="300">
-                        <img src="/designs/Artboard 12.png" alt="" width="300">
-                        <img src="/designs/Artboard 12.png" alt="" width="300">
+                        @foreach ($query as $img)
+                        <img src="{{asset('/designs/'.$img->url)}}" alt="" width="400">
+                        @endforeach
                     </td>
                 </tr>
-            </table>
-             <table class="table table-bordered">
-                <tr>
-                    <th style="width: 20px;">Descripción</th>
-                    <td>Sello de 59 x 23 mm</td>
-                </tr>
-                 <tr>
-                    <th>Modelo</th>
-                    <td>Printer C30</td>
-                </tr>
-                <tr>
-                    <th>Cantidad</th>
-                    <td>1</td>
-                </tr>
-                 <tr>
-                    <th>Observaciones</th>
-                    <td>Entrega para el martes</td>
-                </tr>
-                <tr>
-                    <th>Diseño</th>
-                    <td>
-                        <img src="/designs/Artboard 12.png" alt="" width="300">
-                    </td>
-                </tr>
-            </table>        
+            </table>     
         </div>
+        @endforeach
     </div>
 </div>
 <script src="{{asset('js/modules/quotations.js')}}"></script>

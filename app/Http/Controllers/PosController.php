@@ -456,6 +456,7 @@ class PosController extends Controller
         //aqui envaimos
         $data["id_order"] = $order[0]->idOrder;
         $data["file"]  = $file;        
+        $data["slug"]  = $order[0]->slug;        
         
         Mail::to($user[0]->email,$user[0]->name)->send(new general($data));
 

@@ -16,15 +16,13 @@ class DesignController extends Controller
         $pedido = cnnxn_customer_order::where('slug', $slug)->get();
         //buscamos los detalles del pedido
         $detalles = cnnxn_customer_order_detail::where('idOrder_customer',$pedido[0]->idOrder)->get();
-        // Buscamos las imagenes de cada detalle
+        // Buscamos las imagenes de cada detalle 
 
-        return $detalles;
-
-        /*foreach ($detalles as $img) {
-            return $img = AddArt::where('idLine', $img->url)->get();   
-        }*/
-
-        //return view('production.index');
+        $data = [
+            'pedido'=>$pedido,
+            'detalle'=>$detalles        
+        ];   
+        return view('production.index')->with('data',$data);
     }
 
     public function img(Request $request)
