@@ -30,7 +30,7 @@ class DesignController extends Controller
     public function img(Request $request)
     {
 
-        
+        $query = cnnxn_customer_order::where('slug',$request->slug)->get();
 
         if ($files = $request->file('image')) {
             
@@ -38,7 +38,7 @@ class DesignController extends Controller
             $name = str_replace(' ','_',$file);
             //$files->storeAs('prepress',$name,'public');
 
-            $path = public_path('orders');
+            $path = public_path('designs');
             $files->move($path, $name);
             
             
@@ -47,13 +47,11 @@ class DesignController extends Controller
             $insert->url = $name;
             $insert->details = $request->art_notes;
             $insert->idLine = $request->id_line;
+            $insert->idOrder = $query[0]->idOrder;
 
             $insert->save();
 
         }
-
-
-
 
 
     }
@@ -88,5 +86,27 @@ class DesignController extends Controller
             Mail::to('ventas@sellopronto.com.mx')->send(new alert($data));
 
         } 
+    }
+    public function delete_img_line($id)
+    {
+        //primero sacamos el archivo y lo eliminarmos
+        $query = AddArt::where('id',$id)->get();
+        $file = public_path('designs/'.$query[0]->url);
+        
+        if (file_exists($file)) {
+            unlink($file);
+            //luego eliminamos toda la linea
+            $delete = AddArt::where('id',$id)->delete();
+        }else{
+            $delete = AddArt::where('id',$id)->delete();
+        }
+
+    }
+
+    public function has_draw($slug)
+    {
+        $query = cnnxn_customer_order::where('slug', $slug)->get();
+        $has_draw = AddArt::where('idOrder',$query[0]->idOrder)->count('url');
+        return $has_draw;
     }
 }

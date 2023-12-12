@@ -470,18 +470,12 @@ class PosController extends Controller
     }
 
     //este envia a produccion
-    public function add_img_shop(Request $request)
+    public function to_production(Request $request)
     {
         
-        $files = $request->file('image');        
-        $name = $files->getClientOriginalName();
-        //$files->storeAs('public/prepress',$name);
 
-        $path = public_path('public\img\designs');
-        $files->move($path, $name);
         
         $insert = cnnxn_customer_order::where('slug',$request->slug)->update([
-            'art_img'=> $name,
             'instructions'=> $request->order_notes,
             'status'=> 3,
             'rubber_by'=>$request->user
@@ -491,17 +485,16 @@ class PosController extends Controller
         //sacamos al usuario
         $user = User::where('id',$request->user)->get();
         $idOrder = cnnxn_customer_order::where('slug',$request->slug)->get();
-        $data['file']=$files;
+
+        //sacamos el archivo
+        $file = public_path('designs'.$idOrder[0]->art_img);
         $data['id']=$idOrder[0]->idOrder;
         $data['email']=$user[0]->email;
-        $data['name']=$name;
         $data['instructions']=$request->order_notes;
+        $data['file']=$file;
         $data['title']="Solicitud de elaboracion #".$idOrder[0]->idOrder;
         
         Mail::to($user[0]->email,$user[0]->name)->send(new todesign($data));
-
-        
-        
 
         //enviar al corre
 

@@ -96,6 +96,7 @@
 					</a>
 					<!-- Agregar envio -->
 
+
 					<!-- descargar pdf  -->
 					<a class="btn btn-outline-light rounded-0 btn-sm" @click="getPDF" data-bs-toggle="tooltip" data-bs-placement="top" title="Descargar PDF"><span class="bi bi-filetype-pdf"></span></a>
 					<!-- descargar pdf  -->
@@ -103,9 +104,8 @@
 					<!-- descargar nota de venta  -->
 					<a class="btn btn-outline-light rounded-0 btn-sm" @click="getTk" data-bs-toggle="tooltip" data-bs-placement="top" title="Descargar Nota"><span class="bi bi-receipt-cutoff"></span></a>
 					<!-- descargar nota de venta  -->
-
 					<!-- Enviar a diseños  -->
-					<a v-if="buttons.art_img == 1" class="btn btn-outline-light rounded-0 btn-sm" @click="sendToDesign" data-bs-toggle="tooltip" data-bs-placement="top" title="Enviar a Diseño "><span class="bi bi-pc-display-horizontal"></span></a>
+					<a v-if="is_draw > 0" class="btn btn-outline-light rounded-0 btn-sm" @click="sendToDesign" data-bs-toggle="tooltip" data-bs-placement="top" title="Enviar a Diseño "><span class="bi bi-pc-display-horizontal"></span></a>
 					<!-- Enviar a diseño -->
 
 					<!-- enviar por correo  -->
@@ -417,8 +417,7 @@
         			<button type="button" class="btn-close btn-light bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body" v-for = "line in order">
-					<form @submit.prevent="saveImg_shop()" enctype="mulipart/form-data">
-						<input type="file" name="" @change="getImage" id="file">
+					<form @submit.prevent="sendToProd" enctype="mulipart/form-data">
 						<select name="" id="" class="form-control rounded-0 shadow-none mt-2" v-model="user">
 							<option value="">Selecciona</option>
 							<option :value="user.id" v-for="user in users">@{{user.name}}</option>
@@ -464,7 +463,7 @@
 								<img :src="'/designs/'+item.url" alt="" width="120">
 							</td>
 							<td class="d-flex align-items-baseline">
-								<button class="btn btn-outline-dark rounded-0 btn-sm"><span class="bi bi-x"></span></button>
+								<button class="btn btn-outline-dark rounded-0 btn-sm"><span class="bi bi-x" @click="delete_img(item.id)"></span></button>
 							</td>
 						</tr>
 					</table>

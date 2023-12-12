@@ -213,7 +213,7 @@ Route::group(['middleware'=>'auth'],function(){
     //Mostrar usuario en el form pos
     Route::get('/users_pos', [PosController::class, 'show_user'])->name('users_pos');
     Route::post('/send_to_production/',[PosController::class,'send'])->name('send_to_production');
-    Route::post('/img_shop/',[PosController::class,'add_img_shop'])->name('img_shop');
+    Route::post('/to_production/',[PosController::class,'to_production'])->name('to_production');
     
     /*Ordenes de trabajo*/
     Route::post('/add_job/',[ProductionController::class,'add'])->name('add_job');
@@ -225,6 +225,8 @@ Route::group(['middleware'=>'auth'],function(){
     //ordenes de trabajo dentro de controlador DesignController
     Route::get('/design/{slug}',[DesignController::class,'index'])->name('design');
     Route::post('/send_design/',[DesignController::class,'img_design'])->name('send_design');
+    Route::get('/delete_img_line/{id}',[DesignController::class,'delete_img_line'])->name('delete_img_line');
+    Route::get('/has_draw/{slug}',[DesignController::class,'has_draw'])->name('has_draw');
 
 });
 

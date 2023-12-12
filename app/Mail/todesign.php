@@ -29,8 +29,12 @@ class todesign extends Mailable
     public function build()
     {
 
-        return $this->subject('Solicitud de elaboración No '.$this->data['id'])
-                    ->view('email.shop');
+        
+        return $this->subject('Diseño aprobado, Listo para elaborar '.$this->data['id'])
+                    ->view('email.shop')
+                    ->attach($this->data['file']);
+        
+
         /*$emails = ['email address 1', 'email address 2'];
             $files = ['url 1','url 2'];
             Mail::send('emails.welcome', [], function($message) use ($emails, $files)
