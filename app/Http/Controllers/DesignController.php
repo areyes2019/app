@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\AddArt;
 use App\Models\cnnxn_customer_order;
 use App\Models\cnnxn_customer_order_detail;
+use Mail;
+use App\Mail\alert;
 
 class DesignController extends Controller
 {
@@ -32,10 +34,11 @@ class DesignController extends Controller
 
         if ($files = $request->file('image')) {
             
-            $name = $files->getClientOriginalName();
+            $file = $files->getClientOriginalName();
+            $name = str_replace(' ','_',$file);
             //$files->storeAs('prepress',$name,'public');
 
-            $path = public_path('designs');
+            $path = public_path('orders');
             $files->move($path, $name);
             
             
@@ -47,11 +50,6 @@ class DesignController extends Controller
 
             $insert->save();
 
-            //agregamos el 1 al campo diseño de la tabla cnnxn_customer_order
-
-            $insert_id = cnnxn_customer_order::where('slug', $request->slug)->update([
-                'art_img'=> 1,
-            ]);
         }
 
 
@@ -63,5 +61,32 @@ class DesignController extends Controller
     {
         $query = AddArt::where('idLine',$id)->get();
         return $query;
+    }
+    public function img_design(Request $request)
+    {
+        if ($files = $request->file('image')) {
+            $file = $files->getClientOriginalName();
+            $name = str_replace(' ','_',$file);
+            //$files->storeAs('prepress',$name,'public');
+
+            $path = public_path('orders');
+            $files->move($path, $name);
+            
+            
+            $insert =cnnxn_customer_order::where('idOrder', $request->id)->update([
+                'art_img' => $name
+            ]);
+
+            //enviamos un correo
+
+            $mailable = cnnxn_customer_order::where('idOrder',$request->id)->get();
+            $file = public_path('/orders/'.$mailable[0]->art_img);
+            
+            $data['id']=$mailable[0]->idOrder;
+            $data['file']=$file;
+
+            Mail::to('ventas@sellopronto.com.mx')->send(new alert($data));
+
+        } 
     }
 }

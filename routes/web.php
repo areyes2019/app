@@ -224,6 +224,7 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('/show_design/{id}',[DesignController::class,'show'])->name('show_design');
     //ordenes de trabajo dentro de controlador DesignController
     Route::get('/design/{slug}',[DesignController::class,'index'])->name('design');
+    Route::post('/send_design/',[DesignController::class,'img_design'])->name('send_design');
 
 });
 
