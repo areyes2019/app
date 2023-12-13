@@ -1,6 +1,6 @@
 @extends('template.app')
 @section('content')
-<div class="main-board" id="app">
+<div class="main-board" id="list">
 	<div class="card mb-3 rounded-0 border-0">
 		<div class="card-body">
 			<h3 class="mt-3">Cotizaciones</h3>       
@@ -12,7 +12,7 @@
                 <!-- Card Header - Dropdown -->
                     <div class="card-header rounded-0 ">
                       <!-- cotizar a cliente -->
-                      <a class="btn rounded-0 btn-danger btn-sm" href="#" @click.prevent="makeQt">
+                      <a class="btn rounded-0 btn-outline-dark btn-sm" href="{{route('quotations_new',1)}}">
                         <span class="icon-file-plus icon-my text-white"></span> Nueva Cotización
                       </a>
                     </div>
@@ -23,19 +23,19 @@
                                 <tr>
                                     <th>#</th>
                                     <th>fecha</th>
-                                    <th>empresa</th>
                                     <th>Contacto</th>
+                                    <th>WahtsApp</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="data in general_data">
-                                    <td>@{{data.idQt}}</td>
-                                    <td>@{{data.created_at}}</td>
-                                    <td>@{{data.company}}</td>
-                                    <td>@{{data.name}}</td>
+                                <tr v-for="item in data">
+                                    <td>@{{item.idQt}}</td>
+                                    <td>@{{item.created_at}}</td>
+                                    <td>@{{item.name}}</td>
+                                    <td>@{{item.mobile}}</td>
                                     <td>
-                                       <button class="btn btn-danger rounded-0 btn-sm" @click="toQuotation(data.slug)">Ver</button>
+                                       <a :href="'/quotation_page/'+item.slug" class="btn btn-outline-dark rounded-0 btn-sm">Ver</a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -46,7 +46,7 @@
         </div>
 
         <!-- Modal Cotizar a cliente-->
-        <div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade " id="new_qt" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content rounded-0">
               <div class="modal-header rounded-0 bg-color">
@@ -64,9 +64,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="data in customers_data">
-                            <td v-text="data.company"></td> 
-                            <td v-text="data.name"></td>
+                        <tr>
+                            <td v-text=""></td> 
+                            <td v-text=""></td>
                             <td>
                               <label class="switch">
                                 <input type="checkbox"  @click="tax = !tax" :id="data.idContact">
@@ -85,6 +85,5 @@
           </div>
         </div>
 </div>
-<script src="{{asset('js/modules/quotations.js')}}"></script>
-<quotations-component></quotations-component>
+<script src="{{asset('js/modules/quotation_list.js')}}"></script>
 @endsection

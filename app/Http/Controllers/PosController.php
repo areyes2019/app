@@ -357,7 +357,8 @@ class PosController extends Controller
             return 1;
         }else{
             $query = cnnxn_customer_order::where('slug',$request->id)->update([
-                'advance_payment'=>$request->pay
+                'advance_payment'=>$request->pay,
+                'type'=>2
             ]);   
 
         }
@@ -392,19 +393,27 @@ class PosController extends Controller
         $four = 4;
         switch ($id) {
             case 1:
-                $query = cnnxn_customer_order::where('status',1)->get();
+                $query = cnnxn_customer_order::where('status',1)
+                ->where('type',2)
+                ->get();
                 return $query;
                 break;
             case 2:
-                $query = cnnxn_customer_order::where('status',2)->get();
+                $query = cnnxn_customer_order::where('status',2)
+                ->where('type',2)
+                ->get();;
                 return $query;
                 break;
             case 3:
-                $query = cnnxn_customer_order::where('status',3)->get();
+                $query = cnnxn_customer_order::where('status',3)
+                ->where('type',2)
+                ->get();
                 return $query;
                 break;
             case 4:
-                $query = cnnxn_customer_order::where('status',4)->get();
+                $query = cnnxn_customer_order::where('status',4)
+                ->where('type',2)
+                ->get();
                 return $query;
                 break;
         }

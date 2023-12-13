@@ -27,14 +27,11 @@
 			            Enviar
 			          </a>
 			          <ul class="dropdown-menu rounded-0" aria-labelledby="navbarDropdown">
-			            <li><a class="dropdown-item" href="#">Enviar a Correo</a></li>
-			            <li><hr class="dropdown-divider"></li>
+			            <li><a class="dropdown-item" href="#send_mail_modal" data-bs-toggle = "modal">Enviar a Correo</a></li>
 			            
 			            <li><a class="dropdown-item" href="#">Enviar a WhatsApp</a></li>
-			            <li><hr class="dropdown-divider"></li>
 			            <div v-for="buttons in order">
 				            <li v-if="buttons.status == 2"><a class="dropdown-item" href="#addProduction" data-bs-toggle="modal"><span class="bi bi-gear"></span> Enviar a Produción</a></li>
-				            <li><hr class="dropdown-divider"></li>
 			            </div>
 			            
 			            <li><a class="dropdown-item" href="#">Descargar</a></li>
@@ -98,7 +95,7 @@
 
 
 					<!-- descargar pdf  -->
-					<a class="btn btn-outline-light rounded-0 btn-sm" @click="getPDF" data-bs-toggle="tooltip" data-bs-placement="top" title="Descargar PDF"><span class="bi bi-filetype-pdf"></span></a>
+					<a class="btn btn-outline-light rounded-0 btn-sm" @click="getPDF(1)" data-bs-toggle="tooltip" data-bs-placement="top" title="Descargar PDF"><span class="bi bi-filetype-pdf"></span></a>
 					<!-- descargar pdf  -->
 
 					<!-- descargar nota de venta  -->
@@ -407,6 +404,26 @@
 		</div>
 	</div>
 	<!-- modal diseños -->
+	
+	<!-- modal enviar por correo-->
+	<div class="modal fade" id="send_mail_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-scrollable modal-sm">
+			<div class="modal-content rounded-0">
+				<div class="modal-header bg-dark rounded-0 text-white">
+					<h5 class="modal-title" id="exampleModalLabel">Enviar a Correo</h5>
+        			<button type="button" class="btn-close btn-light bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<label for="">Direccion de Coreo</label>
+					<input type="text" class="form-control rounded-0 shadow-none" v-model="email_address">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-outline-dark rounded-0 d-flex float-right" data-bs-dismiss="modal" @click="sendPDF"><span class="bi bi-send"></span></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- modal enviar por correo -->
 
 	<!-- modal producción-->
 	<div class="modal fade" id="addProduction" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

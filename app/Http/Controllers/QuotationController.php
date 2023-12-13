@@ -12,6 +12,8 @@ use App\Models\cnnxn_Accounting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use PDF;
+use Mail;
+use App\Mail\toEmail;
 class QuotationController extends Controller
 {
   public function index()
@@ -20,7 +22,9 @@ class QuotationController extends Controller
   }
   public function show()
   {
-    $posts = cnnxn_quotation::join('cnnxn_contacts', 'cnnxn_contacts.idContact', '=', 'cnnxn_quotations.idCustomer')->get();
+    $posts = cnnxn_customer_order::join('cnnxn_contacts', 'cnnxn_contacts.idContact', '=', 'cnnxn_customer_orders.idCustomer')
+      ->where('cnnxn_customer_orders.type',1)
+      ->get();
     return $posts;
   } 
   public function store($id)
@@ -359,15 +363,64 @@ class QuotationController extends Controller
         $pdf = PDF::loadView('quotations.pdf',$mega_pack)->setPaper('a4','portrait');
         if ($try == 1) {
             return $pdf->download('QT-'.$quotation.'.pdf');
-        }elseif ($try = "send") {
-            $file=$pdf->output();
-            $file_id = 'QT-'.$id_qt.'-'.$file_name.'.pdf';
-            $mailable = new SendQuotation($file, $file_id);
-            Mail::to($customer_query[0]->email)->send($mailable);
+        }elseif ($try = 2) {
+            $name = 'QT-'.$quotation.'.pdf';
+            $file = file_put_contents($name, $pdf->output());
+
+            $data["file"] = $file; 
+            Mail::to('emilianosej@gmail.com')->send(new general($data));
+
         }
         
     }
+    public function send_pdf(Request $request)
+    {
+       //este es el cliente
+        $query_slug = cnnxn_customer_order::where('slug', $request->id)->get(); 
+        $query_person = Contact::where('idContact', $query_slug[0]->idCustomer)->get();
+        
+        //estos son los datos de la cotización
+        $query_id = cnnxn_customer_order::where('slug', $request->id)->get('idOrder'); 
+        $quotation = $query_id[0]->idOrder;
 
+        //aqui obtenemos todos los datos del cliente
+        $customer_query = Contact::where('idContact',$query_slug)->get();
+        
+        //aqui todos los datos de la cotización
+        $quotation_query    = cnnxn_customer_order::where('slug', $request->id)->get();          
+        
+        //aqui los detalles de la cotización
+        $detail_query = cnnxn_customer_order_detail::where('idOrder_customer',$query_slug[0]->idOrder)->get();
+        
+        
+        //este es el gran total
+        $quotation_total = cnnxn_customer_order::where('slug', $request->id)->get('grand_total');
+        
+        //aplicamos el descuento
+
+        $discount = 0;
+        
+        $data = [
+            'total'=>$quotation_total,
+        ];
+        $mega_pack=[
+            'quotation' =>  $quotation_query,
+            'customer'  =>  $query_person,
+            'detail'    =>  $detail_query,
+            'total'     =>  $data
+        ];
+        
+
+        $pdf = PDF::loadView('quotations.pdf',$mega_pack)->setPaper('a4','portrait');
+        $name = 'QT-'.$quotation.'.pdf';
+        //$file = file_put_contents($name, $pdf->output());
+        $path = public_path('presupuestos');
+        $url = $path."/".$name;
+        file_put_contents($url, $pdf->output());
+
+        $data["file"] = $url; 
+        Mail::to($request->email)->send(new toEmail($data));
+    }
     public function get_tk($id_qt,$try)
     {
         // $id_qt  asdfaFAD##
