@@ -151,7 +151,7 @@
 	<!-- harea de hooks-->
 
 	<!-- categorias destacadas -->
-	<div class="container-fluid mt-4">
+	<!-- <div class="container-fluid mt-4">
 		<div class="top-ten">
 			<div class="top-ten-title">
 				<p>Categorías</p>
@@ -201,7 +201,8 @@
 				
 			</div>
 		</div>
-	</div>
+	</div>-->
+	
 	<!-- prin big-->
 	<div class="container-fluid mt-4">
 		<div class="row">
@@ -220,7 +221,8 @@
 		</div>
 	</div>
 	<!-- populares-->
-	<div class="container-fluid mt-4">
+
+	<!--<div class="container-fluid mt-4">
 		<div class="top-ten">
 			<div class="top-ten-title">
 				<p>Nuestros sellos</p>
@@ -261,5 +263,6 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
+	
 @endsection
