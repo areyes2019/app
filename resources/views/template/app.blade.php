@@ -80,6 +80,13 @@
                         <span>Ventas</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{url('/config/')}}">
+                        <i class="bi bi-gear"></i>
+                        <span>Configuración</span>
+                    </a>
+                </li>
+                
             </ul>
         </nav>
 

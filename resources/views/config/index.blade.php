@@ -25,7 +25,7 @@
 							{{csrf_field()}}
 							<input type="file" class="form-control" name="hook">
 							<input type="text" value="1" name="id" class="d-none">
-							<input type="submit" class="btn btn-danger mt-1" value="Guardar">
+							<input type="submit" class="btn btn-outline-dark rounded-0 mt-1" value="Guardar">
 						</form>
 						<p>Tamaño adecuado de la imagen 936 x 760 px</p>
 					</div>
@@ -47,7 +47,7 @@
 							{{csrf_field()}}
 							<input type="file" class="form-control" name="hook">
 							<input type="text" value="2" name="id" class="d-none">
-							<input type="submit" class="btn btn-danger mt-1" value="Guardar">
+							<input type="submit" class="btn btn-outline-dark rounded-0 mt-1" value="Guardar">
 						</form>
 						<p>Tamaño adecuado de la imagen 936 x 760 px</p>
 					</div>
@@ -69,7 +69,7 @@
 							{{csrf_field()}}
 							<input type="file" class="form-control" name="hook">
 							<input type="text" value="3" name="id" class="d-none">
-							<input type="submit" class="btn btn-danger mt-1" value="Guardar">
+							<input type="submit" class="btn btn-outline-dark rounded-0 mt-1" value="Guardar">
 						</form>
 						<p>Tamaño adecuado de la imagen 936 x 760 px</p>
 					</div>

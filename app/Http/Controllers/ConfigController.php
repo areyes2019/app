@@ -15,7 +15,9 @@ class ConfigController extends Controller
     }
     public function main_img(Request $request)
     {
-         if ($files = $request->file('hook')) {
+        //return $request;
+        
+        if ($files = $request->file('hook')) {
             
             $name = $files->getClientOriginalName();
             $files->storeAs('public/multiporpouse',$name);
@@ -37,6 +39,7 @@ class ConfigController extends Controller
 
             if ($insert) {
                 return redirect('config');   
+            
             }
         }
     }
