@@ -20,7 +20,9 @@ class ConfigController extends Controller
         if ($files = $request->file('hook')) {
             
             $name = $files->getClientOriginalName();
-            $files->storeAs('public/multiporpouse',$name);
+
+            $path = public_path('banner');
+            $files->move($path, $name);
 
             if ($request->id == 1) {
                 $insert = cnnxn_config::where('id',1)->update([
@@ -38,9 +40,12 @@ class ConfigController extends Controller
 
 
             if ($insert) {
-                return redirect('config');   
+                return redirect('config');
             
             }
+        }else{
+            $alert = "Debes cargar una imagen";
+            return redirect('config')->with('alert',$alert);
         }
     }
     public function profit(Request $request)

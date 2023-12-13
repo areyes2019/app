@@ -31,7 +31,7 @@
 					</div>
 					<div class="col-md-3">
 						@foreach ($query as $main_image )
-						<img src="storage/multiporpouse/{{$main_image->img01}}" alt="" class="mt-3" width="150">
+						<img src="{{asset('banner/'.$main_image->img01)}}" alt="" class="mt-3" width="150">
 						@endforeach
 					</div>
 				</div>
@@ -53,7 +53,7 @@
 					</div>
 					<div class="col-md-3">
 						@foreach ($query as $superior_image )
-						<img src="storage/multiporpouse/{{$superior_image->img02}}" alt="" class="mt-3" width="150">
+						<img src="{{asset('banner/'.$superior_image->img02)}}" alt="" class="mt-3" width="150">
 						@endforeach
 					</div>
 				</div>
@@ -75,7 +75,7 @@
 					</div>
 					<div class="col-md-3">
 						@foreach ($query as $inferior_image )
-						<img src="storage/multiporpouse/{{$inferior_image->img03}}" alt="" class="mt-3" width="150">
+						<img src="{{asset('banner/'.$superior_image->img03)}}" alt="" class="mt-3" width="150">
 						@endforeach
 					</div>
 				</div>

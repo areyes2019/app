@@ -110,14 +110,14 @@
 		<div class="banner-container">
 			@foreach ($hooks as $img )
 			<div class="img-banner">
-				<img src="storage/multiporpouse/{{$img->img01}}" class="img-fluid" alt="">
+				<img src="{{asset('banner/'.$img->img01)}}" class="img-fluid" alt="">
 			</div>
 			<div class="img-banner-side">
 				<div class="banner01">
-					<img src="storage/multiporpouse/{{$img->img02}}" class="img-fluid" alt="">
+					<img src="{{asset('banner/'.$img->img02)}}" class="img-fluid" alt="">
 				</div>
 				<div class="banner02">
-					<img src="storage/multiporpouse/{{$img->img03}}" class="img-fluid" alt="">
+					<img src="{{asset('banner/'.$img->img03)}}" class="img-fluid" alt="">
 				</div>
 			</div>
 			@endforeach
