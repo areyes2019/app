@@ -104,7 +104,9 @@
 				<p class="mt-4"><center>Siguenos en nuestras redes</center></p>
 			</div>
 		</div>
+		<div class="elfsight-app-700df9ff-7ff9-42ee-8095-c54be249b10a" data-elfsight-app-lazy></div>
 	</div>
 	<script src="{{asset('js/app.js')}}"></script>
+	<script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
 </body>
 </html>
