@@ -228,7 +228,23 @@ class ArticlesController extends Controller
             }
         }
 
+
     }
+    public function update_popular($id)
+    {
+        $query = cnnxn_Article::where('idArticle',$id)->get();
+
+        if ($query[0]->popular == 0) {
+            $query = cnnxn_Article::where('idArticle',$id)->update([
+                'popular'=>1,
+            ]);
+        }else{
+            $query = cnnxn_Article::where('idArticle',$id)->update([
+                'popular'=>0,
+            ]);
+        }
+    }
+   
 
     
 

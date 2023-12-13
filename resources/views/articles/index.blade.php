@@ -39,7 +39,8 @@
 							<th>Nombre</th>
 							<th>Mod.</th>
 							<th>Precio</th>
-							<th align="center">Sck Mín</th>
+							<th>Sck Mín</th>
+							<th>Dest.</th>
 							<th>Acciones</th>
 						</tr>
 					</thead>
@@ -56,9 +57,20 @@
 								<input type="number" value="0" min="0" style="width: 45px">
 							</td>
 							<td>
+								<input type="checkbox" v-model="article.popular" @click="change_popular(article.idArticle)">
+							</td>
+							<td>
+								<!-- Editar articulos -->
 								<a href="#" @click.prevent="showUpdateModal(article.idArticle)"><span class="bi bi-pencil-square"></span></a>
+								<!-- Editar articulos -->
+
+								<!-- eliminar -->
 								<a href="#" @click.prevent="deleteData(article.idArticle)"><span class="bi bi-trash"></span></a>
+								<!-- eliminar -->
+
+								<!-- Agregar imagen-->
 								<a href="#" @click.prevent="addImage(article.idArticle)"><span class="bi bi-camera"></span></a>
+								<!-- Agregar imagen-->
 							</td>
 						</tr>
 					</tbody>
@@ -177,20 +189,14 @@
 		  <div class="modal-dialog modal-dialog-scrollable">
 		    <div class="modal-content rounded-0">
 		      	<div class="modal-body">
-		      		<h3>Agregar imagen principal</h3>
-		      		<form @submit.prevent="saveImg" enctype="mulipart/form-data">
+		      		<h3>Agregar imagen del producto</h3>
+		      		<form @submit.prevent="saveImg" enctype="mulipart/form-data" class="d-flex justify-content-between align-items-center">
 		      			<input type="file" name="" @change="getImage" id="file">
-		      			<button type="submit" class="btn btn-danger">Guardar</button>
+		      			<button type="submit" class="btn btn-outline-dark rounded-0 mt-2">Guardar</button>
 		      		</form>
-
-		      		<h3 class="mt-4">Agregar galería</h3>
-					<form enctype="mulipart/formdata">
-		      			<input type="file" name="" >
-		      			<button type="submit" class="btn btn-danger">Guardar</button>
-		      		</form>		      		
 		      	</div>
 		      <div class="modal-footer">
-		        <button type="button" class="btn my-btn-secondary-sm" data-bs-dismiss="modal"><span class="bi bi-x-octagon"></span> Cerrar</button>
+		        <button type="button" class="btn btn-outline-dark rounded-0" data-bs-dismiss="modal"><span class="bi bi-x-octagon"></span> Cerrar</button>
 		      </div>
 		    </div>
 		  </div>

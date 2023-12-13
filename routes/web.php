@@ -33,10 +33,9 @@ Route::get('/shop_item/{id}/{data}', [StoreController::class, 'shop_item'])->nam
 Route::get('/description', [StoreController::class, 'shop_item'])->name('shop_item');
 Route::get('/expert', [StoreController::class, 'expert'])->name('expert');
 Route::get('/store_categorie/{slug}', [StoreController::class, 'categories'])->name('store_categorie');
-
-
 Route::get('/shipping', [StoreController::class, 'shipping']);
 Route::get('/purchase', [StoreController::class, 'purchase']);
+Route::get('/get_popular/', [StoreController::class, 'get_popular'])->name('get_popular');
 Route::get('admin', function () {
     if (Auth()->user()) {
         return redirect(route('home'));
@@ -81,6 +80,8 @@ Route::group(['middleware'=>'auth'],function(){
     Route::post('/article_save/',[ArticlesController::class,'store'])->name('article_save');
     //mostrar el articulo en el modal
     Route::get('/article_show/{id}',[ArticlesController::class,'show'])->name('articles_show');
+    //actualiza el campo popular
+    Route::get('/update_popular/{id}',[ArticlesController::class,'update_popular'])->name('update_popular');
     
     //Actalizamos el articulo
     Route::post('/article_update/',[ArticlesController::class,'update'])->name('article_update');

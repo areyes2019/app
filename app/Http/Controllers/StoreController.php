@@ -16,7 +16,8 @@ class StoreController extends Controller
         $single = cnnxn_categorie::where('main',0)->where('is_parent',0)->get();
         $parent = cnnxn_categorie::where('is_parent',1)->get();
         $config = cnnxn_config::all();
-        return view('shop',['single'=>$single,'parent'=>$parent, 'hooks'=>$config]);
+        $popular = cnnxn_Article::where('popular',1)->get();
+        return view('shop',['single'=>$single,'parent'=>$parent, 'hooks'=>$config, 'popular'=>$popular]);
     }
 
     public function shop_item($id, $data)
@@ -68,4 +69,5 @@ class StoreController extends Controller
     {
         return view ('store/purchase');
     }
+    
 }

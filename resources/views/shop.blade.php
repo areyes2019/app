@@ -91,38 +91,16 @@
 				<p>nuestro top 10</p>
 			</div>
 			<div class="row">
+				@foreach ($popular as $item)
 				<div class="col-md-3 p-2">
 					<div class="top-ten-item">
-						<img src="img/front01.png" class="img-fluid" alt="">
-						<p>Colop C40</p>
-						<p>Sello de 59 x 23 mm</p>
-						<p>$250.00</p>
+						<img src="storage/cataloge/{{$item->img_url}}" class="img-fluid" alt="">
+						<p>{{$item->name}}</p>
+						<p>{{$item->model}}</p>
+						<p>{{$item->price}}</p>
 					</div>
 				</div>
-				<div class="col-md-3 p-2">
-					<div class="top-ten-item">
-						<img src="img/front01.png" class="img-fluid" alt="">
-						<p>Colop C60</p>
-						<p>Sello de 59 x 23 mm</p>
-						<p>$250.00</p>
-					</div>
-				</div>
-				<div class="col-md-3 p-2">
-					<div class="top-ten-item">
-						<img src="img/front01.png" class="img-fluid" alt="">
-						<p>Colop C35</p>
-						<p>Sello de 59 x 23 mm</p>
-						<p>$250.00</p>
-					</div>
-				</div>
-				<div class="col-md-3 p-2">
-					<div class="top-ten-item">
-						<img src="img/front01.png" class="img-fluid" alt="">
-						<p>Colop C40</p>
-						<p>Sello de 59 x 23 mm</p>
-						<p>$250.00</p>
-					</div>
-				</div>
+				@endforeach
 			</div>
 		</div>
 	</div>
@@ -133,16 +111,13 @@
 			@foreach ($hooks as $img )
 			<div class="img-banner">
 				<img src="storage/multiporpouse/{{$img->img01}}" class="img-fluid" alt="">
-				<button class="btn my-btn-red">Me intresa</button>
 			</div>
 			<div class="img-banner-side">
 				<div class="banner01">
 					<img src="storage/multiporpouse/{{$img->img02}}" class="img-fluid" alt="">
-					<button class="btn my-btn-red">Me intresa</button>
 				</div>
 				<div class="banner02">
 					<img src="storage/multiporpouse/{{$img->img03}}" class="img-fluid" alt="">
-					<button class="btn my-btn-red">Me intresa</button>
 				</div>
 			</div>
 			@endforeach
@@ -204,7 +179,7 @@
 	</div>-->
 	
 	<!-- prin big-->
-	<div class="container-fluid mt-4">
+	<div class="container-fluid mt-4 mb-4">
 		<div class="row">
 			<div class="col-md-7 big-img">
 				<img src="img/big_rubber.png" class="img-fluid" alt="">
@@ -215,7 +190,6 @@
 					<p>pienses en grande</p>
 					<p>Los sellos de GRAN TAMAÑO tienen múltiples aplicaciones, playeres, bolsas, cajas de pizza y más. Las más comunes son para marcar bolsas de tela (aunque también se podrían marcar bolsas de plástico con una tinta especial de secado rápido) y para marcar cajas de diferentes tipos y tamaños.</p>
 					<img src="img/big.png">
-					<a href="" class="btn my-btn-red mt-4">Me interesa</a>
 				</div>
 			</div>
 		</div>
