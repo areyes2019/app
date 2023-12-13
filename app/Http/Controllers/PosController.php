@@ -487,7 +487,7 @@ class PosController extends Controller
         $idOrder = cnnxn_customer_order::where('slug',$request->slug)->get();
 
         //sacamos el archivo
-        $file = public_path('designs'.$idOrder[0]->art_img);
+        $file = public_path('orders/'.$idOrder[0]->art_img);
         $data['id']=$idOrder[0]->idOrder;
         $data['email']=$user[0]->email;
         $data['instructions']=$request->order_notes;

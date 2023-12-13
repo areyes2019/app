@@ -30,7 +30,6 @@ class general extends Mailable
     {
         $filename = "OT-".$this->data['id_order'].".pdf";
         return $this->subject('Orden de trabajo No '.$this->data['id_order'])
-                    ->view('email.production')
-                    ->attachData($this->data['file'],$filename,['mime' => 'application/pdf']);
+                    ->view('email.production');
     }
 }
