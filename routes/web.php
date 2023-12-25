@@ -116,7 +116,7 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('/quotation_delete/{id}',[QuotationController::class,'destroy'])->name('quotation_delete');
     Route::get('/quotation_line/',[QuotationController::class,'line'])->name('quotation_line');
     
-    Route::get('quotations_show',[QuotationController::class,'show'])->name('quotations_show');
+    Route::get('/quotations_show/',[QuotationController::class,'show'])->name('quotations_show');
     Route::get('/quotations_new/{id}',[QuotationController::class,'store'])->name('quotations_new');
     Route::get('/quotation_page/{id}',[QuotationController::class,'page'])->name('quotation_page');
     Route::get('/articles_show/',[QuotationController::class,'show_articles'])->name('articles_show');
