@@ -10,19 +10,24 @@
     <title>Connexion</title>
   </head>
   <body>
-
-    <!--Area de imagen -->
-    <div class="side-login-image">
-        <div class="side-text-area">
-            <h4 class=" m-0">Bienvenido</h4>
-            <p class=" m-0">A tu CONNE<SPan>XION</SPan></p>
+    <div class="row">
+      <div class="col-md-6">
+        <!--Area de imagen -->
+        <div class="side-login-image">
+            <div class="side-text-area">
+                <h4 class=" m-0">Bienvenido</h4>
+                <p class=" m-0">A tu CONNE<SPan>XION</SPan></p>
+            </div>
         </div>
-    </div>
-    <!--Area de imagen -->
-    <div class="side-login-panel">
-      <div class="side-login-content">
-        <p class=" m-0">conne<span>xion</span></p>
-        @yield('login')
+        <!--Area de imagen -->
+      </div>
+      <div class="col-md-6">
+          <div class="side-login-panel">
+            <div class="side-login-content">
+              <p class=" m-0">conne<span>xion</span></p>
+              @yield('login')
+            </div>
+          </div>
       </div>
     </div>
     <!-- Optional JavaScript; choose one of the two! -->
