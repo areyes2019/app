@@ -35,108 +35,137 @@ class StockController extends Controller
     {
         
 
+
         $find = cnnxn_Stock::where('article',$request->article)->count();
         
         if ($find == 0) {
             //buscamos el articulo
             $article = cnnxn_Article::where('idArticle',$request->article)->get();
-            $total = $article[0]->cost * $request->qty;
+
+            //sacamos todos los costos
+            $total = $article[0]->cost;
             $insert = new cnnxn_Stock;
+            //insertamos la cantidad
             $insert->quantity = $request->qty;
+            //insertamos el articulo
             $insert->article = $request->article;
-            $insert->cost = $article[0]->cost;
-            $insert->total = $total;
-            $insert->total_value = $article[0]->price * $request->qty;
+            //insertamos el total
+            $insert->total_cost = $total * $request->qty;
+            //aqui cambiamos los valores
+            $insert->total_price = $article[0]->price;
+            $insert->profit = $article[0]->price - $total;
             $insert->save();
         }else{
 
+            $query = cnnxn_Article::where('idArticle',$request->article)->get();
+
+            $total = $query[0]->cost;
+            $tota_cost = $total * $request->qty;
+
+            $total_price = $query[0]->price * $request->qty;
+
+            //incrementamos la cantidad
             $article = cnnxn_Stock::where('article',$request->article)->increment('quantity', $request->qty);
-            $new_sum = cnnxn_Stock::where('article',$request->article)->get();
-            $new_data = cnnxn_Article::where('idArticle',$request->article)->get();
             
-            //hacer la sumas
-            $new_number = $new_sum[0]->cost * $new_sum[0]->quantity;
-            $new_price  = $new_data[0]->price * $new_sum[0]->quantity;
+            //incrementamos el costo total
+            $cost = cnnxn_Stock::where('article',$request->article)->increment('total_cost',$total_cost);
+            
+            //incrementamos el precio total
+            $price = cnnxn_Stock::where('article',$request->article)->increment('total_price',$total_price);
+           
+            //sacamos el beneficio
 
+            $benefit = cnnxn_Stock::where('article',$request->article)->get();
 
-            $query = cnnxn_Stock::where('article',$request->article)->update([
-                    'total'=>$new_number,
-                    'total_value'=>$new_price,
+            $update = cnnxn_Stock::where('article',$request->article)->update([
+                'profit'=> $benefit[0]->total_price - $benefit[0]->total_cost
             ]);
+           
         }
     }
     public function take(Request $request)
     {
-
         $id = $request->id;
-        $number = $request->take;
+        $qty = $request->take;
         $query = cnnxn_Stock::where('idStock',$id)->get();
 
-        //esta es la cantidad original
-        $quantity = $query[0]->quantity;
-        //aqui hacemos la suma
-        $new_rest = $quantity - $number;
+        if ($query[0]->quantity < $qty) {
+            return 0;
+        }else{
 
-        //hacemos el update
-        $less = cnnxn_Stock::where('idStock',$id)->decrement('quantity',$number);
+            //sacamos el articulo
 
-        //sacamos el articulo
-        $article = cnnxn_Article::where('idArticle',$query[0]->article)->get();
+            $article = cnnxn_Article::where('idArticle',$query[0]->article)->get();
 
-        $new_total = $query[0]->cost * $new_rest;
-        $new_total_value = $article[0]->price * $new_rest;
-        
-        
+            //sacamos las cantidades
 
-        //actualizamos los demas campos
-        $update = cnnxn_Stock::where('idStock',$id)->update([
-            'total'=>$new_total,
-            'total_value'=>$new_total_value,
-        ]);
+            $total_cost = $article[0]->cost * $qty;
+            $total_price =$article[0]->price * $qty;
 
+            //aumnetamos la cantida de items
+            $less = cnnxn_Stock::where('idStock',$id)->decrement('quantity',$qty);
+
+            //agregamos el total de costo
+            $cost = cnnxn_Stock::where('idStock',$id)->decrement('total_cost',$total_cost);
+
+            //agregams el total de precio
+            $cost = cnnxn_Stock::where('idStock',$id)->decrement('total_price',$total_price);
+
+            //actualizamos el beneficio
+            $actual = cnnxn_Stock::where('idStock',$id)->get();
+
+            $profit = cnnxn_Stock::where('idStock',$id)->update([
+                'profit'=>$actual[0]->total_price - $actual[0]->total_cost 
+            ]);
+
+        }
 
     }
     public function take_up(Request $request)
     {
         $id = $request->id;
-        $number = $request->take;
+        $qty = $request->take;
         $query = cnnxn_Stock::where('idStock',$id)->get();
 
-        //esta es la cantidad original
-        $quantity = $query[0]->quantity;
-        //aqui hacemos la suma
-        $new_rest = $quantity - $number;
-
-        //hacemos el update
-        $less = cnnxn_Stock::where('idStock',$id)->increment('quantity',$number);
-
         //sacamos el articulo
+
         $article = cnnxn_Article::where('idArticle',$query[0]->article)->get();
 
-        $new_total = $query[0]->cost * $new_rest;
-        $new_total_value = $article[0]->price * $new_rest;
-        
-        
+        //sacamos las cantidades
 
-        //actualizamos los demas campos
-        $update = cnnxn_Stock::where('idStock',$id)->update([
-            'total'=>$new_total,
-            'total_value'=>$new_total_value,
+        $total_cost = $article[0]->cost * $qty;
+        $total_price =$article[0]->price * $qty;
+
+        //aumnetamos la cantida de items
+        $less = cnnxn_Stock::where('idStock',$id)->increment('quantity',$qty);
+
+        //agregamos el total de costo
+        $cost = cnnxn_Stock::where('idStock',$id)->increment('total_cost',$total_cost);
+
+        //agregams el total de precio
+        $cost = cnnxn_Stock::where('idStock',$id)->increment('total_price',$total_price);
+
+        //actualizamos el beneficio
+        $actual = cnnxn_Stock::where('idStock',$id)->get();
+
+        $profit = cnnxn_Stock::where('idStock',$id)->update([
+            'profit'=>$actual[0]->total_price - $actual[0]->total_cost 
         ]);
+
+    
     }
     public function show_stock()
     {
         //cosulta total para la tabla
         $query = cnnxn_Stock::join('cnnxn_articles','cnnxn_articles.idArticle','=','cnnxn_stock.article')->get();
 
-        //consulta de valor total
-        $total_value = cnnxn_Stock::join('cnnxn_articles','cnnxn_articles.idArticle','=','cnnxn_stock.article')->sum('total_value');
+        //consulta de valor total del inventario
+        $total_value = cnnxn_Stock::join('cnnxn_articles','cnnxn_articles.idArticle','=','cnnxn_stock.article')->sum('total_price');
 
-        //consulta del inversion
-        $investment = cnnxn_Stock::join('cnnxn_articles','cnnxn_articles.idArticle','=','cnnxn_stock.article')->sum('total');
+        //consulta del lo invertido
+        $investment = cnnxn_Stock::join('cnnxn_articles','cnnxn_articles.idArticle','=','cnnxn_stock.article')->sum('total_cost');
 
-        //profit
-
+        //consulta de beneficio
         $profit = $total_value - $investment;
         
         //Enviamos los datos
