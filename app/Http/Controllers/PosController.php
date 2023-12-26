@@ -382,6 +382,7 @@ class PosController extends Controller
             'delivery_time'=>$request->hour,
             'delivery_day'=>$request->date,
             'details'=>$request->city,
+            'delivery_type'=>1
         ]);
     }
     public function get_sales($id)
@@ -517,6 +518,19 @@ class PosController extends Controller
         $lines = cnnxn_customer_order_detail::where('idOrder_customer',$order[0]->idOrder)->delete();
         $delte = cnnxn_customer_order::where('slug',$slug)->delete();
 
+    }
+    public function order_over(Request $request)
+    {
+        if ($request->type == 1) {
+            $query = cnnxn_customer_order::where('slug',$request->slug)->update([
+                'status'=> 4
+            ]);
+            
+        }elseif($request->type ==2){
+            $query = cnnxn_customer_order::where('slug',$request->slug)->update([
+                'status'=> 5
+            ]);
+        }
     }
    
     

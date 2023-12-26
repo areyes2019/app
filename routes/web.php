@@ -220,6 +220,9 @@ Route::group(['middleware'=>'auth'],function(){
     Route::post('/send_to_production/',[PosController::class,'send'])->name('send_to_production');
     Route::post('/to_production/',[PosController::class,'to_production'])->name('to_production');
     
+    //terminar un pedido listo para entrega
+    Route::post('/order_over/', [PosController::class, 'order_over'])->name('order_over');
+    
     /*Ordenes de trabajo*/
     Route::post('/add_job/',[ProductionController::class,'add'])->name('add_job');
     Route::get('/order_list/{id}',[ProductionController::class,'order'])->name('order_list');

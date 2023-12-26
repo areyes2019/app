@@ -105,9 +105,6 @@
 					<a v-if="is_draw > 0" class="btn btn-outline-light rounded-0 btn-sm" @click="sendToDesign" data-bs-toggle="tooltip" data-bs-placement="top" title="Enviar a Diseño "><span class="bi bi-pc-display-horizontal"></span></a>
 					<!-- Enviar a diseño -->
 
-					<!-- enviar por correo  -->
-
-					<!-- enviar por correo  -->
 
 				</div>
 				<div v-for = "status in order">
@@ -230,15 +227,37 @@
 				</div>
 			</div>
 			<!-- Tabla de totales-->
-			<div v-for="address in order" class="mt-4">
-				<p><strong>Anticipo sugerido: $@{{pay_label = address.total_sum / 2}}</strong></p>
-				<p class="m-0 fs-6">Datos de Envío</p>
-				<hr>
-				<p class="m-0"><strong>Recibe:</strong> @{{address.receiber}}</p>
-				<p class="m-0">@{{address.street}}, Col. @{{address.zone}}</p>
-				<p class="m-0">Población, @{{address.details}}</p>
-				<p class="m-0"><strong>Día</strong> @{{address.delivery_day}}</p>
-				<p class="m-0"><strong>Hora</strong> @{{address.delivery_time}}</p>
+			<div v-for = "done in order">
+				<!-- Marcar como terminado  -->
+				<a v-if="done.status == 3" class="btn btn-outline-dark rounded-0 btn-sm mt-3" @click="endOrder(1)" data-bs-toggle="tooltip" data-bs-placement="top" title="Marcar como terminado"><span class="bi bi-check"></span> Marcar como elaborado</a>
+				<!-- Marcar como terminado -->
+
+				<!-- Marcar como entregado  -->
+				<a v-if="done.status == 4" class="btn btn-outline-dark rounded-0 btn-sm mt-3" @click="endOrder(2)" data-bs-toggle="tooltip" data-bs-placement="top" title="Marcar como terminado"><span class="bi bi-check"></span> Marcar como entregado</a>
+				<!-- Marcar como entregado  -->
+			</div>				
+			<hr>
+			<div class="row mt-3">
+				<div class="col-md-4">
+					<div v-for="address in order">
+						<p><strong>Anticipo sugerido: $@{{pay_label = address.total_sum / 2}}</strong></p>
+						<p class="m-0 fs-6">Datos de Envío</p>
+						<hr>
+						<div v-if="address.receiber == null ">
+							<p>Se recoge en dirección</p>
+						</div>
+						<div v-else>
+							<p class="m-0"><strong>Recibe:</strong> @{{address.receiber}}</p>
+							<p class="m-0">@{{address.street}}, Col. @{{address.zone}}</p>
+							<p class="m-0">Población, @{{address.details}}</p>
+							<p class="m-0"><strong>Día</strong> @{{address.delivery_day}}</p>
+							<p class="m-0"><strong>Hora</strong> @{{address.delivery_time}}</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-8" v-for = "file in order">
+					<iframe v-if="file.status > 2" width="100%" height="400" :src="'/orders/'+file.art_img" frameborder="0"></iframe>
+				</div>
 			</div>
 		</div>
 		<div class="col-md-4 my-note">

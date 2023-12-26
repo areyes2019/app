@@ -168,7 +168,7 @@
                             <th>#</th>
                             <th>WhatsApp</th>
                             <th>Nombre</th>
-                            <th>Arte</th>
+                            <th>Datos de entrega</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -178,10 +178,10 @@
                             <td>@{{sales.mobile}}</td>
                             <td>@{{sales.name}}</td>
                             <td>
-                                <img src="{{asset('img/big.png')}}" alt="" width="40">
+                                <span class="badge bg-danger" v-if="sales.delivery_type == 1">Domicilio</span>
+                                <span class="badge bg-success" v-else>Ocurre</span>
                             </td>
-                            <td align="right" width="25%">
-                                <button class="btn btn-outline-dark rounded-0 shadow-none" @click="sendToDesign(sale.idOrder)">Enviar a Diseño</button>
+                            <td align="right" width="25%">         
                                 <button class="btn btn-outline-dark rounded-0 shadow-none" @click="goToOrder(sales.slug)"> Ver</button>
                             </td>
                         </tr>
