@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use PDF;
 use Mail;
 use App\Mail\toEmail;
+
 class QuotationController extends Controller
 {
   public function index()
@@ -51,7 +52,8 @@ class QuotationController extends Controller
         
         return view('quotations.page')
                 ->with('id', $query[0]->idOrder)
-                ->with('slug',$query[0]->slug);
+                ->with('slug',$query[0]->slug)
+                ->with('type',$query[0]->type);
 
     }
 

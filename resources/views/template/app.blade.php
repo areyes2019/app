@@ -51,7 +51,7 @@
             </div>
             <a href="{{route('quotations_new',1)}}" class="boton">
                 <i class="bi bi-plus-circle"></i>
-                <span>Venta</span>
+                <span>Nueva Venta</span>
             </a>
         </div>
 

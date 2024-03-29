@@ -74,6 +74,7 @@
 		</div>
 	</nav>
 		<P ref="slug" class="d-none">{{$slug}}</P>
+		<P ref="type" class="d-none">{{$type}}</P>
 		<!-- Agregar articulo independiente -->
 	<div class="row mt-3">
 		<div class="col-md-8">

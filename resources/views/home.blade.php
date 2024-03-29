@@ -48,145 +48,64 @@
         <h3>Pedidos</h3>
     </div>
 </div>
-<div class="card mt-2 rounded-0">
-    <div class="card-body">
-        <!-- Botones de las pestañas-->      
-        <ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
-            <!-- Boton pestaña entratnes -->
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active rounded-0" id="home-tab" data-bs-toggle="tab" data-bs-target="#entrance" type="button" role="tab" aria-controls="home" aria-selected="true">Entrantes</button>
-            </li>
-            <!-- Boton pestaña entratnes -->
-
-            <!-- Boton pestaña en diseño -->
-            <li class="nav-item" role="presentation">
-                <button class="nav-link rounded-0" id="profile-tab" data-bs-toggle="tab" data-bs-target="#design" type="button" role="tab" aria-controls="profile" aria-selected="false">En Diseño</button>
-            </li>
-            <!-- Boton pestaña en diseño -->
-
-            <!-- Boton pestaña en produccion -->
-            <li class="nav-item" role="presentation">
-                <button class="nav-link rounded-0" id="contact-tab" data-bs-toggle="tab" data-bs-target="#proces" type="button" role="tab" aria-controls="contact" aria-selected="false">En Producción</button>
-            </li>
-            <!-- Boton pestaña en produccion -->
-
-            <!-- Boton pestaña para entregar -->
-            <li class="nav-item" role="presentation">
-                <button class="nav-link rounded-0" id="contact-tab" data-bs-toggle="tab" data-bs-target="#delivery" type="button" role="tab" aria-controls="contact" aria-selected="false">Para entregar</button>
-            </li>
-            <!-- Boton pestaña para entregar -->
-        </ul>
-        <!-- Botones de las pestañas-->
-
-        <div class="tab-content p-2" id="myTabContent">
-            <!-- pestaña de trabajos entrantes -->      
-            <div class="tab-pane fade show active" id="entrance" role="tabpanel" aria-labelledby="home-tab">
-                <table class="table table-bordered" id="entrada">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>WhatsApp</th>
-                            <th>Nombre</th>
-                            <th>Arte</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="sales in entrance">
-                            <td>@{{sales.idOrder}}</td>
-                            <td>@{{sales.mobile}}</td>
-                            <td>@{{sales.name}}</td>
-                            <td>
-                                <img src="{{asset('img/big.png')}}" alt="" width="40">
-                            </td>
-                            <td align="right" width="25%">
-                                <button class="btn btn-outline-dark rounded-0 shadow-none"  @click="goToOrder(sales.slug)">Ver</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+<div class="row">
+    <div class="col-3">
+        <div class="card mt-2 rounded-0">
+            <div class="card-header">
+                Pedidos entrantes
             </div>
-            
-            <!-- pestaña de trabajos en diseño  -->      
-            <div class="tab-pane fade" id="design" role="tabpanel" aria-labelledby="profile-tab">
-                <table class="table table-bordered" id="art">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>WhatsApp</th>
-                            <th>Nombre</th>
-                            <th>Arte</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="sales in design">
-                            <td>@{{sales.idOrder}}</td>
-                            <td>@{{sales.mobile}}</td>
-                            <td>@{{sales.name}}</td>
-                            <td>
-                                <a :href="'/design/'+sales.slug" click="view_art(sales.idOrder)">Ver OT</a>
-                            </td>
-                            <td align="right" width="25%">
-                                <button class="btn btn-outline-dark rounded-0 shadow-none" @click="goToOrder(sales.slug)">Ver</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="card-body">
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    <div class="d-flex justify-content-between">
+                        <p class="m-0">Pedido No <span class="text-primary"> <a href="">256</a> </span></p>
+                        <div class="dropdown">
+                          <a  href="#" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-three-dots-vertical"></i>
+                          </a>
+
+                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <li><a class="dropdown-item" href="#">A diseño</a></li>
+                            <li><a class="dropdown-item" href="#">A Producción</a></li>
+                            <li><a class="dropdown-item" href="#">A Envio</a></li>
+                          </ul>
+                        </div>
+                    </div>
+                    <p class="m-0"><strong>Maria Helan Rojo</strong></p>
+                    <span class="badge bg-primary">En Diseño</span>
+                  </li>
+                 
+                </ul>
             </div>
-            <div class="tab-pane fade" id="proces" role="tabpanel" aria-labelledby="contact-tab">
-                <table class="table table-bordered" id="proceso">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>WhatsApp</th>
-                            <th>Nombre</th>
-                            <th>Arte</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="sales in proces">
-                            <td>@{{sales.idOrder}}</td>
-                            <td>@{{sales.mobile}}</td>
-                            <td>@{{sales.name}}</td>
-                            <td>
-                                <img src="{{asset('img/big.png')}}" alt="" width="40">
-                            </td>
-                            <td align="right" width="25%">
-                                <button class="btn btn-outline-dark rounded-0 shadow-none" @click="goToOrder(sales.slug)"> Ver</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="card mt-2 rounded-0">
+            <div class="card-header">
+                En diseño
             </div>
-            <div class="tab-pane fade" id="delivery" role="tabpanel" aria-labelledby="contact-tab">
-                <p>Delivery</p>
-                <table class="table table-bordered" id="entrega">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>WhatsApp</th>
-                            <th>Nombre</th>
-                            <th>Datos de entrega</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="sales in delivery">
-                            <td>@{{sales.idOrder}}</td>
-                            <td>@{{sales.mobile}}</td>
-                            <td>@{{sales.name}}</td>
-                            <td>
-                                <span class="badge bg-danger" v-if="sales.delivery_type == 1">Domicilio</span>
-                                <span class="badge bg-success" v-else>Ocurre</span>
-                            </td>
-                            <td align="right" width="25%">         
-                                <button class="btn btn-outline-dark rounded-0 shadow-none" @click="goToOrder(sales.slug)"> Ver</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="card-body">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime cumque voluptates distinctio accusantium non voluptate minus incidunt culpa dolore nemo, dolores ea nobis temporibus ad consequatur sed itaque? Illo, quaerat.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="card mt-2 rounded-0">
+            <div class="card-header">
+                En Producción
+            </div>
+            <div class="card-body">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime cumque voluptates distinctio accusantium non voluptate minus incidunt culpa dolore nemo, dolores ea nobis temporibus ad consequatur sed itaque? Illo, quaerat.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="card mt-2 rounded-0">
+            <div class="card-header">
+                Para Entrega
+            </div>
+            <div class="card-body">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime cumque voluptates distinctio accusantium non voluptate minus incidunt culpa dolore nemo, dolores ea nobis temporibus ad consequatur sed itaque? Illo, quaerat.</p>
             </div>
         </div>
     </div>
